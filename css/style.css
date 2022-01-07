@@ -946,7 +946,7 @@ a:hover, a:focus, a:active {
 }
 
 .probootstrap-section {
-  padding: 7em 0;
+  padding: 6em 0;
   position: relative;
 }
 
@@ -955,7 +955,7 @@ a:hover, a:focus, a:active {
 }
 
 .probootstrap-section.probootstrap-border-top {
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  border-top: 3px solid rgba(0, 0, 0, 0.1);
 }
 
 .probootstrap-section.probootstrap-border-bottom {
@@ -1028,8 +1028,9 @@ a:hover, a:focus, a:active {
 
 @media screen and (max-width: 768px) {
   .section-heading h2 {
-    font-size: 24px;
-    line-height: 24px;
+    font-size: 35px;
+    line-height: 35px;
+    font-weight: 300;
   }
 }
 
@@ -1105,7 +1106,7 @@ a:hover, a:focus, a:active {
 }
 
 .probootstrap-footer {
-  padding: 7em 0;
+  padding: 5em 0;
   padding-bottom: 0;
   background: #000000;
   color: rgba(255, 255, 255, 0.9);
@@ -1425,6 +1426,15 @@ a:hover, a:focus, a:active {
 
 .probootstrap-flex-block .probootstrap-text {
   width: 30%;
+  margin-right: 20px;
+  background: #ffffff;
+  padding: 40px;
+  -webkit-box-shadow: 0px 2px 20px 0px rgba(0, 0, 0, 0.1);
+  box-shadow: 0px 2px 20px 0px rgba(0, 0, 0, 0.1);
+}
+
+.probootstrap-flex-block .probootstrap-text-full {
+  width: 100%;
   margin-right: 20px;
   background: #ffffff;
   padding: 40px;
@@ -2551,7 +2561,7 @@ a:hover, a:focus, a:active {
 }
 
 .owl-carousel-testimony .item {
-  padding-bottom: 40px;
+  padding-bottom: 20px;
   padding-top: 20px;
 }
 

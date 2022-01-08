@@ -19,6 +19,8 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/custom.css">
 
+    <script src="https://cdn.jsdelivr.net/npm/sharer.js@latest/sharer.min.js"></script>
+
     <!--[if lt IE 9]>
       <script src="js/vendor/html5shiv.min.js"></script>
       <script src="js/vendor/respond.min.js"></script>
@@ -78,7 +80,7 @@
               <li class="dropdown">
                 <a href="#" data-toggle="dropdown" class="dropdown-toggle">People</a>
                 <ul class="dropdown-menu">
-                  <li><a href="about.html">Faculty</a></li>
+                  <li><a href="faculty.html">Faculty</a></li>
                   <li><a href="courses.html">Researchers</a></li>
                   <li><a href="course-single.html">Students</a></li>
                   <li><a href="gallery.html">Alumni</a></li>
@@ -190,8 +192,12 @@
       </section> -->
 
 
+      <span></span>
+      <div class="alert alert-info" role="alert">
+        AVISO: Nova página diagramada, vá em People -> Faculty
+      </div>
 
-      
+  
       <section class="probootstrap-section probootstrap-section-colored probootstrap-bg">
         <div class="container">
           <div class="row">
@@ -329,8 +335,8 @@
         </div>
         <div class="probootstrap-tab-style-1">
           <ul class="nav nav-tabs probootstrap-center probootstrap-tabs no-border">
-            <li class="active"><a data-toggle="tab" href="#featured-news">News and Media</a></li>
-            <li><a data-toggle="tab" href="#upcoming-events">New Data</a></li>
+            <li class="active"><a data-toggle="tab" href="#featured-news">Data Releases</a></li>
+            <li><a data-toggle="tab" href="#upcoming-events">News and Media</a></li>
           </ul>
         </div>
       </section>
@@ -346,7 +352,78 @@
                   <div class="row">
                     <div class="col-md-12">
                       <div class="owl-carousel" id="owl1">
+
+
+
                         <div class="item">
+                          <a href="#" class="probootstrap-featured-news-box">
+                            <figure class="probootstrap-media"><img src="img/news/financial_reports.jpeg" alt="Free Bootstrap Template by ProBootstrap.com" class="img-responsive"></figure>
+                            <div class="probootstrap-text">
+                              <h3>Weekly Report 204</h3>
+                              <span class="probootstrap-date"><i class="icon-calendar"></i>Jan 3, 2022</span>
+                              <!-- <span class="probootstrap-location"><i class="icon-location2"></i>White Palace, Brooklyn, NYC</span> -->
+                            </div>
+                          </a>
+                        </div>
+
+
+                        <div class="item">
+                          <a href="#" class="probootstrap-featured-news-box">
+                            <figure class="probootstrap-media"><img src="img/news/news_1.png" alt="Free Bootstrap Template by ProBootstrap.com" class="img-responsive"></figure>
+                            <div class="probootstrap-text">
+                              <h3>Volatility Index (IVol-BR)</h3>
+                              <span class="probootstrap-date"><i class="icon-calendar"></i>Dec 28, 2022</span>
+                              <!-- <span class="probootstrap-location"><i class="icon-location2"></i>White Palace, Brooklyn, NYC</span> -->
+                            </div>
+                          </a>
+                        </div>
+
+
+                        <div class="item">
+                          <a href="#" class="probootstrap-featured-news-box">
+                            <figure class="probootstrap-media"><img src="img/news/financial_reports.jpeg" alt="Free Bootstrap Template by ProBootstrap.com" class="img-responsive"></figure>
+                            <div class="probootstrap-text">
+                              <h3>Weekly Report 203</h3>
+                              <span class="probootstrap-date"><i class="icon-calendar"></i>Dec 27, 2022</span>
+                              <!-- <span class="probootstrap-location"><i class="icon-location2"></i>White Palace, Brooklyn, NYC</span> -->
+                            </div>
+                          </a>
+                        </div>
+
+
+                        <div class="item">
+                          <a href="#" class="probootstrap-featured-news-box">
+                            <figure class="probootstrap-media"><img src="img/news/news_1.png" alt="Free Bootstrap Template by ProBootstrap.com" class="img-responsive"></figure>
+                            <div class="probootstrap-text">
+                              <h3>Weekly Report 202</h3>
+                              <span class="probootstrap-date"><i class="icon-calendar"></i>Dec 20, 2022</span>
+                              <!-- <span class="probootstrap-location"><i class="icon-location2"></i>White Palace, Brooklyn, NYC</span> -->
+                            </div>
+                          </a>
+                        </div>
+
+
+                        
+
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="row">
+                    <div class="col-md-12 text-center">
+                      <p><a href="#" class="btn btn-primary">View all Reports</a></p>  
+                    </div>
+                  </div>
+
+                </div>
+
+                <div id="upcoming-events" class="tab-pane fade">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="owl-carousel" id="owl2">
+
+
+                       <div class="item">
                           <a href="https://valorinveste.globo.com/blogs/rodrigo-de-losso/coluna/principios-de-economia-familiar.ghtml" class="probootstrap-featured-news-box">
                             <figure class="probootstrap-media"><img src="img/news/family_economy.jpeg" alt="Free Bootstrap Template by ProBootstrap.com" class="img-responsive"></figure>
                             <div class="probootstrap-text">
@@ -361,7 +438,9 @@
                             </div>
                           </a>
                         </div>
-                        <!-- END item -->
+
+
+                    
                         <div class="item">
                           <a href="https://g1.globo.com/fantastico/noticia/2021/01/31/day-trade-pratica-explode-no-brasil-veja-alertas-e-cuidados-para-nao-perder-dinheiro.ghtml" class="probootstrap-featured-news-box">
                             <figure class="probootstrap-media"><img src="img/news/daytrade.png" alt="Free Bootstrap Template by ProBootstrap.com" class="img-responsive"></figure>
@@ -374,7 +453,9 @@
                             </div>
                           </a>
                         </div>
-                        <!-- END item -->
+
+
+
                         <div class="item">
                           <a href="#" class="probootstrap-featured-news-box">
                             <figure class="probootstrap-media"><img src="img/news/news_3.png" alt="Free Bootstrap Template by ProBootstrap.com" class="img-responsive"></figure>
@@ -386,7 +467,9 @@
                             </div>
                           </a>
                         </div>
-                        <!-- END item -->
+
+
+                      
                         <div class="item">
                           <a href="#" class="probootstrap-featured-news-box">
                             <figure class="probootstrap-media"><img src="img/img_sm_3.jpg" alt="Free Bootstrap Template by ProBootstrap.com" class="img-responsive"></figure>
@@ -394,76 +477,20 @@
                               <h3>Tempora consectetur unde nisi</h3>
                               <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Iure, earum.</p>
                               <span class="probootstrap-date"><i class="icon-calendar"></i>July 9, 2017</span>
-                              
-                              
                             </div>
                           </a>
                         </div>
-                        <!-- END item -->
+
+
+
                       </div>
                     </div>
                   </div>
-                  <!-- END row -->
+
+
                   <div class="row">
                     <div class="col-md-12 text-center">
-                      <p><a href="#" class="btn btn-primary">View all news</a></p>  
-                    </div>
-                  </div>
-                </div>
-                <div id="upcoming-events" class="tab-pane fade">
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="owl-carousel" id="owl2">
-                        <div class="item">
-                          <a href="#" class="probootstrap-featured-news-box">
-                            <figure class="probootstrap-media"><img src="img/news/financial_reports.jpeg" alt="Free Bootstrap Template by ProBootstrap.com" class="img-responsive"></figure>
-                            <div class="probootstrap-text">
-                              <h3>Report 204</h3>
-                              <span class="probootstrap-date"><i class="icon-calendar"></i>Jan 3, 2022</span>
-                              <!-- <span class="probootstrap-location"><i class="icon-location2"></i>White Palace, Brooklyn, NYC</span> -->
-                            </div>
-                          </a>
-                        </div>
-                        <!-- END item -->
-                        <div class="item">
-                          <a href="#" class="probootstrap-featured-news-box">
-                            <figure class="probootstrap-media"><img src="img/news/news_1.png" alt="Free Bootstrap Template by ProBootstrap.com" class="img-responsive"></figure>
-                            <div class="probootstrap-text">
-                              <h3>Volatility Index (IVol-BR)</h3>
-                              <span class="probootstrap-date"><i class="icon-calendar"></i>Dec 28, 2022</span>
-                              <!-- <span class="probootstrap-location"><i class="icon-location2"></i>White Palace, Brooklyn, NYC</span> -->
-                            </div>
-                          </a>
-                        </div>
-                        <!-- END item -->
-                        <div class="item">
-                          <a href="#" class="probootstrap-featured-news-box">
-                            <figure class="probootstrap-media"><img src="img/news/financial_reports.jpeg" alt="Free Bootstrap Template by ProBootstrap.com" class="img-responsive"></figure>
-                            <div class="probootstrap-text">
-                              <h3>Report 203</h3>
-                              <span class="probootstrap-date"><i class="icon-calendar"></i>Dec 27, 2022</span>
-                              <!-- <span class="probootstrap-location"><i class="icon-location2"></i>White Palace, Brooklyn, NYC</span> -->
-                            </div>
-                          </a>
-                        </div>
-                        <!-- END item -->
-                        <div class="item">
-                          <a href="#" class="probootstrap-featured-news-box">
-                            <figure class="probootstrap-media"><img src="img/news/news_1.png" alt="Free Bootstrap Template by ProBootstrap.com" class="img-responsive"></figure>
-                            <div class="probootstrap-text">
-                              <h3>Report 202</h3>
-                              <span class="probootstrap-date"><i class="icon-calendar"></i>Dec 20, 2022</span>
-                              <!-- <span class="probootstrap-location"><i class="icon-location2"></i>White Palace, Brooklyn, NYC</span> -->
-                            </div>
-                          </a>
-                        </div>
-                        <!-- END item -->
-                      </div>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="col-md-12 text-center">
-                      <p><a href="#" class="btn btn-primary">View all Reports</a></p>  
+                      <p><a href="#" class="btn btn-primary">View all News</a></p>  
                     </div>
                   </div>
                 </div>
@@ -509,7 +536,7 @@
                   <h3>Unskilled fund managers: Replicating active fund performance with few ETFs</h3>
                   <p><h5>International Review of Financial Analysis</h5></p>
                   <p><h5>CAVALCANTE FILHO, E., DE-LOSSO, R. and MOREIRA, F.</h5></p>
-                  <p><a href="https://www.sciencedirect.com/science/article/abs/pii/S105752192100226X" class="btn btn-primary">Read now</a> 
+                  <p><a href="https://www.sciencedirect.com/science/article/abs/pii/S105752192100226X" class="btn btn-primary ">Read now</a> 
                 </div>
               </div>
 
@@ -820,6 +847,8 @@
                   <li><i class="icon-phone2"></i><span>+55 11 3093 0957</span></li>
                 </ul>
               </div>
+
+
             </div>
            
           </div>

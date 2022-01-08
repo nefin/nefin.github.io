@@ -951,7 +951,7 @@ a:hover, a:focus, a:active {
 }
 
 .probootstrap-section.probootstrap-section-sm {
-  padding: 3em 0;
+  padding: 2em 0;
 }
 
 .probootstrap-section.probootstrap-border-top {
@@ -1007,6 +1007,11 @@ a:hover, a:focus, a:active {
 
 .section-heading {
   margin-bottom: 70px;
+}
+
+.section-heading-sm {
+  margin-top: 30px;
+  margin-bottom: 20px;
 }
 
 .section-heading h1 {

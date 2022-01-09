@@ -69,10 +69,10 @@ a:hover, a:focus, a:active {
 }
 
 .hero-text-heading, .probootstrap-hero h1, .flexslider .probootstrap-heading {
-  font-size: 52px;
+  font-size: 40px;
   font-weight: 300;
   margin-bottom: 10px;
-  margin-top: 0;
+  margin-top: 60px;
   line-height: 64px;
   color: white;
   font-weight: 300;
@@ -80,7 +80,8 @@ a:hover, a:focus, a:active {
 
 @media screen and (max-width: 768px) {
   .hero-text-heading, .probootstrap-hero h1, .flexslider .probootstrap-heading {
-    font-size: 40px;
+    margin-top: 80px;
+    font-size: 30px;
     line-height: 1.5;
   }
 }
@@ -2577,12 +2578,12 @@ a:hover, a:focus, a:active {
 
 /* Flexslider override style */
 .slider-height, .flexslider, .flexslider .slides > li {
-  height: 700px;
+  height: 250px;
 }
 
 @media screen and (max-width: 480px) {
   .slider-height, .flexslider, .flexslider .slides > li {
-    height: 400px;
+    height: 250px;
   }
 }
 
@@ -2599,12 +2600,12 @@ a:hover, a:focus, a:active {
 }
 
 .flexslider .probootstrap-slider-text {
-  margin-top: 300px;
+  margin-top: 50px;
 }
 
 @media screen and (max-width: 480px) {
   .flexslider .probootstrap-slider-text {
-    margin-top: 150px;
+    margin-top: 50px;
   }
 }
 
@@ -2626,7 +2627,7 @@ a:hover, a:focus, a:active {
 
 .flexslider .flex-control-paging {
   position: absolute;
-  bottom: 30px;
+  bottom: 0px;
   z-index: 20;
 }
 

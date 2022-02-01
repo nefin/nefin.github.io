@@ -11,7 +11,7 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Faculty - NEFIN</title>
+    <title>Students - NEFIN</title>
     <meta name="description" content="Center for Research in Financial Economics of the University of São Paulo">
     
     <link href="https://fonts.googleapis.com/css?family=Raleway:300,400,500,700|Open+Sans" rel="stylesheet">
@@ -58,7 +58,7 @@
       </div> -->
 
 
-       <nav class="navbar navbar-default probootstrap-navbar">
+        <nav class="navbar navbar-default probootstrap-navbar">
         <div class="container">
           <div class="navbar-header">
             <div class="btn-more js-btn-more visible-xs">
@@ -75,14 +75,14 @@
 
           <div id="navbar-collapse" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-              <li><a href="index.html">Home</a></li>
-              <li class="dropdown active">
+              <li class="active"><a href="index.html">Home</a></li>
+              <li class="dropdown">
                 <a href="#" data-toggle="dropdown" class="dropdown-toggle">People</a>
                 <ul class="dropdown-menu">
                   <li><a href="faculty.html">Faculty</a></li>
-                  <li><a href="courses.html">Researchers</a></li>
-                  <li><a href="course-single.html">Students</a></li>
-                  <li><a href="gallery.html">Alumni</a></li>
+                  <li><a href="researchers.html">Researchers</a></li>
+                  <li><a href="students.html">Students</a></li>
+                  <li><a href="alumni.html">Alumni</a></li>
                 </ul>
               </li>
 
@@ -90,26 +90,26 @@
               <li class="dropdown">
                 <a href="#" data-toggle="dropdown" class="dropdown-toggle">Data</a>
                 <ul class="dropdown-menu">
-                  <li><a href="#">Cost of Equity</a></li>
-                  <li><a href="#">Dividend Yield</a></li>
-                  <li><a href="#">Illiquidity Index</a></li>
-                  <li><a href="#">Load Fees</a></li>
-                  <li><a href="#">Portfolios</a></li>
-                  <li><a href="#">Risk Factors</a></li>
-                  <li><a href="#">Short Interest</a></li>
-                  <li><a href="#">Sport Rate Curve</a></li>
-                  <li><a href="#">Volatility Index</a></li>
+                  <li><a href="/data/cost_of_equity.html">Cost of Equity</a></li>
+                  <li><a href="/data/dividend_yield.html">Dividend Yield</a></li>
+                  <li><a href="/data/illiquidity_index.html">Illiquidity Index</a></li>
+                  <li><a href="/data/loan_fees.html">Loan Fees</a></li>
+                  <li><a href="/data/portfolios.html">Portfolios</a></li>
+                  <li><a href="/data/risk_factors.html">Risk Factors</a></li>
+                  <li><a href="/data/short_interest.html">Short Interest</a></li>
+                  <li><a href="/data/spot_rate_curve.html">Spot Rate Curve</a></li>
+                  <li><a href="/data/volatility_index.html">Volatility Index</a></li>
                   <li class="dropdown-divider"></li>
-                  <li><a href="#">Methodology</a></li>                  
+                  <li><a href="/resources/NEFIN_methodology.pdf">Methodology</a></li>                  
                 </ul>
               </li>
 
               <li class="dropdown">
                 <a href="#" data-toggle="dropdown" class="dropdown-toggle">Research</a>
                 <ul class="dropdown-menu">
-                  <li><a href="about.html">Working Papers</a></li>
-                  <li><a href="courses.html">Papers</a></li>
-                  <li><a href="course-single.html">Books</a></li>
+                  <li><a href="/research/working_papers.html">Working Papers</a></li>
+                  <li><a href="/research/papers.html">Papers</a></li>
+                  <li><a href="/research/books.html">Books</a></li>
                 </ul>
               </li>
 
@@ -117,8 +117,9 @@
               <li class="dropdown">
                 <a href="#" data-toggle="dropdown" class="dropdown-toggle">Reports</a>
                 <ul class="dropdown-menu">
-                  <li><a href="about.html">Weekly Reports</a></li>
-                  <li><a href="courses.html">Funds</a></li>
+                  <li><a href="resources/latest_report_nefin.pdf">Latest Report</a></li>
+                  <li><a href="/reports/weekly_reports.html">All Weekly Reports</a></li>
+                  <li><a href="/reports/weekly_reports.html">Funds</a></li>
                 </ul>
               </li>
 
@@ -143,17 +144,15 @@
               </li>
  -->
 
-              <li><a href="contact.html">Contact</a></li>
+              <li><a href="#" onclick="$('html, body').animate({ scrollTop: $(document).height() }, 2000,'easeInOutExpo');
+">Contact</a></li>
             </ul>
           </div>
         </div>
       </nav>
 
-      <div class="alert alert-info" role="alert">
-        
-        Note que se clickar nos quadrados redirecionamos para a página pessoal.<br>
-        Existe ainda a alternativa de criar uma página interna com informações pessoais, caso algum pesquisador ache interessante.
-      </div>
+
+
       
       <section class="probootstrap-section probootstrap-section-sm probootstrap-section-colored probootstrap-bg">
         <div class="container">
@@ -201,8 +200,8 @@
                   <img src="img/students/elias.jpg" alt="Free Bootstrap Template by ProBootstrap.com" class="img-responsive">
                 </figure>
                 <div class="text">
-                    <h3>Alan De Genaro</h3>
-                    <p>PhD in Statistics <br> <h5>University of São Paulo</h5></p>                
+                    <h3>Elias Cavalcante Filho</h3>
+                    <p>Ph.D Candidate <br> <h5>Advisor: Rodrigo de Losso</h5></p>                
                 </div>
               </a>
               </div>
@@ -216,8 +215,8 @@
                     <img src="img/students/thiago.png" alt="Free Bootstrap Template by ProBootstrap.com" class="img-responsive">
                   </figure>
                   <div class="text">
-                    <h3>Bruno Giovannetti</h3>
-                     <p>PhD in Economics <br> <h5>Columbia University</h5></p>                       
+                    <h3>Thiago Cyfer Goularte</h3>
+                     <p>Ph.D Candidate<br> <h5>Advisor: Rodrigo De Losso</h5></p>                       
                   </div>
                 </a>
               </div>
@@ -232,8 +231,8 @@
                   <img src="img/students/renato.png" alt="Free Bootstrap Template by ProBootstrap.com" class="img-responsive">
                 </figure>
                 <div class="text">
-                   <h3>Eduardo Luzio</h3>
-                     <p>PhD in Economics <br> <h5> University of Illinois at Urbana-Champaign</h5></p>                
+                   <h3>Renato Souza Neto</h3>
+                     <p>Master Candidate <br> <h5> Advisor: Rodrigo De Losso</h5></p>                
                 </div>
               </a>
               </div>

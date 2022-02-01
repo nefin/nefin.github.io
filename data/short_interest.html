@@ -57,7 +57,7 @@
           </div>
         </div>
       </div> -->
-      <nav class="navbar navbar-default probootstrap-navbar">
+       <nav class="navbar navbar-default probootstrap-navbar">
         <div class="container">
           <div class="navbar-header">
             <div class="btn-more js-btn-more visible-xs">
@@ -78,10 +78,10 @@
               <li class="dropdown">
                 <a href="#" data-toggle="dropdown" class="dropdown-toggle">People</a>
                 <ul class="dropdown-menu">
-                  <li><a href="faculty.html">Faculty</a></li>
-                  <li><a href="researchers.html">Researchers</a></li>
-                  <li><a href="students.html">Students</a></li>
-                  <li><a href="alumni.html">Alumni</a></li>
+                  <li><a href="/faculty.html">Faculty</a></li>
+                  <li><a href="/researchers.html">Researchers</a></li>
+                  <li><a href="/students.html">Students</a></li>
+                  <li><a href="/alumni.html">Alumni</a></li>
                 </ul>
               </li>
 
@@ -89,26 +89,26 @@
               <li class="dropdown">
                 <a href="#" data-toggle="dropdown" class="dropdown-toggle">Data</a>
                 <ul class="dropdown-menu">
-                  <li><a href="#">Cost of Equity</a></li>
-                  <li><a href="#">Dividend Yield</a></li>
-                  <li><a href="#">Illiquidity Index</a></li>
-                  <li><a href="#">Load Fees</a></li>
-                  <li><a href="#">Portfolios</a></li>
-                  <li><a href="#">Risk Factors</a></li>
-                  <li><a href="#">Short Interest</a></li>
-                  <li><a href="#">Sport Rate Curve</a></li>
-                  <li><a href="#">Volatility Index</a></li>
+                  <li><a href="/data/cost_of_equity.html">Cost of Equity</a></li>
+                  <li><a href="/data/dividend_yield.html">Dividend Yield</a></li>
+                  <li><a href="/data/illiquidity_index.html">Illiquidity Index</a></li>
+                  <li><a href="/data/loan_fees.html">Loan Fees</a></li>
+                  <li><a href="/data/portfolios.html">Portfolios</a></li>
+                  <li><a href="/data/risk_factors.html">Risk Factors</a></li>
+                  <li><a href="/data/short_interest.html">Short Interest</a></li>
+                  <li><a href="/data/spot_rate_curve.html">Spot Rate Curve</a></li>
+                  <li><a href="/data/volatility_index.html">Volatility Index</a></li>
                   <li class="dropdown-divider"></li>
-                  <li><a href="#">Methodology</a></li>                  
+                  <li><a href="/resources/NEFIN_methodology.pdf">Methodology</a></li>                  
                 </ul>
               </li>
 
               <li class="dropdown">
                 <a href="#" data-toggle="dropdown" class="dropdown-toggle">Research</a>
                 <ul class="dropdown-menu">
-                  <li><a href="about.html">Working Papers</a></li>
-                  <li><a href="courses.html">Papers</a></li>
-                  <li><a href="course-single.html">Books</a></li>
+                  <li><a href="/research/working_papers.html">Working Papers</a></li>
+                  <li><a href="/research/papers.html">Papers</a></li>
+                  <li><a href="/research/books.html">Books</a></li>
                 </ul>
               </li>
 
@@ -116,8 +116,9 @@
               <li class="dropdown">
                 <a href="#" data-toggle="dropdown" class="dropdown-toggle">Reports</a>
                 <ul class="dropdown-menu">
-                  <li><a href="about.html">Weekly Reports</a></li>
-                  <li><a href="courses.html">Funds</a></li>
+                  <li><a href="/resources/latest_report_nefin.pdf">Latest Report</a></li>
+                  <li><a href="/reports/weekly_reports.html">All Weekly Reports</a></li>
+                  <li><a href="/reports/weekly_reports.html">Funds</a></li>
                 </ul>
               </li>
 
@@ -142,11 +143,13 @@
               </li>
  -->
 
-              <li><a href="contact.html">Contact</a></li>
+              <li><a href="#" onclick="$('html, body').animate({ scrollTop: $(document).height() }, 2000,'easeInOutExpo');
+">Contact</a></li>
             </ul>
           </div>
         </div>
       </nav>
+
 
 
       
@@ -180,7 +183,7 @@
                 </div> -->
                 <div class="col-md-12  probootstrap-overlap probootstrap-animate" id="probootstrap-content" style="background-color: white; padding: 40px;">
                     <p>
-                      We construct an implied, forward-looking, volatility index for the Brazilian stock market. We name it "IVol-BR". Our methodology combines standard international methodology with adjustments we propose to take into account the relatively low liquidity of options over IBOVESPA. We then decompose the IVol-BR into two components: the "variance premium" and the "expected variance". From the variance premium we extract a time-varying risk aversion coefficient for the Brazilian investor. Series can be downloaded below. Details can be found in this paper.
+                     We calculate the short interest for the Brazilian market. It is the number of borrowed shares divided by the number of total shares outstanding. This is a commonly used predictor of market conditions: agents sell short more when they are pessimistic. We use only stocks selected following the criteria available here.
                     </p>  
 
 
@@ -315,7 +318,7 @@
         final_data = []
         for(var i=0; i<data_received.length;i++){
           data_piece_date = data_received[i]["year"] + "-" + data_received[i]["month"] + "-" + data_received[i]["day"]
-          data_piece_value = parseFloat(data_received[i]["ivolbr"])
+          data_piece_value = parseFloat(data_received[i]["week_si"])
           data_piece = {"date": data_piece_date, "value":data_piece_value}
           final_data = final_data.concat([data_piece])
         }
@@ -332,7 +335,7 @@
           },
           data: { 
             datasets:[{
-              label: 'IVol-BR',
+              label: 'Short Interest',
               data: data_received,
               fill: false,
               backgroundColor: 'rgb(88, 42, 235)',
@@ -353,7 +356,7 @@
               },
               title: {
                 display: true,
-                text: 'Volatility index for the Brazilian stock market'
+                text: 'Short Interest for the Brazilian Market.'
               }
             }
           },
@@ -399,7 +402,7 @@
       //     }
       //   });
 
-      d3.csv('/data/IVol-BR.csv').then(makeChart);
+      d3.csv('/data/short_interest.csv').then(makeChart);
 
       </script>
   </body>

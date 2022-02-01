@@ -1,0 +1,30 @@
+﻿Small Minus Big (SMB)
+
+Daily Returns: from January 2, 2001.
+
+
+The Small Minus Big Factor (SMB) is the return of a portfolio long on stocks with low market capitalization (small) and short on stocks with high market capitalization (big).
+
+Every January of year t, we (ascending) sort the eligible stocks according to their December of year t-1 market capitalization, and separate them into 3 quantiles, as shown in the following table: 
+
+********************************************************************
+|             Size               |        Type of Portfolio        |
+********************************************************************
+|          1st tercile           |              Small              |
+********************************************************************
+|          2st tercile           |             Neutral             |
+********************************************************************
+|          3st tercile           |               Big               |
+********************************************************************
+
+
+Then, we compute the equal-weighted returns of the first portfolio (small stocks) and the third portfolio (big stocks). The SMB Factor is the return of the small stocks portfolio minus the return of the big stocks portfolio.
+
+
+The Eligibility Criteria
+
+A stock traded in BOVESPA is considered “eligible” for year t if it meets 3 criteria:
+- The stock is the most traded stock of the firm (the one with the highest traded volume during last year);
+- The stock was traded in more than 80% of the days in year t-1 with volume greater than R$ 500.000,00 per day. In case the stock was listed in year t-1, the period considered goes from the listing day to the last day of the year;
+- The stock was initially listed prior to December of year t-1.
+

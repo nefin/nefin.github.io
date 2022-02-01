@@ -184,7 +184,14 @@
                     </p>  
 
 
-                  <canvas id="myChart" width="800" height="600"></canvas>                  
+                  <canvas id="myChart" width="800" height="600"></canvas>     
+
+                  <ul>
+
+                    <li><a style="font-size: 19px; color:#3063AD" href="/resources/spot_rate_curve/spot_rate_curve.xls"  title= "Spot Rate Curve">Spot Rate Curve</a>
+                    <a href="/resources/methodology/spot_rate_curve/Spot_Rate_Curve.txt" target="_blank" class="linkum" "details"> (details) </a></li>
+
+                </ul>             
                 </div>
               </div>
             </div>
@@ -314,8 +321,8 @@
         
         final_data = []
         for(var i=0; i<data_received.length;i++){
-          data_piece_date = data_received[i]["year"] + "-" + data_received[i]["month"] + "-" + data_received[i]["day"]
-          data_piece_value = parseFloat(data_received[i]["ivolbr"])
+          data_piece_date = data_received[i]["Date"]
+          data_piece_value = parseFloat(data_received[i]["1 month"])
           data_piece = {"date": data_piece_date, "value":data_piece_value}
           final_data = final_data.concat([data_piece])
         }
@@ -332,7 +339,7 @@
           },
           data: { 
             datasets:[{
-              label: 'IVol-BR',
+              label: '1 month spot rate',
               data: data_received,
               fill: false,
               backgroundColor: 'rgb(88, 42, 235)',
@@ -399,7 +406,7 @@
       //     }
       //   });
 
-      d3.csv('/data/IVol-BR.csv').then(makeChart);
+      d3.csv('/resources/spot_rate_curve/spot_rate_curve.csv').then(makeChart);
 
       </script>
   </body>

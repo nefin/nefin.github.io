@@ -1,0 +1,31 @@
+﻿High Minus Low (HML)
+
+Daily Returns: from January 2, 2001.
+
+
+The High Minus Low Factor (HML) is the return of a portfolio long on stocks with high book-to-market ratio and short on stocks with low book-to-market ratio.
+
+Every January of year t, we (ascending) sort the eligible stocks into 3 quantiles (portfolios) according to the book-to-market ratio of the stocks in June of year t-1, as shown in the following table: 
+
+********************************************************************
+|         Book-to-Market         |        Type of Portfolio        |
+********************************************************************
+|          1st tercile           |              Growth             |
+********************************************************************
+|          2st tercile           |             Neutral             |
+********************************************************************
+|          3st tercile           |              Value              |
+********************************************************************
+
+Then, we compute the equal-weighted returns of the first portfolio (low book-to-market) and the third portfolio (high book-to-market). The HML Factor is the return of the high book-to-market stocks portfolio minus the return of the low book-to-market stocks portfolio.
+
+
+The Eligibility Criteria
+
+A stock traded in BOVESPA is considered “eligible” for year t if it meets 3 criteria:
+- The stock is the most traded stock of the firm (the one with the highest traded volume during last year);
+- The stock was traded in more than 80% of the days in year t-1 with volume greater than R$ 500.000,00 per day. In case the stock was listed in year t-1, the period considered goes from the listing day to the last day of the year;
+- The stock was initially listed prior to December of year t-1.
+
+
+

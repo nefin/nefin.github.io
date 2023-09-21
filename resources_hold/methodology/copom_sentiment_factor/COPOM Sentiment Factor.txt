@@ -1,0 +1,7 @@
+COPOM Sentiment Factor
+
+Sentiment factor for 141 minutes from the Brazilian Central Bank, from February 2000.
+
+We read 141 minutes from the Brazilian Central Bank, interpreting its content according to the Harvard IV Dictionary, which maps words into semantic groups, such as "Positive", "Negative", "Strong" and others. We then construct a Sentiment Index by computing the relative frequency of each semantic group and use Principal Component Analysis to extract factors from the time series of such frequencies.
+
+The factor loadings and the correlations with macroeconomic variables indicate that this factor captures the optimism of the text about economic conditions. As such we label this factor the "Optimism Factor".

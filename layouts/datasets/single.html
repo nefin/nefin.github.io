@@ -1,0 +1,45 @@
+{{ define "main" }}
+<section class="page-header">
+  <div class="container">
+    <h1>{{ .Title }}</h1>
+    {{ with .Params.updated }}<p>Last updated: {{ . }}</p>{{ end }}
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    {{ with .Params.description }}
+    <p class="data-page__desc">{{ . }}</p>
+    {{ end }}
+
+    {{ with .Params.table }}
+    <table class="data-table">
+      <caption>{{ $.Params.table_caption }}</caption>
+      <thead>
+        <tr>
+          {{ range .headers }}<th>{{ . }}</th>{{ end }}
+        </tr>
+      </thead>
+      <tbody>
+        {{ range .rows }}
+        <tr>{{ range . }}<td>{{ . }}</td>{{ end }}</tr>
+        {{ end }}
+      </tbody>
+    </table>
+    {{ end }}
+
+    {{ .Content }}
+
+    {{ with .Params.downloads }}
+    <div class="download-section mt-4">
+      <h3>Download</h3>
+      <ul class="download-links">
+        {{ range . }}
+        <li><a href="{{ .url }}" {{ if not (hasPrefix .url "/") }}target="_blank" rel="noopener"{{ end }}>{{ .label }}</a></li>
+        {{ end }}
+      </ul>
+    </div>
+    {{ end }}
+  </div>
+</section>
+{{ end }}

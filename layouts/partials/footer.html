@@ -1,0 +1,24 @@
+<footer class="footer" id="contact">
+  <div class="container">
+    <div class="footer__grid">
+      <div>
+        <div class="footer__brand">NEFIN</div>
+        <p class="footer__desc">{{ .Site.Params.description }}. We make data freely available for academics and practitioners, updated on a regular basis.</p>
+      </div>
+      <div>
+        <div class="footer__label">Contact</div>
+        <div class="footer__contact">
+          <span>Department of Economics – FEA</span>
+          <span>Prof. Luciano Gualberto Ave., Cidade Universitária, FEA I</span>
+          <span>São Paulo, SP – Brazil · 05508-900</span>
+          <a href="mailto:{{ .Site.Params.email }}">{{ .Site.Params.email }}</a>
+          <span>{{ .Site.Params.phone }}</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© {{ now.Year }} NEFIN — All rights reserved.</span>
+      <span>Universidade de São Paulo</span>
+    </div>
+  </div>
+</footer>

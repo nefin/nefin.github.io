@@ -1,0 +1,126 @@
+# ============================================================
+# Decap CMS — NEFIN configuration
+# ============================================================
+# Setup instructions:
+#   1. Go to GitHub → Settings → Developer settings → OAuth Apps → New
+#   2. Set Authorization callback URL to: https://nefin.com.br/api/auth
+#   3. Create a free Netlify site connected to this repo
+#   4. Enable Netlify Identity on that site and set External Provider = GitHub
+#   5. Update base_url below with your Netlify site URL
+# ============================================================
+
+backend:
+  name: git-gateway
+  branch: main
+
+# For local development: run `npx decap-server` and uncomment:
+# local_backend: true
+
+media_folder: "static/img/uploads"
+public_folder: "/img/uploads"
+
+collections:
+
+  # ── Faculty ────────────────────────────────────────────────
+  - name: "faculty"
+    label: "Faculty"
+    label_singular: "Faculty Member"
+    folder: "content/people/faculty"
+    create: true
+    slug: "{{slug}}"
+    identifier_field: "title"
+    fields:
+      - { label: "Full Name", name: "title", widget: "string" }
+      - { label: "PhD", name: "phd", widget: "string", hint: "e.g. PhD in Economics" }
+      - { label: "Institution (PhD)", name: "institution", widget: "string" }
+      - { label: "Photo", name: "photo", widget: "image", required: false }
+      - { label: "Personal Website URL", name: "personal_url", widget: "string", required: false }
+      - { label: "Display Order", name: "weight", widget: "number", default: 99 }
+
+  # ── Researchers ────────────────────────────────────────────
+  - name: "researchers"
+    label: "Researchers"
+    label_singular: "Researcher"
+    folder: "content/people/researchers"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Full Name", name: "title", widget: "string" }
+      - { label: "Degree / Role", name: "phd", widget: "string" }
+      - { label: "Institution", name: "institution", widget: "string" }
+      - { label: "Photo", name: "photo", widget: "image", required: false }
+      - { label: "Personal Website URL", name: "personal_url", widget: "string", required: false }
+      - { label: "Display Order", name: "weight", widget: "number", default: 99 }
+
+  # ── Students ───────────────────────────────────────────────
+  - name: "students"
+    label: "Students"
+    label_singular: "Student"
+    folder: "content/people/students"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Full Name", name: "title", widget: "string" }
+      - { label: "Degree / Role", name: "phd", widget: "string", hint: "e.g. Ph.D Candidate" }
+      - { label: "Advisor", name: "institution", widget: "string", hint: "e.g. Advisor: Rodrigo De Losso" }
+      - { label: "Photo", name: "photo", widget: "image", required: false }
+      - { label: "Display Order", name: "weight", widget: "number", default: 99 }
+
+  # ── Alumni ────────────────────────────────────────────────
+  - name: "alumni"
+    label: "Alumni"
+    label_singular: "Alumnus"
+    folder: "content/people/alumni"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Full Name", name: "title", widget: "string" }
+      - { label: "Degree", name: "degree", widget: "string", hint: "e.g. MSc in Economics" }
+      - { label: "Advisor", name: "advisor", widget: "string" }
+
+  # ── Published Papers ───────────────────────────────────────
+  - name: "papers"
+    label: "Published Papers"
+    label_singular: "Paper"
+    folder: "content/research/papers"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Journal", name: "journal", widget: "string" }
+      - { label: "Year", name: "year", widget: "string", required: false }
+      - { label: "Authors", name: "authors", widget: "string" }
+      - { label: "Paper URL (DOI or SSRN)", name: "paper_url", widget: "string" }
+      - { label: "Display Order", name: "weight", widget: "number", default: 99 }
+
+  # ── Working Papers ─────────────────────────────────────────
+  - name: "working-papers"
+    label: "Working Papers"
+    label_singular: "Working Paper"
+    folder: "content/research/working-papers"
+    create: true
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Authors", name: "authors", widget: "string" }
+      - { label: "Paper URL (SSRN)", name: "paper_url", widget: "string" }
+      - { label: "Display Order", name: "weight", widget: "number", default: 99 }
+
+  # ── Datasets ───────────────────────────────────────────────
+  - name: "datasets"
+    label: "Data Pages"
+    label_singular: "Dataset"
+    folder: "content/datasets"
+    create: false
+    slug: "{{slug}}"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Short Summary (card text)", name: "summary", widget: "text" }
+      - { label: "Description (page intro)", name: "description", widget: "text" }
+      - { label: "Last Updated", name: "updated", widget: "string", hint: "e.g. January 2026" }
+      - label: "Download Links"
+        name: "downloads"
+        widget: "list"
+        fields:
+          - { label: "Label", name: "label", widget: "string" }
+          - { label: "URL", name: "url", widget: "string" }

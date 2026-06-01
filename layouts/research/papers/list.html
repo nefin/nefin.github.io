@@ -1,0 +1,29 @@
+{{ define "main" }}
+<section class="page-header">
+  <div class="container">
+    <h1>Research</h1>
+    <p>Publications by NEFIN researchers</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="research-tabs">
+      <a href="/research/papers/" class="research-tab active">Published Papers</a>
+      <a href="/research/working-papers/" class="research-tab">Working Papers</a>
+      <a href="/research/books/" class="research-tab">Books</a>
+    </div>
+    <ul class="pub-list">
+      {{ range .Pages }}
+      <li class="pub-item">
+        <a href="{{ .Params.paper_url | default "#" }}" target="_blank" rel="noopener">
+          <div class="pub-title">{{ .Title }}</div>
+          <div class="pub-journal">{{ .Params.journal }}{{ with .Params.year }} · {{ . }}{{ end }}</div>
+          <div class="pub-authors">{{ .Params.authors }}</div>
+        </a>
+      </li>
+      {{ end }}
+    </ul>
+  </div>
+</section>
+{{ end }}

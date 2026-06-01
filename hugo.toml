@@ -1,0 +1,23 @@
+baseURL = "https://nefin.com.br/"
+locale = "en-us"
+title = "NEFIN"
+
+[params]
+  tagline    = "Center for Research in Financial Economics"
+  description = "Center for Research in Financial Economics of the University of São Paulo"
+  email      = "nefin@usp.br"
+  phone      = "+55 11 3093 0957"
+  address    = "Department of Economics – FEA, Prof. Luciano Gualberto Ave., Cidade Universitária, FEA I, 05508-900, São Paulo, SP – Brazil"
+  googleAnalytics = "G-60RY20MC3F"
+  mission    = "NEFIN is the Brazilian Center for Research in Financial Economics of the University of São Paulo. We advance knowledge in asset pricing, derivative pricing, corporate finance, risk management and portfolio allocation — and make our data freely available to academics and practitioners."
+
+[permalinks]
+  datasets = "/data/:slug/"
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+
+[build]
+  writeStats = true

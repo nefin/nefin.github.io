@@ -1,0 +1,27 @@
+{{ define "main" }}
+<section class="page-header">
+  <div class="container">
+    <h1>Alumni</h1>
+    <p>Former students and researchers of NEFIN</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="alumni-list">
+      <div class="alumni-row alumni-header">
+        <span class="alumni-name">Name</span>
+        <span class="alumni-degree">Degree</span>
+        <span class="alumni-advisor">Advisor</span>
+      </div>
+      {{ range .Pages }}
+      <div class="alumni-row">
+        <span class="alumni-name">{{ .Title }}</span>
+        <span class="alumni-degree">{{ .Params.degree }}</span>
+        <span class="alumni-advisor">{{ .Params.advisor }}</span>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+</section>
+{{ end }}

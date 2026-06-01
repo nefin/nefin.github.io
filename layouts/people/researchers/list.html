@@ -1,0 +1,29 @@
+{{ define "main" }}
+<section class="page-header">
+  <div class="container">
+    <h1>Faculty Members</h1>
+    <p>Department of Economics, Universidade de São Paulo</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="people-grid">
+      {{ range .Pages }}
+      <div class="person-card">
+        {{ with .Params.personal_url }}<a href="{{ . }}" target="_blank" rel="noopener">{{ end }}
+          {{ with .Params.photo }}
+          <img src="{{ . }}" alt="{{ $.Title }}" class="person-card__photo" loading="lazy">
+          {{ else }}
+          <div class="person-card__photo"></div>
+          {{ end }}
+          <div class="person-card__name">{{ .Title }}</div>
+          <div class="person-card__degree">{{ .Params.phd }}</div>
+          <div class="person-card__institution">{{ .Params.institution }}</div>
+        {{ with .Params.personal_url }}</a>{{ end }}
+      </div>
+      {{ end }}
+    </div>
+  </div>
+</section>
+{{ end }}

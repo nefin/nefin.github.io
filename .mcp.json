@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "obsidiankan": {
+      "type": "sse",
+      "url": "http://127.0.0.1:9375/mcp/sse",
+      "headers": {
+        "Authorization": "Bearer jRWieRJxtI4ORH9YP7YcwAI8JSUK6brkcxw6HVjX5hU"
+      }
+    }
+  }
+}

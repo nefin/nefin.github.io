@@ -1,0 +1,22 @@
+{{ define "main" }}
+<section class="page-header">
+  <div class="container">
+    <h1>Financial Data</h1>
+    <p>Freely available datasets, updated regularly. <a href="/resources/NEFIN_methodology.pdf" target="_blank" style="color:rgba(255,255,255,.75);text-decoration:underline;">Download Methodology (PDF)</a></p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="datasets-grid">
+      {{ range .Pages }}
+      <a href="{{ .Permalink }}" class="dataset-card">
+        <div class="dataset-card__title">{{ .Title }}</div>
+        <div class="dataset-card__desc">{{ .Params.summary }}</div>
+        {{ with .Params.updated }}<div class="dataset-card__badge">Updated {{ . }}</div>{{ end }}
+      </a>
+      {{ end }}
+    </div>
+  </div>
+</section>
+{{ end }}

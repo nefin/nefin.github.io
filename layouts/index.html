@@ -1,0 +1,99 @@
+{{ define "main" }}
+
+<!-- ── Hero ── -->
+<section class="hero">
+  <div class="container">
+    <div class="hero__eyebrow">University of São Paulo · Department of Economics · FEA</div>
+    <h1 class="hero__title">Center for Research<br>in Financial Economics</h1>
+    <p class="hero__lead">{{ .Site.Params.mission }}</p>
+    <div class="hero__actions">
+      <a href="/data/" class="btn btn-primary">Explore Our Data</a>
+      <a href="/research/papers/" class="btn btn-ghost">View Publications</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Data ── -->
+<section class="section bg-light">
+  <div class="container">
+    <div class="section-heading">
+      <h2>Financial Data</h2>
+      <p>Freely available datasets, updated regularly for academics and practitioners.</p>
+    </div>
+    <div class="datasets-grid">
+      {{ range (where .Site.RegularPages "Type" "datasets") }}
+      <a href="{{ .Permalink }}" class="dataset-card">
+        <div class="dataset-card__title">{{ .Title }}</div>
+        <div class="dataset-card__desc">{{ .Params.summary }}</div>
+        {{ with .Params.updated }}<div class="dataset-card__badge">Updated {{ . }}</div>{{ end }}
+      </a>
+      {{ end }}
+    </div>
+  </div>
+</section>
+
+<!-- ── Recent Publications ── -->
+<section class="section">
+  <div class="container">
+    <div class="section-heading">
+      <h2>Recent Publications</h2>
+      <p>Selected works by NEFIN researchers.</p>
+    </div>
+    {{ $papers := where .Site.RegularPages "Type" "papers" }}
+    <ul class="pub-list">
+      {{ range first 5 $papers }}
+      <li class="pub-item">
+        <a href="{{ .Params.paper_url | default "#" }}" target="_blank" rel="noopener">
+          <div class="pub-title">{{ .Title }}</div>
+          <div class="pub-journal">{{ .Params.journal }}</div>
+          <div class="pub-authors">{{ .Params.authors }}</div>
+        </a>
+      </li>
+      {{ end }}
+    </ul>
+    <div class="mt-4">
+      <a href="/research/papers/" class="btn btn-outline">All published papers →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Faculty teaser ── -->
+<section class="section bg-light">
+  <div class="container">
+    <div class="section-heading">
+      <h2>Faculty</h2>
+      <p>Our research team at the University of São Paulo.</p>
+    </div>
+    <div class="people-grid">
+      {{ range (where .Site.RegularPages "Type" "faculty") }}
+      <div class="person-card">
+        {{ with .Params.personal_url }}<a href="{{ . }}" target="_blank" rel="noopener">{{ end }}
+          {{ with .Params.photo }}
+          <img src="{{ . }}" alt="{{ $.Title }}" class="person-card__photo" loading="lazy">
+          {{ else }}
+          <div class="person-card__photo"></div>
+          {{ end }}
+          <div class="person-card__name">{{ .Title }}</div>
+          <div class="person-card__degree">{{ .Params.phd }}</div>
+          <div class="person-card__institution">{{ .Params.institution }}</div>
+        {{ with .Params.personal_url }}</a>{{ end }}
+      </div>
+      {{ end }}
+    </div>
+    <div class="mt-4">
+      <a href="/people/faculty/" class="btn btn-outline">View all faculty →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Sponsor ── -->
+<section class="sponsor-section">
+  <div class="container">
+    <p>Sponsored by</p>
+    <a href="https://www.fipe.org.br/" target="_blank" rel="noopener">
+      <img src="/img/logos/logo_fipe.png" alt="FIPE – The Institute of Economic Research Foundation" class="sponsor-logo">
+    </a>
+  </div>
+</section>
+
+{{ end }}

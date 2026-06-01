@@ -1,0 +1,40 @@
+﻿Illiquid Minus Liquid (IML)
+
+Daily Returns: from February 1, 2001.
+
+The Illiquid Minus Liquid Factor (IML) is the return of a portfolio long on liquid stocks (low) and short on illiquid stocks (high)
+
+Every month t, we (ascending) sort the eligible stocks into 3 quantiles (portfolios) according to their previous twelve month moving average of illiquidity, as in Amihud (2002), as shown in the following table:
+
+
+********************************************************************
+
+|          Illiquidity           |        Type of Portfolio        |
+
+********************************************************************
+
+|          1st tercile           |              Low                |
+
+********************************************************************
+
+|          2st tercile           |             Neutral             |
+
+********************************************************************
+
+|          3st tercile           |              High               |
+********************************************************************
+
+
+Then, we compute equal-weighted returns of the first portfolio (low illiquidity) and the third portfolio (high illiquidity). The IML Factor is the return
+of the liquid stocks portfolio minus the return of the illiquid stocks portfolio.
+
+The Eligibility Criteria
+
+A stock traded in BOVESPA is considered eligible for year t if it meets 3 criteria:
+
+- The stock is the most traded stock of the firm (the one with the highest traded volume during last year);
+
+- The stock was traded in more than 80% of the days in year t-1 with volume greater than R$ 500.000,00 per day. In case the stock was listed in year t-1, the period considered goes from the listing day to the last day of the year;
+
+- The stock was initially listed prior to December of year t-1.
+

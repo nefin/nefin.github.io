@@ -1,0 +1,31 @@
+﻿Winners Minus Losers (WML)
+
+Daily Returns: from January 2, 2001.
+
+
+The Winners Minus Losers Factor (WML) is the return of a portfolio long on stocks with high past returns and short on stocks with low past returns.
+
+Every month t, we (ascending) sort the eligible stocks into 3 quantiles (portfolios) according to their cumulative returns between month t-12 and t-2, as shown in the following table:
+
+********************************************************************
+|          Momentum              |        Type of Portfolio        |
+********************************************************************
+|          1st tercile           |             Loser               |
+********************************************************************
+|          2st tercile           |             Neutral             |
+********************************************************************
+|          3st tercile           |             Winner              |
+********************************************************************
+
+Then we compute the equal-weighted returns of the first portfolio (low past returns, i.e., “losers”) and the third portfolio (high past returns, i.e., ”winners”).
+
+The WML Factor is the return of the winners portfolio minus the return of the losers portfolio. 
+
+
+The Eligibility Criteria
+
+A stock traded in BOVESPA is considered “eligible” for year t if it meets 3 criteria:
+- The stock is the most traded stock of the firm (the one with the highest traded volume during last year);
+- The stock was traded in more than 80% of the days in year t-1 with volume greater than R$ 500.000,00 per day. In case the stock was listed in year t-1, the period considered goes from the listing day to the last day of the year;
+- The stock was initially listed prior to December of year t-1.
+

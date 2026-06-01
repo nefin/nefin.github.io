@@ -4,6 +4,8 @@ type: "datasets"
 summary: "Brazilian Fama-French and momentum risk factors (Rm-Rf, SMB, HML, WML, IML) and risk-free rate."
 description: "NEFIN computes a set of risk factors for the Brazilian stock market, following the Fama-French methodology adapted to the local market. Factors include the market premium (Rm-Rf), size (SMB), value (HML), momentum (WML), and illiquidity (IML), as well as the risk-free rate."
 updated: "January 2026"
+dashboard: true
+dashboard_csv: "/resources/risk_factors/nefin_factors.csv"
 downloads:
   - label: "NEFIN Risk Factors (CSV)"
     url: "/resources/risk_factors/nefin_factors.csv"

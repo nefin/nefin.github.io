@@ -1,0 +1,7 @@
+Spot Rate Curve
+
+Daily Returns: from January 2, 2002
+
+The Spot Rate Curve is the interpolation of the One-Day Interbank Deposit Futures contracts (DI rate). We use the flat-forward interpolation, in which we assume that the yield rates remain constant between two periods.
+
+We interpolate the DI rate for the following periods: one month, two months, three months, six months, one year, three years and five years.

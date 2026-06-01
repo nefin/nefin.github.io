@@ -1,0 +1,28 @@
+﻿Market Factor
+
+Daily Returns: from January 2, 2001.
+
+
+The Market Factor is the difference between the value-weighted daily return of the market portfolio (using all the eligible stocks as defined in Section 2) and the daily risk-free rate. The daily risk-free rate is computed from the 30-day DI Swap.
+
+
+The Eligibility Criteria
+
+A stock traded in BOVESPA is considered “eligible” for year t if it meets 3 criteria:
+- The stock is the most traded stock of the firm (the one with the highest traded volume during last year);
+- The stock was traded in more than 80% of the days in year t-1 with volume greater than R$ 500.000,00 per day. In case the stock was listed in year t-1, the period considered goes from the listing day to the last day of the year;
+- The stock was initially listed prior to December of year t-1.
+
+
+
+
+
+
+
+
+
+
+
+
+
+

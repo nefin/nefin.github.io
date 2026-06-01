@@ -28,6 +28,177 @@
     </table>
     {{ end }}
 
+    {{ if .Params.dashboard }}
+    <div class="dashboard">
+      <div class="dashboard__head">
+        <h3 class="dashboard__title">Cumulative Returns</h3>
+        <div class="period-btns">
+          <button class="period-btn" data-period="1">1Y</button>
+          <button class="period-btn" data-period="5">5Y</button>
+          <button class="period-btn active" data-period="all">All</button>
+        </div>
+      </div>
+      <div class="factor-toggles" id="factorToggles"></div>
+      <div class="chart-wrap">
+        <p class="chart-loading" id="chartLoading">Loading data…</p>
+        <canvas id="factorsChart"></canvas>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
+    <script>
+    (function () {
+      const CSV_URL = '{{ with .Params.dashboard_csv }}{{ . }}{{ else }}/resources/risk_factors/nefin_factors.csv{{ end }}';
+
+      const FACTORS = [
+        { key: 'rm_rf', label: 'Rm-Rf',     color: '#003082' },
+        { key: 'smb',   label: 'SMB',       color: '#C8963E' },
+        { key: 'hml',   label: 'HML',       color: '#2a9d8f' },
+        { key: 'wml',   label: 'WML',       color: '#e76f51' },
+        { key: 'iml',   label: 'IML',       color: '#7c5cbf' },
+        { key: 'rf',    label: 'Risk-Free', color: '#9ca3af' },
+      ];
+
+      let allData = [];
+      let chart   = null;
+      let activePeriod  = 'all';
+      let activeFactors = new Set(FACTORS.map(f => f.key));
+
+      async function loadData() {
+        const res  = await fetch(CSV_URL);
+        const text = await res.text();
+        return text.trim().split('\n').slice(1).map(line => {
+          const c = line.split(',');
+          return {
+            date:  c[1],
+            rm_rf: +c[2], smb: +c[3], hml: +c[4],
+            wml:   +c[5], iml: +c[6], rf:  +c[7],
+          };
+        }).filter(d => d.date && !isNaN(d.rm_rf));
+      }
+
+      function getFiltered() {
+        if (activePeriod === 'all') return allData;
+        const cutoff = new Date();
+        cutoff.setFullYear(cutoff.getFullYear() - +activePeriod);
+        const cutoffStr = cutoff.toISOString().slice(0, 10);
+        return allData.filter(d => d.date >= cutoffStr);
+      }
+
+      function cumulative(data, key) {
+        let prod = 1;
+        return data.map(d => {
+          prod *= (1 + d[key]);
+          return +((prod - 1) * 100).toFixed(2);
+        });
+      }
+
+      function buildDatasets(filtered) {
+        return FACTORS.filter(f => activeFactors.has(f.key)).map(f => ({
+          label: f.label,
+          data: cumulative(filtered, f.key),
+          borderColor: f.color,
+          backgroundColor: 'transparent',
+          borderWidth: 1.8,
+          pointRadius: 0,
+          tension: 0,
+        }));
+      }
+
+      function update() {
+        const filtered = getFiltered();
+        const labels   = filtered.map(d => d.date);
+        const datasets = buildDatasets(filtered);
+
+        if (chart) {
+          chart.data.labels   = labels;
+          chart.data.datasets = datasets;
+          chart.update('none');
+        } else {
+          const canvas = document.getElementById('factorsChart');
+          document.getElementById('chartLoading').style.display = 'none';
+          canvas.style.display = 'block';
+          chart = new Chart(canvas, {
+            type: 'line',
+            data: { labels, datasets },
+            options: {
+              responsive: true,
+              maintainAspectRatio: false,
+              interaction: { intersect: false, mode: 'index' },
+              plugins: {
+                legend: { display: false },
+                tooltip: {
+                  callbacks: {
+                    label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y >= 0 ? '+' : ''}${ctx.parsed.y.toFixed(1)}%`,
+                    title: tts => tts[0].label,
+                  }
+                }
+              },
+              scales: {
+                x: {
+                  ticks: {
+                    maxTicksLimit: 10,
+                    callback: (_, idx) => {
+                      const d = labels[idx];
+                      return d ? d.slice(0, 7) : '';
+                    }
+                  },
+                  grid: { display: false },
+                },
+                y: {
+                  ticks: { callback: v => (v >= 0 ? '+' : '') + v.toFixed(0) + '%' },
+                  grid:  { color: 'rgba(0,0,0,.05)' },
+                }
+              }
+            }
+          });
+        }
+      }
+
+      function buildToggles() {
+        const container = document.getElementById('factorToggles');
+        FACTORS.forEach(f => {
+          const el = document.createElement('button');
+          el.className = 'factor-toggle';
+          el.style.cssText = `border-color:${f.color};color:${f.color}`;
+          el.innerHTML = `<span class="factor-toggle__dot" style="background:${f.color}"></span>${f.label}`;
+          el.addEventListener('click', () => {
+            if (activeFactors.has(f.key)) {
+              if (activeFactors.size === 1) return;
+              activeFactors.delete(f.key);
+              el.classList.add('off');
+            } else {
+              activeFactors.add(f.key);
+              el.classList.remove('off');
+            }
+            update();
+          });
+          container.appendChild(el);
+        });
+      }
+
+      async function init() {
+        buildToggles();
+        document.querySelectorAll('.period-btn').forEach(btn => {
+          btn.addEventListener('click', () => {
+            document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            activePeriod = btn.dataset.period;
+            update();
+          });
+        });
+        try {
+          allData = await loadData();
+          update();
+        } catch (e) {
+          document.getElementById('chartLoading').textContent = 'Failed to load data.';
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', init);
+    })();
+    </script>
+    {{ end }}
+
     {{ .Content }}
 
     {{ with .Params.downloads }}

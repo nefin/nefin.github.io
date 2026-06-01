@@ -11,7 +11,9 @@
 
 backend:
   name: git-gateway
-  branch: main
+  branch: new_design
+  identity_url: https://illustrious-moonbeam-ccac5a.netlify.app/.netlify/identity
+  gateway_url: https://illustrious-moonbeam-ccac5a.netlify.app/.netlify/git/github
 
 # For local development: run `npx decap-server` and uncomment:
 # local_backend: true

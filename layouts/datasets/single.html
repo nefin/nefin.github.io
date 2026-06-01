@@ -16,9 +16,7 @@
     <table class="data-table">
       <caption>{{ $.Params.table_caption }}</caption>
       <thead>
-        <tr>
-          {{ range .headers }}<th>{{ . }}</th>{{ end }}
-        </tr>
+        <tr>{{ range .headers }}<th>{{ . }}</th>{{ end }}</tr>
       </thead>
       <tbody>
         {{ range .rows }}
@@ -30,20 +28,59 @@
 
     {{ if .Params.dashboard }}
     <div class="dashboard">
-      <div class="dashboard__head">
-        <h3 class="dashboard__title">Cumulative Returns</h3>
+
+      <!-- ── Tabs ── -->
+      <div class="dash-tabs">
+        <button class="dash-tab active" data-tab="cumulative">Cumulative Returns</button>
+        <button class="dash-tab" data-tab="drawdown">Drawdown</button>
+        <button class="dash-tab" data-tab="heatmap">Monthly Returns</button>
+        <button class="dash-tab" data-tab="histogram">Distribution</button>
+      </div>
+
+      <!-- ── Multi-factor controls (cumulative + drawdown) ── -->
+      <div id="multiControls" class="dash-controls">
         <div class="period-btns">
           <button class="period-btn" data-period="1">1Y</button>
           <button class="period-btn" data-period="5">5Y</button>
           <button class="period-btn active" data-period="all">All</button>
         </div>
+        <div class="factor-toggles" id="factorToggles"></div>
       </div>
-      <div class="factor-toggles" id="factorToggles"></div>
-      <div class="chart-wrap">
-        <p class="chart-loading" id="chartLoading">Loading data…</p>
-        <canvas id="factorsChart"></canvas>
+
+      <!-- ── Single-factor controls (heatmap + histogram) ── -->
+      <div id="singleControls" class="dash-controls" style="display:none">
+        <div class="factor-select-wrap">
+          <label for="factorSelect">Factor</label>
+          <select id="factorSelect" class="factor-select">
+            <option value="rm_rf">Rm-Rf</option>
+            <option value="smb">SMB</option>
+            <option value="hml">HML</option>
+            <option value="wml">WML</option>
+            <option value="iml">IML</option>
+            <option value="rf">Risk-Free</option>
+          </select>
+        </div>
       </div>
-    </div>
+
+      <!-- ── Loading ── -->
+      <p class="chart-loading" id="chartLoading">Loading data…</p>
+
+      <!-- ── Panels ── -->
+      <div id="panel-cumulative" class="dash-panel" style="display:none">
+        <div class="chart-wrap"><canvas id="cumulativeChart"></canvas></div>
+      </div>
+      <div id="panel-drawdown" class="dash-panel" style="display:none">
+        <div class="chart-wrap"><canvas id="drawdownChart"></canvas></div>
+      </div>
+      <div id="panel-heatmap" class="dash-panel" style="display:none">
+        <div class="heatmap-scroll"><div id="heatmapContainer"></div></div>
+      </div>
+      <div id="panel-histogram" class="dash-panel" style="display:none">
+        <div class="chart-wrap"><canvas id="histogramChart"></canvas></div>
+      </div>
+
+    </div><!-- /.dashboard -->
+
     <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
     <script>
     (function () {
@@ -58,137 +95,287 @@
         { key: 'rf',    label: 'Risk-Free', color: '#9ca3af' },
       ];
 
-      let allData = [];
-      let chart   = null;
-      let activePeriod  = 'all';
+      // ── State ──────────────────────────────────────────────────
+      let allData       = [];
+      let loaded        = false;
+      let period        = 'all';
       let activeFactors = new Set(FACTORS.map(f => f.key));
+      let singleFactor  = 'rm_rf';
+      let activeTab     = 'cumulative';
+      const charts      = {};
 
+      // ── CSV loading ─────────────────────────────────────────────
       async function loadData() {
         const res  = await fetch(CSV_URL);
         const text = await res.text();
         return text.trim().split('\n').slice(1).map(line => {
           const c = line.split(',');
-          return {
-            date:  c[1],
-            rm_rf: +c[2], smb: +c[3], hml: +c[4],
-            wml:   +c[5], iml: +c[6], rf:  +c[7],
-          };
+          return { date: c[1], rm_rf: +c[2], smb: +c[3], hml: +c[4], wml: +c[5], iml: +c[6], rf: +c[7] };
         }).filter(d => d.date && !isNaN(d.rm_rf));
       }
 
+      // ── Data transforms ─────────────────────────────────────────
       function getFiltered() {
-        if (activePeriod === 'all') return allData;
-        const cutoff = new Date();
-        cutoff.setFullYear(cutoff.getFullYear() - +activePeriod);
-        const cutoffStr = cutoff.toISOString().slice(0, 10);
-        return allData.filter(d => d.date >= cutoffStr);
+        if (period === 'all') return allData;
+        const lastDate = new Date(allData[allData.length - 1].date);
+        lastDate.setFullYear(lastDate.getFullYear() - +period);
+        const s = lastDate.toISOString().slice(0, 10);
+        return allData.filter(d => d.date >= s);
       }
 
-      function cumulative(data, key) {
-        let prod = 1;
+      function cumReturn(data, key) {
+        let p = 1;
+        return data.map(d => { p *= (1 + d[key]); return +((p - 1) * 100).toFixed(2); });
+      }
+
+      function drawdown(data, key) {
+        let p = 1, peak = 1;
         return data.map(d => {
-          prod *= (1 + d[key]);
-          return +((prod - 1) * 100).toFixed(2);
+          p *= (1 + d[key]);
+          if (p > peak) peak = p;
+          return +((p / peak - 1) * 100).toFixed(2);
         });
       }
 
-      function buildDatasets(filtered) {
-        return FACTORS.filter(f => activeFactors.has(f.key)).map(f => ({
-          label: f.label,
-          data: cumulative(filtered, f.key),
-          borderColor: f.color,
-          backgroundColor: 'transparent',
-          borderWidth: 1.8,
-          pointRadius: 0,
-          tension: 0,
-        }));
+      function monthlyReturns(key) {
+        const map = {};
+        allData.forEach(d => {
+          const ym = d.date.slice(0, 7);
+          if (!map[ym]) map[ym] = 1;
+          map[ym] *= (1 + d[key]);
+        });
+        const out = {};
+        Object.keys(map).forEach(ym => { out[ym] = (map[ym] - 1) * 100; });
+        return out;
       }
 
-      function update() {
+      function histBins(data, key, nBins = 60) {
+        const vals = data.map(d => d[key] * 100);
+        const n    = vals.length;
+        const mean = vals.reduce((a, b) => a + b, 0) / n;
+        const std  = Math.sqrt(vals.reduce((a, b) => a + (b - mean) ** 2, 0) / n);
+        const lo = mean - 4.5 * std, hi = mean + 4.5 * std;
+        const w  = (hi - lo) / nBins;
+        const counts  = new Array(nBins).fill(0);
+        const centers = Array.from({ length: nBins }, (_, i) => lo + (i + 0.5) * w);
+        vals.forEach(v => { const i = Math.min(Math.max(Math.floor((v - lo) / w), 0), nBins - 1); counts[i]++; });
+        return {
+          centers,
+          density: counts.map(c => c / (n * w)),
+          normal:  centers.map(x => (1 / (std * Math.sqrt(2 * Math.PI))) * Math.exp(-0.5 * ((x - mean) / std) ** 2)),
+          mean, std, n,
+        };
+      }
+
+      // ── Chart helpers ────────────────────────────────────────────
+      function baseLineCfg(labels, datasets, yFmt) {
+        return {
+          type: 'line',
+          data: { labels, datasets },
+          options: {
+            responsive: true, maintainAspectRatio: false,
+            interaction: { intersect: false, mode: 'index' },
+            plugins: {
+              legend: { display: false },
+              tooltip: { callbacks: { label: ctx => ` ${ctx.dataset.label}: ${yFmt(ctx.parsed.y)}` } },
+            },
+            scales: {
+              x: {
+                ticks: {
+                  maxTicksLimit: 10,
+                  callback: function(value) {
+                    const label = this.getLabelForValue(value);
+                    return label ? label.slice(0, 7) : '';
+                  },
+                },
+                grid: { display: false },
+              },
+              y: { ticks: { callback: yFmt }, grid: { color: 'rgba(0,0,0,.05)' } },
+            },
+          },
+        };
+      }
+
+      function lineDataset(f, data) {
+        return { label: f.label, data, borderColor: f.color, backgroundColor: 'transparent', borderWidth: 1.8, pointRadius: 0, tension: 0 };
+      }
+
+      // ── Renderers ────────────────────────────────────────────────
+      function renderCumulative() {
         const filtered = getFiltered();
         const labels   = filtered.map(d => d.date);
-        const datasets = buildDatasets(filtered);
-
-        if (chart) {
-          chart.data.labels   = labels;
-          chart.data.datasets = datasets;
-          chart.update('none');
+        const datasets = FACTORS.filter(f => activeFactors.has(f.key)).map(f => lineDataset(f, cumReturn(filtered, f.key)));
+        const fmt = v => (v >= 0 ? '+' : '') + v.toFixed(0) + '%';
+        if (charts.cumulative) {
+          charts.cumulative.data.labels = labels; charts.cumulative.data.datasets = datasets; charts.cumulative.update('none');
         } else {
-          const canvas = document.getElementById('factorsChart');
-          document.getElementById('chartLoading').style.display = 'none';
-          canvas.style.display = 'block';
-          chart = new Chart(canvas, {
-            type: 'line',
+          charts.cumulative = new Chart(document.getElementById('cumulativeChart'), baseLineCfg(labels, datasets, fmt));
+        }
+      }
+
+      function renderDrawdown() {
+        const filtered = getFiltered();
+        const labels   = filtered.map(d => d.date);
+        const datasets = FACTORS.filter(f => activeFactors.has(f.key)).map(f => ({
+          ...lineDataset(f, drawdown(filtered, f.key)),
+          fill: { target: 'origin', below: f.color + '25' },
+        }));
+        const fmt = v => v.toFixed(0) + '%';
+        if (charts.drawdown) {
+          charts.drawdown.data.labels = labels; charts.drawdown.data.datasets = datasets; charts.drawdown.update('none');
+        } else {
+          charts.drawdown = new Chart(document.getElementById('drawdownChart'), baseLineCfg(labels, datasets, fmt));
+        }
+      }
+
+      function renderHeatmap() {
+        const monthly = monthlyReturns(singleFactor);
+        const years   = [...new Set(Object.keys(monthly).map(k => k.slice(0, 4)))].sort();
+        const mNames  = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+        const vals    = Object.values(monthly);
+        const pct90   = vals.slice().sort((a, b) => Math.abs(b) - Math.abs(a))[Math.floor(vals.length * 0.10)];
+        const scale   = Math.abs(pct90) || 1;
+
+        function cellStyle(v) {
+          if (v === undefined) return 'background:#f3f4f6;color:#9ca3af';
+          const t = Math.min(Math.abs(v) / scale, 1);
+          let bg, fg = t > 0.55 ? '#fff' : '#111';
+          if (v >= 0) {
+            const r = Math.round(255 * (1 - t));
+            const g = Math.round(255 * (1 - t) + 48 * t);
+            const b = Math.round(255 * (1 - t) + 130 * t);
+            bg = `rgb(${r},${g},${b})`;
+          } else {
+            const r = Math.round(255 * (1 - t) + 220 * t);
+            const g = Math.round(255 * (1 - t) + 38 * t);
+            const b = Math.round(255 * (1 - t) + 38 * t);
+            bg = `rgb(${r},${g},${b})`;
+          }
+          return `background:${bg};color:${fg}`;
+        }
+
+        let html = '<table class="heatmap-table"><thead><tr><th></th>';
+        mNames.forEach(m => { html += `<th>${m}</th>`; });
+        html += '</tr></thead><tbody>';
+        years.forEach(year => {
+          html += `<tr><td class="heatmap-year">${year}</td>`;
+          for (let m = 1; m <= 12; m++) {
+            const ym  = `${year}-${String(m).padStart(2, '0')}`;
+            const val = monthly[ym];
+            const txt = val !== undefined ? val.toFixed(1) + '%' : '—';
+            html += `<td class="heatmap-cell" style="${cellStyle(val)}" title="${ym}: ${txt}">${txt}</td>`;
+          }
+          html += '</tr>';
+        });
+        html += '</tbody></table>';
+        document.getElementById('heatmapContainer').innerHTML = html;
+      }
+
+      function renderHistogram() {
+        const filtered = getFiltered();
+        const { centers, density, normal } = histBins(filtered, singleFactor);
+        const fLabel  = FACTORS.find(f => f.key === singleFactor)?.label || singleFactor;
+        const labels  = centers.map(v => v.toFixed(2) + '%');
+        const barColors = centers.map(v => v >= 0 ? 'rgba(0,48,130,0.7)' : 'rgba(220,38,38,0.7)');
+
+        const datasets = [
+          { type: 'bar',  label: fLabel,  data: density, backgroundColor: barColors, borderColor: 'transparent', barPercentage: 1.0, categoryPercentage: 1.0 },
+          { type: 'line', label: 'Normal', data: normal,  borderColor: '#C8963E', backgroundColor: 'transparent', borderWidth: 2, pointRadius: 0, tension: 0.4 },
+        ];
+
+        if (charts.histogram) {
+          charts.histogram.data.labels = labels;
+          charts.histogram.data.datasets = datasets;
+          charts.histogram.update('none');
+        } else {
+          charts.histogram = new Chart(document.getElementById('histogramChart'), {
+            type: 'bar',
             data: { labels, datasets },
             options: {
-              responsive: true,
-              maintainAspectRatio: false,
-              interaction: { intersect: false, mode: 'index' },
+              responsive: true, maintainAspectRatio: false,
               plugins: {
-                legend: { display: false },
-                tooltip: {
-                  callbacks: {
-                    label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y >= 0 ? '+' : ''}${ctx.parsed.y.toFixed(1)}%`,
-                    title: tts => tts[0].label,
-                  }
-                }
+                legend: { display: true, position: 'top', labels: { boxWidth: 12, font: { size: 11 } } },
+                tooltip: { callbacks: { title: t => t[0].label, label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y.toFixed(4)}` } },
               },
               scales: {
-                x: {
-                  ticks: {
-                    maxTicksLimit: 10,
-                    callback: (_, idx) => {
-                      const d = labels[idx];
-                      return d ? d.slice(0, 7) : '';
-                    }
-                  },
-                  grid: { display: false },
-                },
-                y: {
-                  ticks: { callback: v => (v >= 0 ? '+' : '') + v.toFixed(0) + '%' },
-                  grid:  { color: 'rgba(0,0,0,.05)' },
-                }
-              }
-            }
+                x: { ticks: { maxTicksLimit: 12 }, grid: { display: false } },
+                y: { ticks: { callback: v => v.toFixed(2) }, title: { display: true, text: 'Density', font: { size: 11 } } },
+              },
+            },
           });
         }
       }
 
+      // ── Tab logic ─────────────────────────────────────────────────
+      function renderActive() {
+        switch (activeTab) {
+          case 'cumulative': renderCumulative(); break;
+          case 'drawdown':   renderDrawdown();   break;
+          case 'heatmap':    renderHeatmap();    break;
+          case 'histogram':  renderHistogram();  break;
+        }
+      }
+
+      function showTab(tab) {
+        activeTab = tab;
+        document.querySelectorAll('.dash-tab').forEach(b => b.classList.toggle('active', b.dataset.tab === tab));
+        document.querySelectorAll('.dash-panel').forEach(p => { p.style.display = 'none'; });
+        document.getElementById('panel-' + tab).style.display = '';
+        const multi = tab === 'cumulative' || tab === 'drawdown';
+        document.getElementById('multiControls').style.display  = multi ? '' : 'none';
+        document.getElementById('singleControls').style.display = multi ? 'none' : '';
+        if (loaded) renderActive();
+      }
+
+      // ── Build controls ────────────────────────────────────────────
       function buildToggles() {
-        const container = document.getElementById('factorToggles');
+        const wrap = document.getElementById('factorToggles');
         FACTORS.forEach(f => {
-          const el = document.createElement('button');
-          el.className = 'factor-toggle';
-          el.style.cssText = `border-color:${f.color};color:${f.color}`;
-          el.innerHTML = `<span class="factor-toggle__dot" style="background:${f.color}"></span>${f.label}`;
-          el.addEventListener('click', () => {
+          const btn = document.createElement('button');
+          btn.className = 'factor-toggle';
+          btn.style.cssText = `border-color:${f.color};color:${f.color}`;
+          btn.innerHTML = `<span class="factor-toggle__dot" style="background:${f.color}"></span>${f.label}`;
+          btn.addEventListener('click', () => {
             if (activeFactors.has(f.key)) {
               if (activeFactors.size === 1) return;
-              activeFactors.delete(f.key);
-              el.classList.add('off');
+              activeFactors.delete(f.key); btn.classList.add('off');
             } else {
-              activeFactors.add(f.key);
-              el.classList.remove('off');
+              activeFactors.add(f.key); btn.classList.remove('off');
             }
-            update();
+            if (loaded) renderActive();
           });
-          container.appendChild(el);
+          wrap.appendChild(btn);
         });
       }
 
+      // ── Init ──────────────────────────────────────────────────────
       async function init() {
         buildToggles();
+
+        document.querySelectorAll('.dash-tab').forEach(btn => {
+          btn.addEventListener('click', () => showTab(btn.dataset.tab));
+        });
+
         document.querySelectorAll('.period-btn').forEach(btn => {
           btn.addEventListener('click', () => {
             document.querySelectorAll('.period-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            activePeriod = btn.dataset.period;
-            update();
+            period = btn.dataset.period;
+            if (loaded) renderActive();
           });
         });
+
+        document.getElementById('factorSelect').addEventListener('change', e => {
+          singleFactor = e.target.value;
+          if (charts.histogram) { charts.histogram.destroy(); delete charts.histogram; }
+          if (loaded) renderActive();
+        });
+
         try {
           allData = await loadData();
-          update();
+          loaded  = true;
+          document.getElementById('chartLoading').style.display = 'none';
+          showTab('cumulative');
         } catch (e) {
           document.getElementById('chartLoading').textContent = 'Failed to load data.';
         }

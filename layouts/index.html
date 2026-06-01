@@ -2,7 +2,8 @@
 
 <!-- ── Hero ── -->
 <section class="hero">
-  <div class="container">
+  <div class="hero__geo" aria-hidden="true"></div>
+  <div class="container hero__content">
     <div class="hero__eyebrow">University of São Paulo · Department of Economics · FEA</div>
     <h1 class="hero__title">Center for Research<br>in Financial Economics</h1>
     <p class="hero__lead">{{ .Site.Params.mission }}</p>
@@ -12,6 +13,33 @@
     </div>
   </div>
 </section>
+
+<!-- ── Stats strip ── -->
+<div class="stats-strip">
+  <div class="container">
+    <div class="stats-strip__grid">
+      <div class="stat-item">
+        <span class="stat-item__number">9</span>
+        <span class="stat-item__label">Financial Datasets</span>
+      </div>
+      <div class="stat-item__divider"></div>
+      <div class="stat-item">
+        <span class="stat-item__number">20+</span>
+        <span class="stat-item__label">Years of Data</span>
+      </div>
+      <div class="stat-item__divider"></div>
+      <div class="stat-item">
+        <span class="stat-item__number">Free</span>
+        <span class="stat-item__label">Open Access</span>
+      </div>
+      <div class="stat-item__divider"></div>
+      <div class="stat-item">
+        <span class="stat-item__number">Monthly</span>
+        <span class="stat-item__label">Updates</span>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- ── Data ── -->
 <section class="section bg-light">
@@ -82,6 +110,32 @@
     </div>
     <div class="mt-4">
       <a href="/people/faculty/" class="btn btn-outline">View all faculty →</a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Contact ── -->
+<section class="section bg-light" id="contact">
+  <div class="container">
+    <div class="section-heading">
+      <h2>Contact</h2>
+      <p>Get in touch with the NEFIN team.</p>
+    </div>
+    <div class="contact-grid">
+      <div class="contact-block">
+        <div class="contact-block__label">Address</div>
+        <p>Department of Economics – FEA<br>
+        Prof. Luciano Gualberto Ave., Cidade Universitária<br>
+        FEA I · São Paulo, SP – Brazil · 05508-900</p>
+      </div>
+      <div class="contact-block">
+        <div class="contact-block__label">Email</div>
+        <a href="mailto:{{ .Site.Params.email }}">{{ .Site.Params.email }}</a>
+      </div>
+      <div class="contact-block">
+        <div class="contact-block__label">Phone</div>
+        <span>{{ .Site.Params.phone }}</span>
+      </div>
     </div>
   </div>
 </section>

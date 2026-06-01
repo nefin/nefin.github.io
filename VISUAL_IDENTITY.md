@@ -43,9 +43,9 @@ Documento de referência para decisões de design do site. Registra o que existi
 
 | Variável CSS | Hex | Papel |
 |---|---|---|
-| `--primary` | `#1B3A6B` | Azul navy — cor principal, navbar, hero, headers |
-| `--primary-dark` | `#0f2444` | Azul mais escuro — footer |
-| `--primary-light` | `#2a52a0` | Azul mais claro — hover states |
+| `--primary` | `#003082` | Azul USP — cor principal, navbar, hero, headers |
+| `--primary-dark` | `#00204f` | Azul USP escuro — footer |
+| `--primary-light` | `#0044b3` | Azul USP claro — hover states |
 | `--accent` | `#C8963E` | Dourado — acentos, hovers, bordas ativas, badges |
 | `--white` | `#ffffff` | Fundo principal |
 | `--gray-50` | `#f9fafb` | Fundo de seções alternadas |
@@ -80,7 +80,7 @@ Documento de referência para decisões de design do site. Registra o que existi
 - [ ] Definir se o logotipo "NEFIN" na navbar fica só em texto ou ganha um símbolo
 - [ ] Avaliar se inclui foto da USP / FEA no hero ou mantém fundo sólido
 - [ ] Decidir o tom exato do dourado — pode ser ajustado de `#C8963E` para algo mais frio ou mais vivo
-- [ ] Avaliar se a cor primária se aproxima mais do azul USP oficial (`#003082`)
+- [x] Cor primária aproximada do azul USP oficial → `#003082`
 
 ---
 

@@ -2,6 +2,7 @@
 title: "Spot Rate Curve"
 type: "datasets"
 summary: "Brazilian spot interest rate curve estimated from DI futures and NTN-F bonds."
+under_update: true
 updated: "Monthly"
 downloads:
   - label: "Spot Rate Curve (CSV)"

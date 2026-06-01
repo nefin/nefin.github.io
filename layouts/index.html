@@ -53,7 +53,11 @@
       <a href="{{ .Permalink }}" class="dataset-card">
         <div class="dataset-card__title">{{ .Title }}</div>
         <div class="dataset-card__desc">{{ .Params.summary }}</div>
-        {{ with .Params.updated }}<div class="dataset-card__badge">Updated {{ . }}</div>{{ end }}
+        {{ if .Params.under_update }}
+        <div class="dataset-card__badge dataset-card__badge--notice">⏳ Methodology update in progress</div>
+        {{ else }}{{ with .Params.updated }}
+        <div class="dataset-card__badge">Updated {{ . }}</div>
+        {{ end }}{{ end }}
       </a>
       {{ end }}
     </div>

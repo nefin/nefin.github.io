@@ -2,6 +2,7 @@
 title: "Cost of Equity"
 type: "datasets"
 summary: "Expected return on equity for Brazilian listed firms, estimated using NEFIN risk factors."
+under_update: true
 updated: "Monthly"
 downloads:
   - label: "Cost of Equity (XLS)"

@@ -1,0 +1,33 @@
+{{ define "main" }}
+<section class="page-header">
+  <div class="container">
+    <h1>Books</h1>
+    <p>Books published by NEFIN faculty members.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="books-grid">
+      {{ range sort .Pages "Params.weight" }}
+      <div class="book-card">
+        <a href="{{ .Params.buy_url }}" target="_blank" rel="noopener" class="book-card__cover-link">
+          {{ with .Params.cover }}
+          <img src="{{ . }}" alt="{{ $.Title }}" class="book-card__cover" loading="lazy">
+          {{ else }}
+          <div class="book-card__cover book-card__cover--placeholder"></div>
+          {{ end }}
+        </a>
+        <div class="book-card__body">
+          <div class="book-card__title">{{ .Title }}</div>
+          <div class="book-card__authors">{{ .Params.authors }}</div>
+          {{ with .Params.buy_url }}
+          <a href="{{ . }}" target="_blank" rel="noopener" class="book-card__buy">Buy on Amazon →</a>
+          {{ end }}
+        </div>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+</section>
+{{ end }}

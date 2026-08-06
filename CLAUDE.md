@@ -4,53 +4,59 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is the static website for **NEFIN** (Núcleo de Estudos em Finanças e Investimentos / Center for Research in Financial Economics at the University of São Paulo), hosted at `nefin.com.br` via GitHub Pages. The site is based on the **Enlight Bootstrap theme** by ProBootstrap.com and has been heavily customized.
+This is the static website for **NEFIN** (Núcleo de Estudos em Finanças e Investimentos / Center for Research in Financial Economics at the University of São Paulo), hosted at `nefin.com.br` via GitHub Pages. The site is built with **Hugo** and managed via **Decap CMS**.
 
 ## Build System
 
-The project uses **Gulp** for asset compilation. There is no package-lock.json, so install with:
+The project uses **Hugo** as the static site generator. No npm/Gulp build step is needed.
 
 ```bash
-npm install
+# Local development server (live reload)
+hugo server
+
+# Production build
+hugo --minify
+# Output goes to public/
 ```
 
-Key Gulp tasks:
-- `gulp sass` — compile `scss/style.scss` → `css/style.css` and `css/style.min.css`
-- `gulp scripts` — bundle vendor JS into `js/scripts.js` and `js/scripts.min.js`
-- `gulp merge-styles` — concatenate all vendor CSS into `css/styles-merged.css`
-- `gulp default` — run sass + scripts + browser-sync with file watching
-
-> Note: The `browser-sync` task is configured for a local proxy (`localhost/probootstrap/enlight`). For static file serving, edit `gulpfile.js` to use the `server: { baseDir: './' }` option (commented out in the file).
-
-For CSS-only changes, just edit `css/custom.css` directly (no build step needed — it's loaded last and overrides the theme).
+Deployment is handled automatically by GitHub Actions (`.github/workflows/hugo.yml`) on every push to `main`. The CMS admin panel is hosted separately on Netlify (`netlify.toml`) for authentication only.
 
 ## Architecture
 
 ### File Structure
-- **Root HTML files** — one `.html` per page (no templating engine; pages share nav/footer HTML by copy-paste)
-- **`css/`** — compiled CSS; `styles-merged.css` is the vendor bundle, `style.css`/`style.min.css` are compiled from SCSS, `custom.css` is hand-edited site-specific overrides
-- **`scss/`** — two files: `style.scss` (theme styles) and `_custom-settings.scss` (variables)
-- **`js/main.js`** — site JavaScript (carousel, parallax, back-to-top, mobile detection); `js/custom.js` is for additional custom JS
-- **`js/vendor/`** — pre-bundled third-party libraries (jQuery, Bootstrap, Owl Carousel, FlexSlider, PhotoSwipe, Isotope, etc.)
-- **`data/`** — financial data files (CSV, XLS) and their corresponding HTML display pages; `data/Portfolios/` holds portfolio-sorted Excel files
-- **`resources/`** — downloadable research data organized by category (cost_of_capital, risk_factors, spot_rate_curve, portfolios, volatility_index, etc.) and PDF methodology documents
-- **`templates/`** — `graphs.html` and `panel.html` used as layout references when building new data pages
-- **`python_general_scripts/`** — Jupyter notebook (`converting_xls_to_csv.ipynb`) for batch-converting XLS data files to CSV using pandas
+- **`content/`** — Markdown source files organized by section:
+  - `_index.md` — homepage content
+  - `datasets/` — one `.md` per dataset (risk factors, cost of equity, etc.)
+  - `people/` — faculty, researchers, students, alumni
+  - `research/` — papers and working papers
+- **`layouts/`** — Hugo HTML templates:
+  - `index.html` — homepage template
+  - `_default/` — fallback layouts
+  - `datasets/`, `people/`, `research/` — section-specific templates
+  - `partials/` — reusable components (`head.html`, `nav.html`, `footer.html`)
+- **`static/`** — assets copied verbatim to `public/` during build:
+  - `css/main.css` — all site CSS (edit directly, no build step)
+  - `img/` — images
+  - `resources/` — downloadable data files (CSV, XLS, PDF), organized by category (`risk_factors/`, `cost_of_capital/`, `spot_rate_curve/`, `portfolios/`, `volatility_index/`, `methodology/`, `report/`)
+  - `admin/` — Decap CMS configuration (`config.yml`)
+- **`hugo.toml`** — Hugo site configuration (base URL, permalink structure, params)
+- **`netlify.toml`** — Netlify build settings (used only for CMS auth, not for hosting)
+- **`python_general_scripts/`** — Jupyter notebook for batch-converting XLS → CSV using pandas
+- **`DEPRECATED/`** — archived Bootstrap/Gulp site (kept for reference, not used by Hugo)
 
-### CSS Loading Order
-1. `css/styles-merged.css` (vendor bundle)
-2. `css/style.css` (theme SCSS compiled)
-3. `css/custom.css` (site-specific overrides — edit this for visual changes)
+### URL Structure
+Dataset content pages are published at `/data/:slug/` (configured in `hugo.toml` permalinks). This is the URL path of the generated HTML pages — it has no relation to any `data/` directory in the repo. Download links inside those pages point to `/resources/...`.
 
-### Data Pages Pattern
-Pages under `data/` (e.g., `risk_factors.html`, `dividend_yield.html`) follow a consistent layout: navbar shared with the main site, a data table or chart, and download links pointing to files in `data/` or `resources/`. Use `templates/panel.html` or `templates/graphs.html` as the starting point when creating new data pages.
+### CSS
+Edit `static/css/main.css` directly — no compilation needed. Changes take effect immediately on `hugo server`.
 
-### No Build Required for HTML/CSS Changes
-Since pages are plain HTML, edits take effect immediately — just open in a browser. The SCSS build is only needed when modifying `scss/` files; otherwise edit `css/custom.css` directly.
+### Adding a New Dataset Page
+1. Create `content/datasets/my-dataset.md` following the frontmatter pattern of existing dataset files (title, description, url, downloads list, table data)
+2. The `layouts/datasets/` templates handle rendering automatically
 
 ## Data Update Workflow
 
-When updating financial data:
-1. Place new XLS/CSV files in `data/` or the appropriate `resources/` subdirectory
-2. Run `python_general_scripts/converting_xls_to_csv.ipynb` if converting XLS → CSV (uses pandas; run from the `python_general_scripts/` directory so relative paths resolve correctly)
-3. Update the corresponding HTML page's download links and displayed dates
+When updating financial data files:
+1. Place new XLS/CSV files in the appropriate `static/resources/` subdirectory
+2. Run `python_general_scripts/converting_xls_to_csv.ipynb` if converting XLS → CSV (run from the `python_general_scripts/` directory so relative paths resolve correctly)
+3. Update the corresponding `content/datasets/*.md` file: adjust displayed dates, table data, and download URLs if filenames changed

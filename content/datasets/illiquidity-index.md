@@ -2,7 +2,6 @@
 title: "Illiquidity Index"
 type: "datasets"
 summary: "Amihud illiquidity measure for the Brazilian stock market, at stock and portfolio level."
-under_update: true
 updated: "Monthly"
 downloads:
   - label: "Methodology (PDF)"

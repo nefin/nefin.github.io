@@ -55,7 +55,7 @@ ul { list-style: none; }
 .nav__link--cta:hover { background: var(--primary-light); }
 
 /* Dropdown */
-.nav__dropdown { position: absolute; top: calc(100% + 6px); left: 0; background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius); min-width: 210px; box-shadow: var(--shadow-md); opacity: 0; visibility: hidden; transition: opacity .15s, visibility .15s; pointer-events: none; }
+.nav__dropdown { position: absolute; top: 100%; left: 0; background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius); min-width: 210px; box-shadow: var(--shadow-md); opacity: 0; visibility: hidden; transition: opacity .15s, visibility .15s; pointer-events: none; }
 .nav__item:hover .nav__dropdown { opacity: 1; visibility: visible; pointer-events: auto; }
 .nav__dropdown a { display: block; padding: .55rem 1rem; color: var(--gray-700); font-size: .875rem; }
 .nav__dropdown a:hover { color: var(--primary); background: var(--gray-50); text-decoration: none; }

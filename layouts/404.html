@@ -1,0 +1,28 @@
+{{ define "main" }}
+<section class="page-header">
+  <div class="container">
+    <h1>Page not found</h1>
+    <p>The address you followed does not exist on this site.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <p class="data-page__desc">
+      If you arrived from a bookmark or a citation, the page may have moved. The most
+      commonly requested destinations are below.
+    </p>
+    <ul class="download-links">
+      <li><a href="/data/">Financial data — all datasets</a></li>
+      <li><a href="/research/papers/">Published papers</a></li>
+      <li><a href="/research/working-papers/">Working papers</a></li>
+      <li><a href="/people/">People</a></li>
+      <li><a href="/insights/">Insights</a></li>
+      <li><a href="/resources/NEFIN_methodology.pdf">Methodology (PDF)</a></li>
+    </ul>
+    <p class="mt-4 text-muted">
+      Still stuck? Write to <a href="mailto:{{ site.Params.email }}">{{ site.Params.email }}</a>.
+    </p>
+  </div>
+</section>
+{{ end }}

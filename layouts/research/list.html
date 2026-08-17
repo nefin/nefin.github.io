@@ -1,0 +1,32 @@
+{{ define "main" }}
+{{/* Hub for /research/ — previously an empty page that nothing linked to. */}}
+<section class="page-header">
+  <div class="container">
+    <h1>{{ .Title }}</h1>
+    <p>Publications by NEFIN researchers</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    {{ partial "research-tabs.html" . }}
+    {{ range .Sections }}
+    <div style="margin-bottom:3rem">
+      <h2 class="people-section-title"><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+      <ul class="pub-list">
+        {{ range first 4 .Pages }}
+        <li class="pub-item">
+          <a href="{{ .Params.paper_url | default .Params.buy_url | default "#" }}" target="_blank" rel="noopener">
+            <div class="pub-title">{{ .Title }}</div>
+            {{ with .Params.journal }}<div class="pub-journal">{{ . }}</div>{{ end }}
+            <div class="pub-authors">{{ .Params.authors }}</div>
+          </a>
+        </li>
+        {{ end }}
+      </ul>
+      <div class="mt-2"><a href="{{ .RelPermalink }}" class="btn btn-outline">All {{ .Title | lower }} →</a></div>
+    </div>
+    {{ end }}
+  </div>
+</section>
+{{ end }}

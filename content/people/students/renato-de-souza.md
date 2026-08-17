@@ -1,7 +1,7 @@
 ---
 title: "Renato de Souza"
 phd: "Ph.D Candidate"
-institution: "Advisor: Rodrigo De Losso"
+advisor: "Rodrigo De Losso"
 photo: "/img/students/renato.png"
-weight: 1
+weight: 3
 ---

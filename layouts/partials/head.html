@@ -1,9 +1,34 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{{ if .IsHome }}{{ .Site.Title }} — {{ .Site.Params.tagline }}{{ else }}{{ .Title }} — {{ .Site.Title }}{{ end }}</title>
-<meta name="description" content="{{ with .Description }}{{ . }}{{ else }}{{ .Site.Params.description }}{{ end }}">
+<meta name="description" content="{{ or .Params.summary .Description site.Params.description }}">
+
+{{/* Social preview cards (LinkedIn, X, WhatsApp, Bluesky) */}}
+{{ $ogTitle := cond .IsHome (printf "%s — %s" site.Title site.Params.tagline) .Title }}
+{{ $ogDesc  := or .Params.summary .Description site.Params.description }}
+{{ $ogImage := "" }}
+{{ with or .Params.image .Params.author_photo }}{{ $ogImage = . | absURL }}{{ end }}
+<meta property="og:type" content="{{ if eq .Type "insights" }}article{{ else }}website{{ end }}">
+<meta property="og:site_name" content="NEFIN">
+<meta property="og:title" content="{{ $ogTitle }}">
+<meta property="og:description" content="{{ $ogDesc }}">
+<meta property="og:url" content="{{ .Permalink }}">
+<meta property="og:locale" content="{{ if eq (.Params.language | default "en") "pt" }}pt_BR{{ else }}en_US{{ end }}">
+{{ with $ogImage }}<meta property="og:image" content="{{ . }}">{{ end }}
+{{ if eq .Type "insights" }}
+<meta property="article:published_time" content="{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}">
+{{ with .Params.author }}<meta property="article:author" content="{{ . }}">{{ end }}
+{{ range .Params.topics }}<meta property="article:tag" content="{{ . }}">{{ end }}
+{{ end }}
+<meta name="twitter:card" content="{{ if $ogImage }}summary_large_image{{ else }}summary{{ end }}">
+<meta name="twitter:title" content="{{ $ogTitle }}">
+<meta name="twitter:description" content="{{ $ogDesc }}">
+
 <link rel="stylesheet" href="/css/main.css">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+{{ with site.GetPage "/insights" }}{{ with .OutputFormats.Get "rss" }}
+<link rel="alternate" type="application/rss+xml" href="{{ .Permalink }}" title="NEFIN Insights">
+{{ end }}{{ end }}
 {{ with .Site.Params.googleAnalytics }}
 <script async src="https://www.googletagmanager.com/gtag/js?id={{ . }}"></script>
 <script>

@@ -1,0 +1,23 @@
+{{/* Resolves an Insights post's author details. Context: the post page.
+     Guest authors carry their own details in front matter; if the name happens to
+     match someone on a People page, that person's photo/role/link fill the blanks.
+     Used by both insight-card.html and insights/single.html so the two can never
+     disagree about who wrote a post.
+
+     Returns: dict with .name .photo .role .url */}}
+
+{{ $name  := .Params.author }}
+{{ $photo := .Params.author_photo }}
+{{ $role  := .Params.author_affiliation }}
+{{ $url   := .Params.author_url }}
+
+{{ with $name }}
+  {{ $matches := where (where site.RegularPages "Section" "people") "Title" . }}
+  {{ with first 1 $matches }}{{ range . }}
+    {{ if not $photo }}{{ $photo = .Params.photo }}{{ end }}
+    {{ if not $role  }}{{ $role  = .Params.phd }}{{ end }}
+    {{ if not $url   }}{{ $url   = .Params.personal_url }}{{ end }}
+  {{ end }}{{ end }}
+{{ end }}
+
+{{ return dict "name" $name "photo" $photo "role" $role "url" $url }}

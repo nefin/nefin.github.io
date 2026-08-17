@@ -15,17 +15,18 @@
 </section>
 
 <!-- ── Stats strip ── -->
+{{ $datasets := (site.GetPage "/datasets").Pages }}
 <div class="stats-strip">
   <div class="container">
     <div class="stats-strip__grid">
       <div class="stat-item">
-        <span class="stat-item__number">9</span>
+        <span class="stat-item__number">{{ len $datasets }}</span>
         <span class="stat-item__label">Financial Datasets</span>
       </div>
       <div class="stat-item__divider"></div>
       <div class="stat-item">
-        <span class="stat-item__number">20+</span>
-        <span class="stat-item__label">Years of Data</span>
+        <span class="stat-item__number">Since 2001</span>
+        <span class="stat-item__label">Longest Series</span>
       </div>
       <div class="stat-item__divider"></div>
       <div class="stat-item">
@@ -34,8 +35,8 @@
       </div>
       <div class="stat-item__divider"></div>
       <div class="stat-item">
-        <span class="stat-item__number">Monthly</span>
-        <span class="stat-item__label">Updates</span>
+        <span class="stat-item__number">CSV · XLS</span>
+        <span class="stat-item__label">Machine Readable</span>
       </div>
     </div>
   </div>
@@ -46,32 +47,22 @@
   <div class="container">
     <div class="section-heading">
       <h2>Financial Data</h2>
-      <p>Freely available datasets, updated regularly for academics and practitioners.</p>
+      <p>Freely available to academics and practitioners. Each card states the last observation in the data.</p>
     </div>
     <div class="datasets-grid">
-      {{ range (where .Site.RegularPages "Type" "datasets") }}
-      <a href="{{ .Permalink }}" class="dataset-card">
-        <div class="dataset-card__title">{{ .Title }}</div>
-        <div class="dataset-card__desc">{{ .Params.summary }}</div>
-        {{ if .Params.under_update }}
-        <div class="dataset-card__badge dataset-card__badge--notice">⏳ Methodology update in progress</div>
-        {{ else }}{{ with .Params.updated }}
-        <div class="dataset-card__badge">Updated {{ . }}</div>
-        {{ end }}{{ end }}
-      </a>
-      {{ end }}
+      {{ range $datasets }}{{ partial "dataset-card.html" . }}{{ end }}
     </div>
   </div>
 </section>
 
-<!-- ── Recent Publications ── -->
+<!-- ── Selected Publications ── -->
 <section class="section">
   <div class="container">
     <div class="section-heading">
-      <h2>Recent Publications</h2>
-      <p>Selected works by NEFIN researchers.</p>
+      <h2>Selected Publications</h2>
+      <p>Peer-reviewed articles by NEFIN researchers.</p>
     </div>
-    {{ $papers := where .Site.RegularPages "Type" "papers" }}
+    {{ $papers := (site.GetPage "/research/papers").Pages }}
     <ul class="pub-list">
       {{ range first 5 $papers }}
       <li class="pub-item">
@@ -89,6 +80,25 @@
   </div>
 </section>
 
+<!-- ── Insights ── -->
+{{ $insights := first 3 (site.GetPage "/insights").RegularPagesRecursive.ByDate.Reverse }}
+{{ with $insights }}
+<section class="section section--divided">
+  <div class="container">
+    <div class="section-heading">
+      <h2>Insights</h2>
+      <p>Guest essays on finance research, written by invited researchers.</p>
+    </div>
+    <div class="insights-grid">
+      {{ range . }}{{ partial "insight-card.html" . }}{{ end }}
+    </div>
+    <div class="mt-4">
+      <a href="/insights/" class="btn btn-outline">All insights →</a>
+    </div>
+  </div>
+</section>
+{{ end }}
+
 <!-- ── Faculty teaser ── -->
 <section class="section bg-light">
   <div class="container">
@@ -97,20 +107,7 @@
       <p>Our research team at the University of São Paulo.</p>
     </div>
     <div class="people-grid">
-      {{ range (where .Site.RegularPages "Type" "faculty") }}
-      <div class="person-card">
-        {{ with .Params.personal_url }}<a href="{{ . }}" target="_blank" rel="noopener">{{ end }}
-          {{ with .Params.photo }}
-          <img src="{{ . }}" alt="{{ $.Title }}" class="person-card__photo" loading="lazy">
-          {{ else }}
-          <div class="person-card__photo"></div>
-          {{ end }}
-          <div class="person-card__name">{{ .Title }}</div>
-          <div class="person-card__degree">{{ .Params.phd }}</div>
-          <div class="person-card__institution">{{ .Params.institution }}</div>
-        {{ with .Params.personal_url }}</a>{{ end }}
-      </div>
-      {{ end }}
+      {{ range (site.GetPage "/people/faculty").Pages }}{{ partial "person-card.html" . }}{{ end }}
     </div>
     <div class="mt-4">
       <a href="/people/faculty/" class="btn btn-outline">View all faculty →</a>
@@ -119,7 +116,7 @@
 </section>
 
 <!-- ── Contact ── -->
-<section class="section bg-light" id="contact">
+<section class="section section--divided" id="contact">
   <div class="container">
     <div class="section-heading">
       <h2>Contact</h2>

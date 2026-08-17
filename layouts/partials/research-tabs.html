@@ -1,0 +1,8 @@
+{{/* Tab strip shared by the three Research sections. Context: the section page. */}}
+{{ $current := .RelPermalink }}
+<nav class="research-tabs" aria-label="Research sections">
+  {{ range slice (dict "url" "/research/papers/" "label" "Published Papers") (dict "url" "/research/working-papers/" "label" "Working Papers") (dict "url" "/research/books/" "label" "Books") }}
+  {{ $active := eq $current .url }}
+  <a href="{{ .url }}" class="research-tab{{ if $active }} active{{ end }}"{{ if $active }} aria-current="page"{{ end }}>{{ .label }}</a>
+  {{ end }}
+</nav>

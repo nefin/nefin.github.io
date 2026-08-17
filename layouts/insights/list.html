@@ -1,0 +1,39 @@
+{{ define "main" }}
+<section class="page-header">
+  <div class="container">
+    <h1>{{ .Title }}</h1>
+    <p>Guest essays on finance research, written by invited researchers.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    {{ with .Content }}<div class="insight-intro">{{ . }}</div>{{ end }}
+
+    {{ $posts := .RegularPagesRecursive.ByDate.Reverse }}
+
+    {{ with site.Taxonomies.topics }}
+    <div class="topic-filters">
+      <span class="topic-filters__label">Topics</span>
+      {{ range $name, $taxonomy := . }}
+      {{ with site.GetPage (printf "/topics/%s" $name) }}
+      <a href="{{ .RelPermalink }}" class="topic-chip">{{ .Title }} <span>{{ len $taxonomy }}</span></a>
+      {{ end }}
+      {{ end }}
+    </div>
+    {{ end }}
+
+    {{ if $posts }}
+    <div class="insights-grid">
+      {{ range $posts }}{{ partial "insight-card.html" . }}{{ end }}
+    </div>
+    {{ else }}
+    <p class="insight-empty">No posts published yet — the first essays are on their way.</p>
+    {{ end }}
+
+    {{ with .OutputFormats.Get "rss" }}
+    <div class="mt-4"><a href="{{ .RelPermalink }}" class="btn btn-outline">Subscribe via RSS</a></div>
+    {{ end }}
+  </div>
+</section>
+{{ end }}

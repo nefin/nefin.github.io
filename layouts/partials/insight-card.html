@@ -1,0 +1,22 @@
+{{/* Card for one Insights post. Context: the post page. */}}
+{{ $pt := eq (.Params.language | default "en") "pt" }}
+{{ $a  := partial "insight-author.html" . }}
+<a href="{{ .Permalink }}" class="insight-card">
+  <div class="insight-card__meta">
+    <time datetime="{{ .Date.Format "2006-01-02" }}">
+      {{ if $pt }}{{ .Date.Format "02/01/2006" }}{{ else }}{{ .Date.Format "Jan 2, 2006" }}{{ end }}
+    </time>
+    <span class="insight-badge insight-badge--{{ if $pt }}pt{{ else }}en{{ end }}">{{ if $pt }}PT{{ else }}EN{{ end }}</span>
+  </div>
+  <h3 class="insight-card__title">{{ .Title }}</h3>
+  <p class="insight-card__summary">{{ .Params.summary | default .Summary }}</p>
+  <div class="insight-card__footer">
+    {{ with $a.name }}
+    <span class="insight-card__byline">
+      {{ with $a.photo }}<img src="{{ . }}" alt="" class="insight-card__photo" width="28" height="28" loading="lazy">{{ end }}
+      <span class="insight-card__author">{{ . }}{{ with $a.role }}<span class="insight-card__affiliation">{{ . }}</span>{{ end }}</span>
+    </span>
+    {{ end }}
+    <span class="insight-card__time">{{ .ReadingTime }} min{{ if $pt }} de leitura{{ else }} read{{ end }}</span>
+  </div>
+</a>

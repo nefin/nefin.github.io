@@ -1,6 +1,7 @@
 baseURL = "https://nefin.com.br/"
 locale = "en-us"
 title = "NEFIN"
+removePathAccents = true
 
 [params]
   tagline    = "Center for Research in Financial Economics"
@@ -12,12 +13,16 @@ title = "NEFIN"
   mission    = "NEFIN is the Brazilian Center for Research in Financial Economics of the University of São Paulo. We advance knowledge in asset pricing, derivative pricing, corporate finance, risk management and portfolio allocation — and make our data freely available to academics and practitioners."
 
 [permalinks]
-  datasets = "/data/:slug/"
+  # :slugorcontentbasename — the filename drives the URL, and an explicit `slug:` in the
+  # front matter can still override it. Plain :slug falls back to the *title*, which
+  # meant renaming a post silently changed nothing and retitling it broke the URL.
+  datasets = "/data/:slugorcontentbasename/"
+  insights = "/insights/:slugorcontentbasename/"
+
+[taxonomies]
+  topic = "topics"
 
 [markup]
   [markup.goldmark]
     [markup.goldmark.renderer]
       unsafe = true
-
-[build]
-  writeStats = true

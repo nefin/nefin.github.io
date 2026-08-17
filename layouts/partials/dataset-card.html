@@ -1,0 +1,7 @@
+{{/* Card for one dataset. Context: the dataset page. */}}
+{{ $f := partial "dataset-freshness.html" . }}
+<a href="{{ .Permalink }}" class="dataset-card">
+  <div class="dataset-card__title">{{ .Title }}</div>
+  <div class="dataset-card__desc">{{ .Params.summary }}</div>
+  <div class="dataset-card__badge dataset-card__badge--{{ $f.state }}">{{ $f.label }}</div>
+</a>

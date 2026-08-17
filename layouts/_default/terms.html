@@ -1,0 +1,18 @@
+{{ define "main" }}
+<section class="page-header">
+  <div class="container">
+    <h1>Topics</h1>
+    <p>Browse Insights posts by subject.</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <div class="topic-filters">
+      {{ range .Data.Terms.Alphabetical }}
+      <a href="{{ .Page.RelPermalink }}" class="topic-chip">{{ .Page.Title }} <span>{{ .Count }}</span></a>
+      {{ end }}
+    </div>
+  </div>
+</section>
+{{ end }}

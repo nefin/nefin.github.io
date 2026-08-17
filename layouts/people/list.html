@@ -1,0 +1,42 @@
+{{ define "main" }}
+{{/* One layout for every People section. The /people/ root has child sections and
+     renders as a hub; the leaf sections (faculty, researchers, students) render the
+     card grid. Alumni has its own table layout in people/alumni/list.html. */}}
+
+{{ $isHub := gt (len .Sections) 0 }}
+
+<section class="page-header">
+  <div class="container">
+    <h1>{{ .Title }}</h1>
+    {{ with .Params.subtitle }}<p>{{ . }}</p>{{ end }}
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    {{ with .Content }}<div class="insight-intro">{{ . }}</div>{{ end }}
+
+    {{ if $isHub }}
+      {{ range .Sections }}
+      <div class="mb-4" style="margin-bottom:3.5rem">
+        <h2 class="people-section-title">
+          <a href="{{ .RelPermalink }}">{{ .Title }}</a>
+        </h2>
+        {{ if eq .Title "Alumni" }}
+        <p class="text-muted">{{ len .Pages }} former students and researchers —
+          <a href="{{ .RelPermalink }}">see the full list →</a></p>
+        {{ else }}
+        <div class="people-grid">
+          {{ range .Pages }}{{ partial "person-card.html" . }}{{ end }}
+        </div>
+        {{ end }}
+      </div>
+      {{ end }}
+    {{ else }}
+      <div class="people-grid">
+        {{ range .Pages }}{{ partial "person-card.html" . }}{{ end }}
+      </div>
+    {{ end }}
+  </div>
+</section>
+{{ end }}

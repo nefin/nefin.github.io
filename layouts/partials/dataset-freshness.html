@@ -1,0 +1,29 @@
+{{/* Returns a dict describing how current a dataset is, derived from
+     `last_observation` in the front matter — never from a hand-typed label.
+
+     Context: the dataset page.
+     Returns: dict with .state ("none" | "current" | "lagging" | "stale" | "unknown"),
+              .label (short text) and .months (integer months since last observation).
+
+     A dataset is considered `current` while it is within its own update cycle
+     (frequency + one grace period), `lagging` up to a year, `stale` beyond that. */}}
+
+{{ $out := dict "state" "unknown" "label" "Update status unknown" "months" 0 }}
+
+{{ if .Params.no_data }}
+  {{ $out = dict "state" "none" "label" "No data file published" "months" 0 }}
+{{ else if .Params.last_observation }}
+  {{ $d      := time.AsTime .Params.last_observation }}
+  {{ $months := int (div (now.Sub $d).Hours 730.5) }}
+  {{ $pretty := $d.Format "Jan 2006" }}
+  {{ $limit  := cond (eq (.Params.frequency | default "Daily") "Monthly") 3 2 }}
+  {{ if le $months $limit }}
+    {{ $out = dict "state" "current" "label" (printf "Updated %s" $pretty) "months" $months }}
+  {{ else if lt $months 12 }}
+    {{ $out = dict "state" "lagging" "label" (printf "Last observation %s" $pretty) "months" $months }}
+  {{ else }}
+    {{ $out = dict "state" "stale" "label" (printf "Last observation %s" $pretty) "months" $months }}
+  {{ end }}
+{{ end }}
+
+{{ return $out }}

@@ -1,0 +1,17 @@
+{{ define "main" }}
+<section class="page-header">
+  <div class="container">
+    <h1>{{ .Title }}</h1>
+    <p>{{ len .Pages }} post{{ if ne (len .Pages) 1 }}s{{ end }} on this topic</p>
+  </div>
+</section>
+
+<section class="section">
+  <div class="container">
+    <a href="/insights/" class="insight__back">← All insights</a>
+    <div class="insights-grid mt-4">
+      {{ range .Pages.ByDate.Reverse }}{{ partial "insight-card.html" . }}{{ end }}
+    </div>
+  </div>
+</section>
+{{ end }}

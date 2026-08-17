@@ -1,0 +1,20 @@
+{{/* One person card. Context: the person page.
+     `phd` is the degree, `institution` is where the degree was awarded — labelled
+     explicitly so it is not misread as the person's current affiliation. */}}
+<div class="person-card">
+  {{ with .Params.personal_url }}<a href="{{ . }}" target="_blank" rel="noopener">{{ end }}
+    {{ with .Params.photo }}
+    <img src="{{ . }}" alt="{{ $.Title }}" class="person-card__photo" width="110" height="110" loading="lazy">
+    {{ else }}
+    <div class="person-card__photo" aria-hidden="true"></div>
+    {{ end }}
+    <div class="person-card__name">{{ .Title }}</div>
+    {{/* Degree and awarding institution read as one phrase, so "Columbia University"
+         can't be misread as the person's current affiliation. */}}
+    {{ $degree := slice }}
+    {{ with .Params.phd }}{{ $degree = $degree | append . }}{{ end }}
+    {{ with .Params.institution }}{{ $degree = $degree | append . }}{{ end }}
+    {{ with $degree }}<div class="person-card__degree">{{ delimit . ", " }}</div>{{ end }}
+    {{ with .Params.advisor }}<div class="person-card__institution">Advisor: {{ . }}</div>{{ end }}
+  {{ with .Params.personal_url }}</a>{{ end }}
+</div>

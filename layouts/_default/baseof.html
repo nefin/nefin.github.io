@@ -1,9 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+{{/* Insights posts declare their own language; everything else is English. */}}
+<html lang="{{ if eq (.Params.language | default "en") "pt" }}pt-BR{{ else }}en{{ end }}">
 <head>{{ partial "head.html" . }}</head>
 <body>
+  <a href="#main" class="skip-link">Skip to content</a>
   {{ partial "nav.html" . }}
-  <main>{{ block "main" . }}{{ end }}</main>
+  <main id="main" tabindex="-1">{{ block "main" . }}{{ end }}</main>
   {{ partial "footer.html" . }}
 </body>
 </html>

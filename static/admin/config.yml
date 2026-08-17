@@ -64,7 +64,7 @@ collections:
     fields:
       - { label: "Full Name", name: "title", widget: "string" }
       - { label: "Degree / Role", name: "phd", widget: "string", hint: "e.g. Ph.D Candidate" }
-      - { label: "Advisor", name: "institution", widget: "string", hint: "e.g. Advisor: Rodrigo De Losso" }
+      - { label: "Advisor", name: "advisor", widget: "string", hint: "e.g. Rodrigo De Losso" }
       - { label: "Photo", name: "photo", widget: "image", required: false }
       - { label: "Display Order", name: "weight", widget: "number", default: 99 }
 
@@ -108,6 +108,40 @@ collections:
       - { label: "Paper URL (SSRN)", name: "paper_url", widget: "string" }
       - { label: "Display Order", name: "weight", widget: "number", default: 99 }
 
+  # ── Insights (essays / crônicas) ───────────────────────────
+  - name: "insights"
+    label: "Insights"
+    label_singular: "Post"
+    folder: "content/insights"
+    create: true
+    slug: "{{slug}}"
+    sortable_fields: ["date", "title"]
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Date", name: "date", widget: "datetime", format: "YYYY-MM-DD", date_format: "DD/MM/YYYY", time_format: false }
+      - label: "Language"
+        name: "language"
+        widget: "select"
+        default: "pt"
+        options:
+          - { label: "Português", value: "pt" }
+          - { label: "English", value: "en" }
+      - { label: "Guest Author", name: "author", widget: "string", hint: "Full name of the invited researcher, as it should appear in the byline." }
+      - { label: "Author Affiliation", name: "author_affiliation", widget: "string", required: false, hint: "e.g. Professor of Finance, FGV-EAESP" }
+      - { label: "Author Website", name: "author_url", widget: "string", required: false, hint: "Personal page, Google Scholar or SSRN profile." }
+      - { label: "Author Photo", name: "author_photo", widget: "image", required: false }
+      - { label: "Author Bio", name: "author_bio", widget: "text", required: false, hint: "Two or three lines shown in the box at the end of the text." }
+      - { label: "Summary", name: "summary", widget: "text", hint: "One or two sentences shown on the listing card." }
+      - label: "Topics"
+        name: "topics"
+        widget: "list"
+        required: false
+        field: { label: "Topic", name: "topic", widget: "string" }
+        hint: "e.g. Asset Pricing, Short Selling, Mercado Brasileiro"
+      - { label: "Social Preview Image", name: "image", widget: "image", required: false, hint: "Shown when the post is shared on LinkedIn, X or WhatsApp. Ideally 1200×630 px. Falls back to the author photo." }
+      - { label: "Draft (not published)", name: "draft", widget: "boolean", default: false, required: false }
+      - { label: "Text", name: "body", widget: "markdown" }
+
   # ── Datasets ───────────────────────────────────────────────
   - name: "datasets"
     label: "Data Pages"
@@ -119,7 +153,14 @@ collections:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Short Summary (card text)", name: "summary", widget: "text" }
       - { label: "Description (page intro)", name: "description", widget: "text" }
-      - { label: "Last Updated", name: "updated", widget: "string", hint: "e.g. January 2026" }
+      - { label: "Last observation in the data", name: "last_observation", widget: "date", format: "YYYY-MM-DD", required: false, hint: "The date of the LAST ROW of the data file — not the day you uploaded it. The freshness badge on the site is computed from this." }
+      - { label: "First observation in the data", name: "coverage_start", widget: "date", format: "YYYY-MM-DD", required: false }
+      - label: "Frequency"
+        name: "frequency"
+        widget: "select"
+        required: false
+        options: ["Daily", "Weekly", "Monthly", "Quarterly"]
+      - { label: "No data file published", name: "no_data", widget: "boolean", default: false, required: false, hint: "Tick when only the methodology is available. The page will say so explicitly." }
       - label: "Download Links"
         name: "downloads"
         widget: "list"

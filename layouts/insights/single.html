@@ -1,0 +1,90 @@
+{{ define "main" }}
+{{ $pt := eq (.Params.language | default "en") "pt" }}
+{{ $a  := partial "insight-author.html" . }}
+{{ $author := $a.name }}
+{{ $photo  := $a.photo }}
+{{ $role   := $a.role }}
+{{ $link   := $a.url }}
+
+<article class="insight">
+
+  <header class="insight__header">
+    <div class="container container--narrow">
+      <a href="/insights/" class="insight__back">← {{ if $pt }}Todos os textos{{ else }}All insights{{ end }}</a>
+      <div class="insight__meta">
+        <time datetime="{{ .Date.Format "2006-01-02" }}">
+          {{ if $pt }}{{ .Date.Format "02/01/2006" }}{{ else }}{{ .Date.Format "January 2, 2006" }}{{ end }}
+        </time>
+        <span class="insight-badge insight-badge--{{ if $pt }}pt{{ else }}en{{ end }}">{{ if $pt }}PT{{ else }}EN{{ end }}</span>
+        <span>{{ .ReadingTime }} min{{ if $pt }} de leitura{{ else }} read{{ end }}</span>
+      </div>
+      <h1>{{ .Title }}</h1>
+      {{ with .Params.summary }}<p class="insight__lead">{{ . }}</p>{{ end }}
+      {{ with $author }}
+      <div class="insight__byline">
+        {{ with $photo }}<img src="{{ . }}" alt="{{ $author }}" class="insight__byline-photo" loading="lazy">{{ end }}
+        <div>
+          <span class="insight__byline-eyebrow">{{ if $pt }}Texto convidado por{{ else }}Guest essay by{{ end }}</span>
+          <span class="insight__byline-name">
+            {{ with $link }}<a href="{{ . }}" target="_blank" rel="noopener">{{ $author }}</a>{{ else }}{{ $author }}{{ end }}
+          </span>
+          {{ with $role }}<span class="insight__byline-role">{{ . }}</span>{{ end }}
+        </div>
+      </div>
+      {{ end }}
+      {{ partial "share.html" . }}
+    </div>
+  </header>
+
+  <div class="section">
+    <div class="container container--narrow">
+      <div class="insight__body">{{ .Content }}</div>
+
+      {{ with .Params.author_bio }}
+      <aside class="insight__author-box">
+        {{ with $photo }}<img src="{{ . }}" alt="{{ $author }}" class="insight__author-box-photo" loading="lazy">{{ end }}
+        <div>
+          <div class="insight__author-box-label">{{ if $pt }}Sobre o autor{{ else }}About the author{{ end }}</div>
+          <div class="insight__author-box-name">
+            {{ with $link }}<a href="{{ . }}" target="_blank" rel="noopener">{{ $author }}</a>{{ else }}{{ $author }}{{ end }}
+            {{ with $role }}<span class="insight__author-box-role">{{ . }}</span>{{ end }}
+          </div>
+          <p>{{ . }}</p>
+        </div>
+      </aside>
+      {{ end }}
+
+      <p class="insight__disclaimer">
+        {{ if $pt }}
+        Texto de autoria convidada. As opiniões expressas são de responsabilidade do autor e não representam
+        necessariamente a posição do NEFIN ou da Universidade de São Paulo.
+        {{ else }}
+        Guest contribution. The views expressed are the author's own and do not necessarily
+        represent the position of NEFIN or the University of São Paulo.
+        {{ end }}
+      </p>
+
+      <div class="share-footer">{{ partial "share.html" . }}</div>
+
+      {{ with .Params.topics }}
+      <div class="insight__topics">
+        {{ range . }}
+        <a href="/topics/{{ . | urlize }}/" class="topic-chip">{{ . }}</a>
+        {{ end }}
+      </div>
+      {{ end }}
+
+      {{ $related := first 3 (where (where site.RegularPages "Type" "insights") "Permalink" "!=" .Permalink).ByDate.Reverse }}
+      {{ with $related }}
+      <div class="insight__related">
+        <h2>{{ if $pt }}Leia também{{ else }}Read next{{ end }}</h2>
+        <div class="insights-grid">
+          {{ range . }}{{ partial "insight-card.html" . }}{{ end }}
+        </div>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+
+</article>
+{{ end }}

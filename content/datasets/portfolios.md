@@ -2,7 +2,10 @@
 title: "Portfolios"
 type: "datasets"
 summary: "Brazilian stock portfolios sorted by size, book-to-market, momentum, and illiquidity."
-updated: "Monthly"
+description: "Daily returns of Brazilian stock portfolios, published as one file per sorting scheme: three portfolios sorted independently by size, book-to-market, momentum and illiquidity; three 2×2 double sorts combining size with book-to-market, illiquidity and momentum; and seven portfolios sorted by industry. Each file is dated by year, month and day, with returns as daily fractions."
+last_observation: "2023-08-31"
+coverage_start: "2001-01-02"
+frequency: "Daily"
 downloads:
   - label: "3 Portfolios Sorted by Size (XLS)"
     url: "/resources/portfolios/3_portfolios_sorted_by_size.xls"

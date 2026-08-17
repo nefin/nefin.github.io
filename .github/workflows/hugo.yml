@@ -2,7 +2,7 @@ name: Deploy Hugo site to GitHub Pages
 
 on:
   push:
-    branches: [main, new_design]
+    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -24,8 +24,16 @@ jobs:
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v3
         with:
-          hugo-version: "0.162.0"
+          hugo-version: "0.164.0"
           extended: true
+
+      # The freshness badge on every dataset page is derived from `last_observation`.
+      # If someone uploads new data but forgets to update the front matter, the site
+      # would quietly claim the old date — so fail the build instead.
+      - name: Check dataset dates match the data files
+        run: |
+          python3 -m pip install --quiet pandas xlrd
+          python3 python_general_scripts/update_dataset_dates.py --check
 
       - name: Build
         run: hugo --minify

@@ -1,12 +1,15 @@
-<nav class="nav">
+<nav class="nav" aria-label="Main">
   <div class="container">
     <div class="nav__inner">
-      <a href="/" class="nav__brand">NEFIN</a>
-      <button class="nav__toggle" aria-label="Toggle menu" onclick="this.nextElementSibling.classList.toggle('open')">☰</button>
-      <ul class="nav__list">
+      <a href="/" class="nav__brand">NEFIN<span class="sr-only"> — home</span></a>
 
-        <li class="nav__item">
-          <a href="/people/faculty/" class="nav__link">People ▾</a>
+      <button class="nav__toggle" type="button" aria-label="Toggle menu"
+              aria-expanded="false" aria-controls="nav-list">☰</button>
+
+      <ul class="nav__list" id="nav-list">
+
+        <li class="nav__item nav__item--has-menu">
+          <a href="/people/" class="nav__link" aria-haspopup="true" aria-expanded="false">People <span aria-hidden="true">▾</span></a>
           <div class="nav__dropdown">
             <a href="/people/faculty/">Faculty</a>
             <a href="/people/researchers/">Researchers</a>
@@ -15,8 +18,8 @@
           </div>
         </li>
 
-        <li class="nav__item">
-          <a href="/data/" class="nav__link">Data ▾</a>
+        <li class="nav__item nav__item--has-menu">
+          <a href="/data/" class="nav__link" aria-haspopup="true" aria-expanded="false">Data <span aria-hidden="true">▾</span></a>
           <div class="nav__dropdown">
             <a href="/data/risk-factors/">Risk Factors</a>
             <a href="/data/volatility-index/">Volatility Index</a>
@@ -28,16 +31,29 @@
             <a href="/data/short-interest/">Short Interest</a>
             <a href="/data/spot-rate-curve/">Spot Rate Curve</a>
             <div class="nav__dropdown-divider"></div>
-            <a href="/resources/NEFIN_methodology.pdf" target="_blank">Methodology (PDF)</a>
+            <a href="/data/">All datasets</a>
+            <a href="/resources/NEFIN_methodology.pdf" target="_blank" rel="noopener">Methodology (PDF)</a>
           </div>
         </li>
 
-        <li class="nav__item">
-          <a href="/research/papers/" class="nav__link">Research ▾</a>
+        <li class="nav__item nav__item--has-menu">
+          <a href="/research/" class="nav__link" aria-haspopup="true" aria-expanded="false">Research <span aria-hidden="true">▾</span></a>
           <div class="nav__dropdown">
             <a href="/research/papers/">Published Papers</a>
             <a href="/research/working-papers/">Working Papers</a>
             <a href="/research/books/">Books</a>
+          </div>
+        </li>
+
+        <li class="nav__item nav__item--has-menu">
+          <a href="/insights/" class="nav__link" aria-haspopup="true" aria-expanded="false">Insights <span aria-hidden="true">▾</span></a>
+          <div class="nav__dropdown">
+            <a href="/insights/">All posts</a>
+            <a href="/topics/">Browse by topic</a>
+            {{ with site.GetPage "/insights" }}{{ with .OutputFormats.Get "rss" }}
+            <div class="nav__dropdown-divider"></div>
+            <a href="{{ .RelPermalink }}">RSS feed</a>
+            {{ end }}{{ end }}
           </div>
         </li>
 
@@ -49,3 +65,44 @@
     </div>
   </div>
 </nav>
+
+<script>
+/* Dropdowns open on hover (CSS) and on focus/click (here), so they are reachable
+   by keyboard and on touch devices, where :hover never fires reliably. */
+(function () {
+  var nav = document.currentScript.previousElementSibling;
+  var toggle = nav.querySelector('.nav__toggle');
+  var list = nav.querySelector('.nav__list');
+
+  toggle.addEventListener('click', function () {
+    var open = list.classList.toggle('open');
+    toggle.setAttribute('aria-expanded', String(open));
+  });
+
+  nav.querySelectorAll('.nav__item--has-menu').forEach(function (item) {
+    var link = item.querySelector('.nav__link');
+
+    function setOpen(open) {
+      item.classList.toggle('is-open', open);
+      link.setAttribute('aria-expanded', String(open));
+    }
+
+    // On small screens the parent link is the menu trigger; on wide screens it
+    // stays a normal link and hover does the work.
+    link.addEventListener('click', function (e) {
+      if (window.matchMedia('(max-width: 768px)').matches) {
+        e.preventDefault();
+        setOpen(!item.classList.contains('is-open'));
+      }
+    });
+
+    item.addEventListener('focusin', function () { setOpen(true); });
+    item.addEventListener('focusout', function (e) {
+      if (!item.contains(e.relatedTarget)) setOpen(false);
+    });
+    item.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') { setOpen(false); link.focus(); }
+    });
+  });
+})();
+</script>

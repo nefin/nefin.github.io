@@ -2,7 +2,10 @@
 title: "Cost of Equity"
 type: "datasets"
 summary: "Expected return on equity for Brazilian listed firms, estimated using NEFIN risk factors."
-updated: "Monthly"
+description: "Estimated cost of equity for Brazilian listed firms, reported separately for seven sectors (Basic Products, Construction, Consumer, Energy, Finance, Manufacturing and Other). Each file gives the monthly discount rate, in percent per year, for project horizons of 1, 5, 10 and 20 years. See the methodology PDF for the estimation procedure."
+last_observation: "2023-08-01"
+coverage_start: "2005-01-01"
+frequency: "Monthly"
 downloads:
   - label: "Basic Products (CSV)"
     url: "/resources/cost_of_capital/Basic Products.csv"

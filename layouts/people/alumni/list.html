@@ -1,27 +1,33 @@
 {{ define "main" }}
 <section class="page-header">
   <div class="container">
-    <h1>Alumni</h1>
-    <p>Former students and researchers of NEFIN</p>
+    <h1>{{ .Title }}</h1>
+    {{ with .Params.subtitle }}<p>{{ . }}</p>{{ end }}
   </div>
 </section>
 
 <section class="section">
   <div class="container">
-    <div class="alumni-list">
-      <div class="alumni-row alumni-header">
-        <span class="alumni-name">Name</span>
-        <span class="alumni-degree">Degree</span>
-        <span class="alumni-advisor">Advisor</span>
-      </div>
-      {{ range .Pages }}
-      <div class="alumni-row">
-        <span class="alumni-name">{{ .Title }}</span>
-        <span class="alumni-degree">{{ .Params.degree }}</span>
-        <span class="alumni-advisor">{{ .Params.advisor }}</span>
-      </div>
-      {{ end }}
-    </div>
+    <table class="alumni-table">
+      <caption class="sr-only">Former NEFIN students and researchers, with degree and advisor</caption>
+      <thead>
+        <tr>
+          <th scope="col">Name</th>
+          <th scope="col">Degree</th>
+          <th scope="col">Advisor</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{/* Alumni are a text-only list by design — no photos. */}}
+        {{ range .Pages }}
+        <tr>
+          <th scope="row" class="alumni-name">{{ .Title }}</th>
+          <td class="alumni-degree">{{ .Params.degree }}</td>
+          <td class="alumni-advisor">{{ .Params.advisor }}</td>
+        </tr>
+        {{ end }}
+      </tbody>
+    </table>
   </div>
 </section>
 {{ end }}

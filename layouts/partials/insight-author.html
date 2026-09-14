@@ -12,7 +12,16 @@
 {{ $url   := .Params.author_url }}
 
 {{ with $name }}
-  {{ $matches := where (where site.RegularPages "Section" "people") "Title" . }}
+  {{/* Person pages carry `build.list: local` (see content/people/_index.md), so
+       they never show up in site.RegularPages — only in their own subsection's
+       .RegularPages. Check each subsection directly instead. */}}
+  {{ $people := slice }}
+  {{ range slice "faculty" "researchers" "students" "alumni" }}
+    {{ with site.GetPage (printf "/people/%s" .) }}
+      {{ $people = $people | append .RegularPages }}
+    {{ end }}
+  {{ end }}
+  {{ $matches := where $people "Title" . }}
   {{ with first 1 $matches }}{{ range . }}
     {{ if not $photo }}{{ $photo = .Params.photo }}{{ end }}
     {{ if not $role  }}{{ $role  = .Params.phd }}{{ end }}

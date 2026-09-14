@@ -25,6 +25,9 @@
 <meta name="twitter:description" content="{{ $ogDesc }}">
 
 <link rel="stylesheet" href="/css/main.css">
+{{/* Self-hosted (see /static/vendor/katex): no third-party CDN on an institutional
+     page, loaded only on pages that set `math: true` in front matter. */}}
+{{ if .Params.math }}<link rel="stylesheet" href="/vendor/katex/katex.min.css">{{ end }}
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 {{ with site.GetPage "/insights" }}{{ with .OutputFormats.Get "rss" }}
 <link rel="alternate" type="application/rss+xml" href="{{ .Permalink }}" title="NEFIN Insights">

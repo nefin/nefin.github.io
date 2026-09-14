@@ -1,4 +1,11 @@
 {{ define "main" }}
+{{/* Bilingual posts (bilingual: true) carry both languages in one file — the
+     body via {{% lang-en %}}/{{% lang-pt %}} shortcodes, everything else via
+     a `_pt` front matter twin (title/title_pt, summary/summary_pt, ...). Both
+     render server-side; a client-side toggle (below) shows/hides by
+     [data-lang] so there's no page reload and no JS dependency for the
+     default (English) view. Regular single-language posts are untouched. */}}
+{{ $bilingual := .Params.bilingual }}
 {{ $pt := eq (.Params.language | default "en") "pt" }}
 {{ $a  := partial "insight-author.html" . }}
 {{ $author := $a.name }}
@@ -6,25 +13,54 @@
 {{ $role   := $a.role }}
 {{ $link   := $a.url }}
 
-<article class="insight">
+<article class="insight"{{ if $bilingual }} data-lang="en"{{ end }}>
 
   <header class="insight__header">
     <div class="container container--narrow">
-      <a href="/insights/" class="insight__back">← {{ if $pt }}Todos os textos{{ else }}All insights{{ end }}</a>
+      {{ if $bilingual }}
+      <div class="lang-switch" role="group" aria-label="Language / Idioma">
+        <button type="button" class="lang-switch__btn is-active" data-lang-btn="en" aria-pressed="true">EN</button>
+        <button type="button" class="lang-switch__btn" data-lang-btn="pt" aria-pressed="false">PT</button>
+      </div>
+      {{ end }}
+
+      <a href="/insights/" class="insight__back">{{ if $bilingual }}<span data-lang="en">← All insights</span><span data-lang="pt">← Todos os textos</span>{{ else }}← {{ if $pt }}Todos os textos{{ else }}All insights{{ end }}{{ end }}</a>
+
       <div class="insight__meta">
+        {{ if $bilingual }}
+        <time data-lang="en" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "January 2, 2006" }}</time>
+        <time data-lang="pt" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "02/01/2006" }}</time>
+        <span class="insight-badge insight-badge--bilingual">EN/PT</span>
+        <span data-lang="en">{{ .ReadingTime }} min read</span>
+        <span data-lang="pt">{{ .ReadingTime }} min de leitura</span>
+        {{ else }}
         <time datetime="{{ .Date.Format "2006-01-02" }}">
           {{ if $pt }}{{ .Date.Format "02/01/2006" }}{{ else }}{{ .Date.Format "January 2, 2006" }}{{ end }}
         </time>
         <span class="insight-badge insight-badge--{{ if $pt }}pt{{ else }}en{{ end }}">{{ if $pt }}PT{{ else }}EN{{ end }}</span>
         <span>{{ .ReadingTime }} min{{ if $pt }} de leitura{{ else }} read{{ end }}</span>
+        {{ end }}
       </div>
+
+      {{ if $bilingual }}
+      <h1><span data-lang="en">{{ .Title }}</span><span data-lang="pt">{{ .Params.title_pt }}</span></h1>
+      {{ with .Params.summary }}<p class="insight__lead" data-lang="en">{{ . }}</p>{{ end }}
+      {{ with .Params.summary_pt }}<p class="insight__lead" data-lang="pt">{{ . }}</p>{{ end }}
+      {{ else }}
       <h1>{{ .Title }}</h1>
       {{ with .Params.summary }}<p class="insight__lead">{{ . }}</p>{{ end }}
+      {{ end }}
+
       {{ with $author }}
       <div class="insight__byline">
         {{ with $photo }}<img src="{{ . }}" alt="{{ $author }}" class="insight__byline-photo" loading="lazy">{{ end }}
         <div>
+          {{ if $bilingual }}
+          <span class="insight__byline-eyebrow" data-lang="en">Guest essay by</span>
+          <span class="insight__byline-eyebrow" data-lang="pt">Texto convidado por</span>
+          {{ else }}
           <span class="insight__byline-eyebrow">{{ if $pt }}Texto convidado por{{ else }}Guest essay by{{ end }}</span>
+          {{ end }}
           <span class="insight__byline-name">
             {{ with $link }}<a href="{{ . }}" target="_blank" rel="noopener">{{ $author }}</a>{{ else }}{{ $author }}{{ end }}
           </span>
@@ -40,6 +76,23 @@
     <div class="container container--narrow">
       <div class="insight__body">{{ .Content }}</div>
 
+      {{ if $bilingual }}
+      {{ if or .Params.author_bio .Params.author_bio_pt }}
+      <aside class="insight__author-box">
+        {{ with $photo }}<img src="{{ . }}" alt="{{ $author }}" class="insight__author-box-photo" loading="lazy">{{ end }}
+        <div>
+          <div class="insight__author-box-label" data-lang="en">About the author</div>
+          <div class="insight__author-box-label" data-lang="pt">Sobre o autor</div>
+          <div class="insight__author-box-name">
+            {{ with $link }}<a href="{{ . }}" target="_blank" rel="noopener">{{ $author }}</a>{{ else }}{{ $author }}{{ end }}
+            {{ with $role }}<span class="insight__author-box-role">{{ . }}</span>{{ end }}
+          </div>
+          {{ with .Params.author_bio }}<p data-lang="en">{{ . }}</p>{{ end }}
+          {{ with .Params.author_bio_pt }}<p data-lang="pt">{{ . }}</p>{{ end }}
+        </div>
+      </aside>
+      {{ end }}
+      {{ else }}
       {{ with .Params.author_bio }}
       <aside class="insight__author-box">
         {{ with $photo }}<img src="{{ . }}" alt="{{ $author }}" class="insight__author-box-photo" loading="lazy">{{ end }}
@@ -53,7 +106,18 @@
         </div>
       </aside>
       {{ end }}
+      {{ end }}
 
+      {{ if $bilingual }}
+      <p class="insight__disclaimer" data-lang="en">
+        Guest contribution. The views expressed are the author's own and do not necessarily
+        represent the position of NEFIN or the University of São Paulo.
+      </p>
+      <p class="insight__disclaimer" data-lang="pt">
+        Texto de autoria convidada. As opiniões expressas são de responsabilidade do autor e não representam
+        necessariamente a posição do NEFIN ou da Universidade de São Paulo.
+      </p>
+      {{ else }}
       <p class="insight__disclaimer">
         {{ if $pt }}
         Texto de autoria convidada. As opiniões expressas são de responsabilidade do autor e não representam
@@ -63,6 +127,7 @@
         represent the position of NEFIN or the University of São Paulo.
         {{ end }}
       </p>
+      {{ end }}
 
       <div class="share-footer">{{ partial "share.html" . }}</div>
 
@@ -77,7 +142,12 @@
       {{ $related := first 3 (where (where site.RegularPages "Type" "insights") "Permalink" "!=" .Permalink).ByDate.Reverse }}
       {{ with $related }}
       <div class="insight__related">
+        {{ if $bilingual }}
+        <h2 data-lang="en">Read next</h2>
+        <h2 data-lang="pt">Leia também</h2>
+        {{ else }}
         <h2>{{ if $pt }}Leia também{{ else }}Read next{{ end }}</h2>
+        {{ end }}
         <div class="insights-grid">
           {{ range . }}{{ partial "insight-card.html" . }}{{ end }}
         </div>
@@ -87,4 +157,35 @@
   </div>
 
 </article>
+
+{{ if $bilingual }}
+<script>
+(function () {
+  var article = document.querySelector('.insight[data-lang]');
+  if (!article) return;
+  var buttons = article.querySelectorAll('[data-lang-btn]');
+
+  function setLang(lang) {
+    article.setAttribute('data-lang', lang);
+    buttons.forEach(function (b) {
+      var active = b.getAttribute('data-lang-btn') === lang;
+      b.classList.toggle('is-active', active);
+      b.setAttribute('aria-pressed', String(active));
+    });
+    try { localStorage.setItem('nefin-insight-lang', lang); } catch (e) {}
+  }
+
+  buttons.forEach(function (b) {
+    b.addEventListener('click', function () { setLang(b.getAttribute('data-lang-btn')); });
+  });
+
+  // Default is English (server-rendered); only override if the reader
+  // switched before, on this or another bilingual post.
+  try {
+    var saved = localStorage.getItem('nefin-insight-lang');
+    if (saved === 'en' || saved === 'pt') setLang(saved);
+  } catch (e) {}
+})();
+</script>
+{{ end }}
 {{ end }}

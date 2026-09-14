@@ -298,6 +298,22 @@ ul { list-style: none; }
 .insight-badge { font-size: .65rem; font-weight: 600; letter-spacing: .06em; padding: .1rem .38rem; border-radius: 2px; border: 1px solid var(--gray-200); color: var(--gray-500); }
 .insight-badge--pt { color: var(--accent-text); border-color: var(--accent-text); }
 .insight-badge--en { color: var(--primary); border-color: var(--primary); }
+.insight-badge--bilingual { color: var(--gray-700); border-color: var(--gray-400); }
+
+/* ── Bilingual posts (bilingual: true): both languages render server-side,
+   this hides the inactive one. Default (no JS, or before any toggle click)
+   is English, set via [data-lang="en"] on the article in the template. ── */
+.insight[data-lang="en"] [data-lang="pt"] { display: none; }
+.insight[data-lang="pt"] [data-lang="en"] { display: none; }
+
+.lang-switch { display: inline-flex; gap: .3rem; margin-bottom: 1.2rem; }
+.lang-switch__btn {
+  font-family: var(--font-sans); font-size: .72rem; font-weight: 600; letter-spacing: .04em;
+  padding: .3rem .7rem; border-radius: 999px; border: 1px solid var(--gray-200);
+  background: var(--white); color: var(--gray-500); cursor: pointer; transition: all .15s;
+}
+.lang-switch__btn:hover { border-color: var(--primary); color: var(--primary); }
+.lang-switch__btn.is-active { background: var(--primary); border-color: var(--primary); color: var(--white); }
 
 .topic-filters { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; margin-bottom: 2rem; }
 .topic-filters__label { font-size: .7rem; text-transform: uppercase; letter-spacing: .1em; color: var(--accent-text); margin-right: .3rem; }
@@ -331,6 +347,51 @@ ul { list-style: none; }
 .insight__body blockquote { border-left: 3px solid var(--accent); padding-left: 1.2rem; margin: 1.8rem 0; color: var(--gray-700); font-style: italic; }
 .insight__body code { background: var(--gray-100); padding: .1rem .3rem; border-radius: 2px; font-size: .9em; }
 .insight__body a { text-decoration: underline; text-underline-offset: 2px; }
+
+/* ── Code blocks ── Chroma wraps highlighted fences in .highlight > pre; a
+   plain ``` fence (used here for program output) is a bare pre with no
+   wrapper. Both inherit the base "pre" rule below (padding, radius, an
+   "Output" label); the more specific .highlight pre rule then overrides it
+   back to a plain dark code box with no label, so only real output gets the
+   label and neither ever shows the browser's default pre margin (that
+   default margin, with no background under it, was the white gap above/
+   below each block). */
+.insight__body pre {
+  position: relative;
+  margin: 1.6rem 0 1.8rem;
+  padding: 1.7rem 1.25rem 1.1rem;
+  background: var(--gray-50);
+  border: 1px solid var(--gray-200);
+  border-radius: var(--radius);
+  overflow-x: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, "Liberation Mono", monospace;
+  font-size: .82rem;
+  line-height: 1.65;
+  color: var(--gray-700);
+}
+.insight__body pre::before {
+  content: "Output";
+  position: absolute;
+  top: .55rem;
+  left: 1.25rem;
+  font-size: .65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+  color: var(--accent-text);
+}
+.insight__body pre code { background: none; padding: 0; font-size: inherit; }
+
+.insight__body .highlight { margin: 1.6rem 0 1.8rem; }
+.insight__body .highlight pre {
+  /* Chroma sets color/background inline on this element (wins over any CSS
+     here regardless); only the box model needs resetting from the base rule. */
+  margin: 0;
+  padding: 1.1rem 1.25rem;
+  border: none;
+  border-radius: var(--radius);
+}
+.insight__body .highlight pre::before { content: none; }
 
 .insight__topics { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 2.5rem; padding-top: 1.5rem; border-top: 1px solid var(--gray-200); }
 .insight__related { margin-top: 3.5rem; }

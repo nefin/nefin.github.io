@@ -7,5 +7,22 @@
   {{ partial "nav.html" . }}
   <main id="main" tabindex="-1">{{ block "main" . }}{{ end }}</main>
   {{ partial "footer.html" . }}
+  {{ if .Params.math }}
+  <script defer src="/vendor/katex/katex.min.js"></script>
+  <script defer src="/vendor/katex/auto-render.min.js"></script>
+  <script>
+  {{/* \( \) and \[ \] only — never $ ... $, which collides with plain dollar
+       amounts ("$100") that show up all over a finance site. */}}
+  document.addEventListener('DOMContentLoaded', function () {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: '\\(', right: '\\)', display: false},
+        {left: '\\[', right: '\\]', display: true}
+      ],
+      throwOnError: false
+    });
+  });
+  </script>
+  {{ end }}
 </body>
 </html>

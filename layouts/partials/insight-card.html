@@ -1,12 +1,17 @@
 {{/* Card for one Insights post. Context: the post page. */}}
 {{ $pt := eq (.Params.language | default "en") "pt" }}
+{{ $bilingual := .Params.bilingual }}
 {{ $a  := partial "insight-author.html" . }}
 <a href="{{ .Permalink }}" class="insight-card">
   <div class="insight-card__meta">
     <time datetime="{{ .Date.Format "2006-01-02" }}">
       {{ if $pt }}{{ .Date.Format "02/01/2006" }}{{ else }}{{ .Date.Format "Jan 2, 2006" }}{{ end }}
     </time>
+    {{ if $bilingual }}
+    <span class="insight-badge insight-badge--bilingual">EN/PT</span>
+    {{ else }}
     <span class="insight-badge insight-badge--{{ if $pt }}pt{{ else }}en{{ end }}">{{ if $pt }}PT{{ else }}EN{{ end }}</span>
+    {{ end }}
   </div>
   <h3 class="insight-card__title">{{ .Title }}</h3>
   <p class="insight-card__summary">{{ .Params.summary | default .Summary }}</p>

@@ -1,0 +1,12 @@
+{{/* Raw LaTeX, rendered client-side by KaTeX (see baseof.html, gated on `math: true`
+     front matter). Use {{< math >}}...{{< /math >}} inline or
+     {{< math display="true" >}}...{{< /math >}} for a centered block equation.
+     Angle-bracket shortcode so markdown doesn't touch underscores/asterisks inside
+     the LaTeX — but goldmark still runs CommonMark backslash-escaping over the
+     substituted text (e.g. `\[` -> `[`, `\,` -> `,`), so every backslash is emitted
+     as the &#92; entity instead: markdown passes HTML entities through untouched,
+     and the browser has already decoded them back to `\` by the time auto-render.js
+     reads the DOM. safeHTML on the whole computed string avoids Hugo double-escaping
+     that same entity's `&` back into `&amp;`. */}}
+{{ $esc := replace .Inner "\\" "&#92;" }}
+{{ if eq (.Get "display") "true" }}{{ printf "&#92;[%s&#92;]" $esc | safeHTML }}{{ else }}{{ printf "&#92;(%s&#92;)" $esc | safeHTML }}{{ end }}

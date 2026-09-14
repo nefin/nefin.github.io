@@ -87,8 +87,10 @@
             {{ with $link }}<a href="{{ . }}" target="_blank" rel="noopener">{{ $author }}</a>{{ else }}{{ $author }}{{ end }}
             {{ with $role }}<span class="insight__author-box-role">{{ . }}</span>{{ end }}
           </div>
-          {{ with .Params.author_bio }}<p data-lang="en">{{ . }}</p>{{ end }}
-          {{ with .Params.author_bio_pt }}<p data-lang="pt">{{ . }}</p>{{ end }}
+          {{/* safeHTML: author_bio may embed a plain <a> link (e.g. a personal
+               site) with its own anchor text — front matter, never user input. */}}
+          {{ with .Params.author_bio }}<p data-lang="en">{{ . | safeHTML }}</p>{{ end }}
+          {{ with .Params.author_bio_pt }}<p data-lang="pt">{{ . | safeHTML }}</p>{{ end }}
         </div>
       </aside>
       {{ end }}
@@ -102,7 +104,7 @@
             {{ with $link }}<a href="{{ . }}" target="_blank" rel="noopener">{{ $author }}</a>{{ else }}{{ $author }}{{ end }}
             {{ with $role }}<span class="insight__author-box-role">{{ . }}</span>{{ end }}
           </div>
-          <p>{{ . }}</p>
+          <p>{{ . | safeHTML }}</p>
         </div>
       </aside>
       {{ end }}

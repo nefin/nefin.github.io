@@ -29,7 +29,7 @@ Deployment is handled automatically by GitHub Actions (`.github/workflows/hugo.y
   - `datasets/` — one `.md` per dataset (risk factors, cost of equity, etc.)
   - `people/` — faculty, researchers, students, alumni. `_index.md` cascades `build.render: never` to the individual person pages: people are rendered inside the section lists, never as standalone pages
   - `research/` — papers, working papers and books. Same `render: never` cascade
-  - `insights/` — guest essays on finance research by invited (non-NEFIN) researchers, published at `/insights/<filename>/`
+  - `insights/` — two kinds of writing, published at `/insights/<filename>/`: guest essays by invited (non-NEFIN) researchers about their own work, and didactic/informative pieces (tutorials, explainers) written by the NEFIN team itself
 - **`layouts/`** — Hugo HTML templates:
   - `index.html` — homepage template
   - `_default/` — fallback layouts
@@ -85,7 +85,7 @@ Edit `static/css/main.css` directly — no compilation needed. Changes take effe
 ### Adding a New Insights Post
 1. Duplicate `content/insights/modelo-de-post.md` (a `draft: true` template, never published) and rename it — the filename becomes the URL slug. Its front matter is deliberately all placeholders and its body is AI-written filler: never publish it, and never attribute a demo body to a real person
 2. Frontmatter: `title`, `date`, `language` (`pt` or `en` — drives the language badge and date format; note the key is `language`, since Hugo removed `lang`), `author`, `summary`, `topics` (list)
-3. Posts are written by **invited guest researchers**, not NEFIN members. Their details live in the post's own front matter: `author_affiliation`, `author_url`, `author_photo` (upload to `static/img/uploads/`), `author_bio` (renders the "About the author" box). Every post automatically carries a guest-contribution disclaimer
+3. Most posts are written by **invited guest researchers**, not NEFIN members — their details live in the post's own front matter: `author_affiliation`, `author_url`, `author_photo` (upload to `static/img/uploads/`), `author_bio` (renders the "About the author" box; may contain a plain `<a>` link — it's rendered with `safeHTML`). Every post currently carries the same guest-contribution disclaimer regardless of who wrote it — there's no `guest: false` switch yet for the NEFIN-authored didactic posts the section now also covers (see `content/insights/_index.md`), so a NEFIN team member publishing one still appears under "Guest essay by / Texto convidado por"
 4. If `author` happens to match a name in `content/people/**`, that person's photo, role and personal URL fill in whichever `author_*` fields were left blank
 5. `topics` feed the `topic` taxonomy at `/topics/:term/`; the section also emits RSS at `/insights/index.xml`
 6. Researchers can do all of this through Decap CMS ("Insights" collection)

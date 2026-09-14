@@ -306,7 +306,7 @@ ul { list-style: none; }
 .insight[data-lang="en"] [data-lang="pt"] { display: none; }
 .insight[data-lang="pt"] [data-lang="en"] { display: none; }
 
-.lang-switch { display: inline-flex; gap: .3rem; margin-bottom: 1.2rem; }
+.lang-switch { display: flex; gap: .3rem; margin-bottom: 1.2rem; }
 .lang-switch__btn {
   font-family: var(--font-sans); font-size: .72rem; font-weight: 600; letter-spacing: .04em;
   padding: .3rem .7rem; border-radius: 999px; border: 1px solid var(--gray-200);

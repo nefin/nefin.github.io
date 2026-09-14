@@ -49,8 +49,17 @@
       <h2>Financial Data</h2>
       <p>Freely available to academics and practitioners. Each card states the last observation in the data.</p>
     </div>
+    {{/* Curated subset for the homepage teaser — the stat count above still
+         reflects the full catalog at /data/, which lists every dataset. */}}
+    {{ $homeDatasets := slice
+      (site.GetPage "/datasets/risk-factors")
+      (site.GetPage "/datasets/loan-fees")
+      (site.GetPage "/datasets/dividend-yield")
+      (site.GetPage "/datasets/portfolios")
+      (site.GetPage "/datasets/short-interest")
+    }}
     <div class="datasets-grid">
-      {{ range $datasets }}{{ partial "dataset-card.html" . }}{{ end }}
+      {{ range $homeDatasets }}{{ partial "dataset-card.html" . }}{{ end }}
     </div>
   </div>
 </section>

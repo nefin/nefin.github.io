@@ -187,4 +187,4 @@ collections:
               field: { label: "Cell", name: "cell", widget: "string" }
       - { label: "Table Caption", name: "table_caption", widget: "string", required: false }
       - { label: "Show Interactive Dashboard (charts)", name: "dashboard", widget: "boolean", default: false, required: false }
-      - { label: "Dashboard CSV Path", name: "dashboard_csv", widget: "string", required: false, hint: "e.g. /resources/risk_factors/nefin_factors.csv" }
+      - { label: "Dashboard CSV Path", name: "dashboard_csv", widget: "string", required: false, hint: "e.g. /nefindata/risk-factors/nefin_factors.csv" }

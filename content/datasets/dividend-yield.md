@@ -8,9 +8,9 @@ coverage_start: "2001-02-02"
 frequency: "Weekly"
 downloads:
   - label: "Dividend Yield (CSV)"
-    url: "/resources/Predictability/dividend_yield.csv"
+    url: "/nefindata/dividend-yield/dividend_yield.csv"
   - label: "Dividend Yield (XLS)"
-    url: "/resources/Predictability/dividend_yield.xls"
+    url: "/nefindata/dividend-yield/dividend_yield.xls"
   - label: "Methodology (PDF)"
-    url: "/resources/NEFIN_methodology.pdf"
+    url: "/nefindata/methodology/nefin_methodology.pdf"
 ---

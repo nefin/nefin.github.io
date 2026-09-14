@@ -125,7 +125,7 @@
     <script src="/js/chart.umd.min.js" defer></script>
     <script>
     (function () {
-      const CSV_URL = '{{ with .Params.dashboard_csv }}{{ . }}{{ else }}/resources/risk_factors/nefin_factors.csv{{ end }}';
+      const CSV_URL = '{{ with .Params.dashboard_csv }}{{ . }}{{ else }}/nefindata/risk-factors/nefin_factors.csv{{ end }}';
 
       const FACTORS = [
         { key: 'rm_rf', label: 'Rm-Rf',     color: '#003082' },

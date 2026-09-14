@@ -6,5 +6,5 @@ description: "Amihud (2002) illiquidity measure for the Brazilian stock market, 
 no_data: true
 downloads:
   - label: "Methodology (PDF)"
-    url: "/resources/NEFIN_methodology.pdf"
+    url: "/nefindata/methodology/nefin_methodology.pdf"
 ---

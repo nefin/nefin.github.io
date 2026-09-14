@@ -45,7 +45,7 @@ Deployment is handled automatically by GitHub Actions (`.github/workflows/hugo.y
   - `img/` — images
   - `js/chart.umd.min.js` — Chart.js v4.4.4, self-hosted (no CDN)
   - `favicon.svg`
-  - `resources/` — downloadable data files (CSV, XLS, PDF), organized by category (`risk_factors/`, `cost_of_capital/`, `spot_rate_curve/`, `portfolios/`, `volatility_index/`, `methodology/`, `report/`)
+  - `nefindata/` — downloadable data files (CSV, XLS, PDF), one subfolder per dataset, named after that dataset's slug (`risk-factors/`, `cost-of-equity/`, `spot-rate-curve/`, `portfolios/`, `volatility-index/`, `dividend-yield/`, `loan-fees/`, `short-interest/`), plus a shared `methodology/` folder for `nefin_methodology.pdf`. See **Data file URLs** below and `static/nefindata/README.md` (published at `/nefindata/README.md`) for the full naming policy and file table — written for the Python data-loading library too, not just site maintainers
   - `admin/` — Decap CMS configuration (`config.yml`)
 - **`hugo.toml`** — Hugo site configuration (base URL, permalink structure, params)
 - **`netlify.toml`** — Netlify build settings (used only for CMS auth, not for hosting)
@@ -55,7 +55,15 @@ Deployment is handled automatically by GitHub Actions (`.github/workflows/hugo.y
 - **`DEPRECATED/`** — archived Bootstrap/Gulp site (kept for reference, not used by Hugo)
 
 ### URL Structure
-Dataset pages are published at `/data/<filename>/` and Insights posts at `/insights/<filename>/`, via the `:slugorcontentbasename` permalink token in `hugo.toml`. **The filename drives the URL** — an explicit `slug:` in the front matter overrides it. (This used to be plain `:slug`, which fell back to the *title*, so retitling a page silently broke its URL.) `/data/` is a URL path only; it has no relation to any `data/` directory in the repo. Download links inside those pages point to `/resources/...`.
+Dataset pages are published at `/data/<filename>/` and Insights posts at `/insights/<filename>/`, via the `:slugorcontentbasename` permalink token in `hugo.toml`. **The filename drives the URL** — an explicit `slug:` in the front matter overrides it. (This used to be plain `:slug`, which fell back to the *title*, so retitling a page silently broke its URL.) `/data/` is a URL path only; it has no relation to any `data/` directory in the repo.
+
+### Data file URLs
+Every downloadable data file lives at a fixed URL: **`nefin.com.br/nefindata/{datafolder}/{filename}.{filenametype}`**. `{datafolder}` is always the dataset's own slug (the same string as its `content/datasets/*.md` filename and its `/data/{slug}/` page), so the data folder for `content/datasets/cost-of-equity.md` is `static/nefindata/cost-of-equity/`. This is the one place the site deviates from "the filename drives the URL" for pages — here the *directory* is the fixed, citable part, since these links get pasted into papers, notebooks and — now — a Python data-loading library, not just read by a human. Consequences:
+- `{datafolder}` is kebab-case (matches the URL slug); `{filename}` is lowercase snake_case, never containing a hyphen or a space — this split lets a parser separate the two unambiguously, and a space would force URL-encoding in every downstream script. `NEFIN_methodology.pdf` → `nefin_methodology.pdf` and `IVol-BR.csv` → `ivol_br.csv` are past mistakes fixed under this rule (2026-09) — don't reintroduce mixed case or in-filename hyphens
+- `nefin_methodology.pdf` is the one file shared by every dataset page; it lives in `static/nefindata/methodology/`, not inside any single dataset's folder
+- Moving or renaming a file under `static/nefindata/` breaks that fixed URL for anyone who already saved it — treat it as a public API, not an implementation detail. Update the corresponding `downloads[].url` (and `dashboard_csv` for risk-factors) in the dataset's front matter in the same change
+- `python_general_scripts/update_dataset_dates.py`'s `SOURCES` map reads straight from `static/nefindata/...` — keep it in sync with any path change
+- Full naming policy + current file table: `static/nefindata/README.md`
 
 ### Cross-cutting conventions
 - **Never query pages by `Type`.** `content/research/papers/x.md` has `.Type == "research"`, not `"papers"`, so `where site.RegularPages "Type" "papers"` silently returns nothing for anything the CMS creates. Use `site.GetPage "/research/papers"` and range over `.Pages`.
@@ -86,7 +94,7 @@ Edit `static/css/main.css` directly — no compilation needed. Changes take effe
 ## Data Update Workflow
 
 When updating financial data files:
-1. Place new XLS/CSV files in the appropriate `static/resources/` subdirectory
+1. Place new XLS/CSV files in the appropriate `static/nefindata/<dataset-slug>/` subdirectory (see **Data file URLs** above)
 2. Run `python_general_scripts/converting_xls_to_csv.ipynb` if converting XLS → CSV (run from the `python_general_scripts/` directory so relative paths resolve correctly)
 3. Run `python3 python_general_scripts/update_dataset_dates.py` from the repo root — it rewrites `coverage_start` and `last_observation` from the files you just added. If you add a new dataset, register its file and date format in that script's `SOURCES` map
 4. Update the corresponding `content/datasets/*.md` by hand only for things the script cannot know: `table` / `table_caption` (the summary statistics) and `downloads` URLs if filenames changed

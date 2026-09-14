@@ -74,12 +74,12 @@ O site não é feito de páginas HTML prontas — ele é **gerado automaticament
 | Onde | O que é | Como editar |
 |---|---|---|
 | `content/**/*.md` | Textos, nomes, links, tabelas — o conteúdo em si (professores, papers, datasets, etc.) | Pelo painel do CMS (recomendado) ou direto no arquivo `.md`, se você souber Git |
-| `static/resources/**` | Os arquivos de dados de verdade (CSV, XLS, PDF) que os links de download apontam | Substituindo o arquivo direto no repositório (o CMS não faz upload desses arquivos) |
+| `static/nefindata/<dataset>/**` | Os arquivos de dados de verdade (CSV, XLS, PDF) que os links de download apontam. Cada dataset tem sua própria pasta, nomeada igual ao slug da página (ex.: `static/nefindata/risk-factors/`), e cada arquivo fica disponível em `nefin.com.br/nefindata/<dataset>/<arquivo>` | Substituindo o arquivo direto no repositório (o CMS não faz upload desses arquivos) |
 | `static/css/main.css` | A aparência visual do site (cores, espaçamento, layout) | Direto no arquivo, é CSS puro — não precisa compilar nada para ver o efeito localmente |
 | `layouts/**` | Os "moldes" HTML que decidem onde cada campo do `.md` aparece na página | Direto no arquivo — exige conhecimento de Hugo/Go templates |
 | `static/admin/config.yml` | Quais campos aparecem no painel do CMS para cada seção | Direto no arquivo — não é editável pelo próprio CMS |
 
-Ou seja: **quem edita conteúdo do dia a dia só mexe em `content/` (via CMS) e, ocasionalmente, sobe um arquivo novo em `static/resources/`.** As pastas `layouts/`, `static/css/` e `static/admin/config.yml` são "código" do site e mudam raramente.
+Ou seja: **quem edita conteúdo do dia a dia só mexe em `content/` (via CMS) e, ocasionalmente, sobe um arquivo novo em `static/nefindata/<dataset>/`.** As pastas `layouts/`, `static/css/` e `static/admin/config.yml` são "código" do site e mudam raramente.
 
 ### Como isso é compilado
 

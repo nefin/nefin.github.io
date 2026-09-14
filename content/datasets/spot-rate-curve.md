@@ -8,9 +8,9 @@ coverage_start: "2002-01-02"
 frequency: "Daily"
 downloads:
   - label: "Spot Rate Curve (CSV)"
-    url: "/resources/spot_rate_curve/spot_rate_curve.csv"
+    url: "/nefindata/spot-rate-curve/spot_rate_curve.csv"
   - label: "Spot Rate Curve (XLS)"
-    url: "/resources/spot_rate_curve/spot_rate_curve.xls"
+    url: "/nefindata/spot-rate-curve/spot_rate_curve.xls"
   - label: "Methodology (PDF)"
-    url: "/resources/NEFIN_methodology.pdf"
+    url: "/nefindata/methodology/nefin_methodology.pdf"
 ---

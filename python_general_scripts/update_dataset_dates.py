@@ -32,14 +32,14 @@ STATIC = ROOT / "static"
 #   date="ymd"    -> separate year / month / day columns
 #   date="myyyy"  -> a "M/YYYY" string column
 SOURCES: dict[str, dict] = {
-    "risk-factors":      {"file": "resources/risk_factors/nefin_factors.csv",        "date": "iso",   "col": "Date"},
-    "short-interest":    {"file": "resources/stock_loans/average_short_interest.csv", "date": "iso",   "col": "date"},
-    "spot-rate-curve":   {"file": "resources/spot_rate_curve/spot_rate_curve.csv",   "date": "iso",   "col": "Date"},
-    "volatility-index":  {"file": "resources/volatility_index/IVol-BR.csv",          "date": "ymd"},
-    "dividend-yield":    {"file": "resources/Predictability/dividend_yield.csv",     "date": "ymd"},
-    "loan-fees":         {"file": "resources/Predictability/loan_fees.csv",          "date": "ymd"},
-    "portfolios":        {"file": "resources/portfolios/3_portfolios_sorted_by_size.xls", "date": "ymd"},
-    "cost-of-equity":    {"file": "resources/cost_of_capital/Consumer.xls",          "date": "myyyy", "col": "Month/Year"},
+    "risk-factors":      {"file": "nefindata/risk-factors/nefin_factors.csv",        "date": "iso",   "col": "Date"},
+    "short-interest":    {"file": "nefindata/short-interest/average_short_interest.csv", "date": "iso",   "col": "date"},
+    "spot-rate-curve":   {"file": "nefindata/spot-rate-curve/spot_rate_curve.csv",   "date": "iso",   "col": "Date"},
+    "volatility-index":  {"file": "nefindata/volatility-index/ivol_br.csv",          "date": "ymd"},
+    "dividend-yield":    {"file": "nefindata/dividend-yield/dividend_yield.csv",     "date": "ymd"},
+    "loan-fees":         {"file": "nefindata/loan-fees/loan_fees.csv",               "date": "ymd"},
+    "portfolios":        {"file": "nefindata/portfolios/3_portfolios_sorted_by_size.xls", "date": "ymd"},
+    "cost-of-equity":    {"file": "nefindata/cost-of-equity/consumer.xls",           "date": "myyyy", "col": "Month/Year"},
     # illiquidity-index has no data file; the page carries `no_data: true`.
 }
 

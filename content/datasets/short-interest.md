@@ -11,11 +11,11 @@ description: "Nefin computes a set of statistics for the Brazilian stock loan
   30-day average trading volume) and the loan fee. "
 downloads:
   - label: Average Short Interest (CSV)
-    url: /resources/stock_loans/average_short_interest.csv
+    url: /nefindata/short-interest/average_short_interest.csv
   - label: Average Days-to-Cover (CSV)
-    url: /resources/stock_loans/average_days_to_cover.csv
+    url: /nefindata/short-interest/average_days_to_cover.csv
   - label: Average Loan Fee (CSV)
-    url: /resources/stock_loans/average_loan_fee.csv
+    url: /nefindata/short-interest/average_loan_fee.csv
   - label: Methodology (PDF)
-    url: /resources/NEFIN_methodology.pdf
+    url: /nefindata/methodology/nefin_methodology.pdf
 ---

@@ -1,5 +1,6 @@
 ---
 title: "Eduardo Sanchez Astorino"
 degree: "PhD in Economics"
-advisor: "Bruno Cara Giovannetti"
+advisor: ""
+advisor_hidden: "Bruno Cara Giovannetti"
 ---

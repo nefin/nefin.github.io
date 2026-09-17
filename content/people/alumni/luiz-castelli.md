@@ -1,5 +1,6 @@
 ---
 title: "Luiz Fernando Castelli"
 degree: "MSc in Economics"
-advisor: "Bruno Cara Giovannetti"
+advisor: ""
+advisor_hidden: "Bruno Cara Giovannetti"
 ---

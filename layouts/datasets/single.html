@@ -63,7 +63,7 @@
     {{ if .Params.dashboard }}
     <div class="dashboard">
 
-      <!-- ── Tabs ── -->
+      {{/* ── Tabs ── */}}
       <div class="dash-tabs">
         <button class="dash-tab active" data-tab="cumulative">Cumulative Returns</button>
         <button class="dash-tab" data-tab="drawdown">Drawdown</button>
@@ -71,7 +71,7 @@
         <button class="dash-tab" data-tab="histogram">Distribution</button>
       </div>
 
-      <!-- ── Multi-factor controls (cumulative + drawdown) ── -->
+      {{/* ── Multi-factor controls (cumulative + drawdown) ── */}}
       <div id="multiControls" class="dash-controls">
         <div class="period-btns">
           <button class="period-btn" data-period="1">1Y</button>
@@ -81,7 +81,7 @@
         <div class="factor-toggles" id="factorToggles"></div>
       </div>
 
-      <!-- ── Single-factor controls (heatmap + histogram) ── -->
+      {{/* ── Single-factor controls (heatmap + histogram) ── */}}
       <div id="singleControls" class="dash-controls" style="display:none">
         <div class="factor-select-wrap">
           <label for="factorSelect">Factor</label>
@@ -101,10 +101,10 @@
         </div>
       </div>
 
-      <!-- ── Loading ── -->
+      {{/* ── Loading ── */}}
       <p class="chart-loading" id="chartLoading">Loading data…</p>
 
-      <!-- ── Panels ── -->
+      {{/* ── Panels ── */}}
       <div id="panel-cumulative" class="dash-panel" style="display:none">
         <div class="chart-wrap"><canvas id="cumulativeChart"></canvas></div>
       </div>
@@ -118,7 +118,7 @@
         <div class="chart-wrap"><canvas id="histogramChart"></canvas></div>
       </div>
 
-    </div><!-- /.dashboard -->
+    </div>{{/* /.dashboard */}}
 
     {{/* Self-hosted: no third-party CDN on an institutional page, and the chart
          still renders if jsdelivr is blocked or down. Chart.js v4.4.4, MIT. */}}

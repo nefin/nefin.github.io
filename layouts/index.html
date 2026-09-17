@@ -1,6 +1,6 @@
 {{ define "main" }}
 
-{{/* ── Hero ── */}}
+<!-- ── Hero ── -->
 <section class="hero">
   <div class="hero__geo" aria-hidden="true"></div>
   <div class="container hero__content">
@@ -14,7 +14,7 @@
   </div>
 </section>
 
-{{/* ── Stats strip ── */}}
+<!-- ── Stats strip ── -->
 {{ $datasets := (site.GetPage "/datasets").Pages }}
 <div class="stats-strip">
   <div class="container">
@@ -42,7 +42,7 @@
   </div>
 </div>
 
-{{/* ── Data ── */}}
+<!-- ── Data ── -->
 <section class="section bg-light">
   <div class="container">
     <div class="section-heading">
@@ -64,7 +64,7 @@
   </div>
 </section>
 
-{{/* ── Selected Publications ── */}}
+<!-- ── Selected Publications ── -->
 <section class="section">
   <div class="container">
     <div class="section-heading">
@@ -89,7 +89,7 @@
   </div>
 </section>
 
-{{/* ── Insights ── */}}
+<!-- ── Insights ── -->
 {{ $insights := first 3 (site.GetPage "/insights").RegularPagesRecursive.ByDate.Reverse }}
 {{ with $insights }}
 <section class="section section--divided">
@@ -108,7 +108,7 @@
 </section>
 {{ end }}
 
-{{/* ── Faculty teaser ── */}}
+<!-- ── Faculty teaser ── -->
 <section class="section bg-light">
   <div class="container">
     <div class="section-heading">
@@ -124,7 +124,7 @@
   </div>
 </section>
 
-{{/* ── Contact ── */}}
+<!-- ── Contact ── -->
 <section class="section section--divided" id="contact">
   <div class="container">
     <div class="section-heading">
@@ -150,7 +150,7 @@
   </div>
 </section>
 
-{{/* ── Sponsor ── */}}
+<!-- ── Sponsor ── -->
 <section class="sponsor-section">
   <div class="container">
     <p>Sponsored by</p>

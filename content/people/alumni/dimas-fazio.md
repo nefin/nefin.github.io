@@ -1,6 +1,5 @@
 ---
 title: "Dimas Mateus Fazio"
 degree: "MSc in Economics"
-advisor: ""
-advisor_hidden: "Bruno Cara Giovannetti"
+advisor: "Bruno Cara Giovannetti"
 ---

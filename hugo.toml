@@ -26,9 +26,3 @@ removePathAccents = true
   [markup.goldmark]
     [markup.goldmark.renderer]
       unsafe = true
-
-[minify]
-  # `hugo --minify` strips HTML comments by default, which would drop the
-  # `advisor_hidden` names the Alumni table deliberately keeps in the source.
-  [minify.tdewolff.html]
-    keepComments = true

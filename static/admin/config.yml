@@ -78,8 +78,7 @@ collections:
     fields:
       - { label: "Full Name", name: "title", widget: "string" }
       - { label: "Degree", name: "degree", widget: "string", hint: "e.g. MSc in Economics" }
-      - { label: "Advisor", name: "advisor", widget: "string", required: false }
-      - { label: "Advisor (hidden)", name: "advisor_hidden", widget: "string", required: false, hint: "Rendered as an HTML comment only — kept in the source, invisible on the page" }
+      - { label: "Advisor", name: "advisor", widget: "string" }
 
   # ── Published Papers ───────────────────────────────────────
   - name: "papers"

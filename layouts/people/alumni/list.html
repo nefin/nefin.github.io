@@ -23,10 +23,7 @@
         <tr>
           <th scope="row" class="alumni-name">{{ .Title }}</th>
           <td class="alumni-degree">{{ .Params.degree }}</td>
-          {{/* advisor_hidden keeps a name in the source but off the page. The comment is built with printf
-              because Go's html/template strips literal <!-- --> from templates at parse time; `minify.tdewolff.html
-              keepComments` in hugo.toml is what keeps it through `hugo --minify`. */}}
-          <td class="alumni-advisor">{{ .Params.advisor }}{{ with .Params.advisor_hidden }}{{ printf "<!-- %s -->" . | safeHTML }}{{ end }}</td>
+          <td class="alumni-advisor">{{ .Params.advisor }}</td>
         </tr>
         {{ end }}
       </tbody>

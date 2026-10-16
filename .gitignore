@@ -2,3 +2,11 @@ public/
 .hugo_build.lock
 hugo_stats.json
 .DS_Store
+
+# Hugo image cache
+resources/
+
+# Per-machine agent / MCP config (holds local tokens)
+.mcp.json
+settings.json
+.claude/settings.local.json

@@ -6,6 +6,7 @@ description: "Daily returns of Brazilian stock portfolios, published as one file
 last_observation: "2023-08-31"
 coverage_start: "2001-01-02"
 frequency: "Daily"
+discontinued: true
 downloads:
   - label: "3 Portfolios Sorted by Size (XLS)"
     url: "/nefindata/portfolios/3_portfolios_sorted_by_size.xls"
@@ -25,4 +26,6 @@ downloads:
     url: "/nefindata/portfolios/7_portfolios_sorted_by_industry.xls"
   - label: "Methodology (PDF)"
     url: "/nefindata/methodology/nefin_methodology.pdf"
+aliases:
+  - "/data/portfolios.html"
 ---

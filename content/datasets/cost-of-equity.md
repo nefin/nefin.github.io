@@ -6,6 +6,7 @@ description: "Estimated cost of equity for Brazilian listed firms, reported sepa
 last_observation: "2023-08-01"
 coverage_start: "2005-01-01"
 frequency: "Monthly"
+discontinued: true
 downloads:
   - label: "Basic Products (CSV)"
     url: "/nefindata/cost-of-equity/basic_products.csv"
@@ -37,4 +38,6 @@ downloads:
     url: "/nefindata/cost-of-equity/other.xls"
   - label: "Methodology (PDF)"
     url: "/nefindata/methodology/nefin_methodology.pdf"
+aliases:
+  - "/data/cost_of_equity.html"
 ---

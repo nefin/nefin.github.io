@@ -20,8 +20,10 @@
   <div class="container">
     <div class="stats-strip__grid">
       <div class="stat-item">
+        {{/* Counts the whole catalog, archives included — so the label says
+             "catalog", not "we publish 9 live series". */}}
         <span class="stat-item__number">{{ len $datasets }}</span>
-        <span class="stat-item__label">Financial Datasets</span>
+        <span class="stat-item__label">Datasets in the Catalog</span>
       </div>
       <div class="stat-item__divider"></div>
       <div class="stat-item">
@@ -47,19 +49,28 @@
   <div class="container">
     <div class="section-heading">
       <h2>Financial Data</h2>
-      <p>Freely available to academics and practitioners. Each card states the last observation in the data.</p>
+      <p>The series we currently produce, free to academics and practitioners. Each card states the last observation in the data.</p>
     </div>
-    {{/* Curated subset for the homepage teaser — the stat count above still
-         reflects the full catalog at /data/, which lists every dataset. */}}
-    {{ $homeDatasets := slice
-      (site.GetPage "/datasets/risk-factors")
-      (site.GetPage "/datasets/loan-fees")
-      (site.GetPage "/datasets/dividend-yield")
-      (site.GetPage "/datasets/portfolios")
-      (site.GetPage "/datasets/short-interest")
-    }}
+    {{/* The homepage shows only what NEFIN still produces: a card here is a
+         claim that the series is live, and that claim is what sent people to a
+         page frozen since 2023. Retired series (`discontinued`) and
+         methodology-only pages (`no_data`) stay in the full catalog at /data/.
+         Derived rather than hand-listed, so retiring or reviving a series moves
+         it here on its own — `where` is avoided because it drops pages that
+         simply lack the key. */}}
+    {{ $homeDatasets := slice }}
+    {{ range $datasets }}
+      {{ if not (or .Params.discontinued .Params.no_data) }}
+        {{ $homeDatasets = $homeDatasets | append . }}
+      {{ end }}
+    {{ end }}
     <div class="datasets-grid">
       {{ range $homeDatasets }}{{ partial "dataset-card.html" . }}{{ end }}
+      <a href="/data/" class="dataset-card dataset-card--all">
+        <div class="dataset-card__title">All datasets</div>
+        <div class="dataset-card__desc">The full catalog, including the series we no longer update and keep as historical archives.</div>
+        <div class="dataset-card__badge">Browse the archive →</div>
+      </a>
     </div>
   </div>
 </section>

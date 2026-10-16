@@ -29,6 +29,17 @@
       The methodology is documented in the PDF below. If you need this series, write to
       <a href="mailto:{{ site.Params.email }}">{{ site.Params.email }}</a>.
     </p>
+    {{ else if eq $f.state "discontinued" }}
+    <p class="data-notice data-notice--discontinued">
+      <strong>This series is no longer updated.</strong>
+      It is complete as published — the last observation is
+      {{ (time.AsTime .Params.last_observation).Format "2 January 2006" }} — and the page is kept
+      as a historical archive.
+      {{ with .Params.successor_url }}
+      The maintained replacement is
+      <a href="{{ . }}">{{ $.Params.successor_label | default "another dataset" }}</a>.
+      {{ end }}
+    </p>
     {{ else if eq $f.state "stale" }}
     <p class="data-notice data-notice--stale">
       <strong>This series has not been updated in {{ math.Round (div $f.months 12.0) }} year{{ if gt $f.months 18 }}s{{ end }}.</strong>
@@ -45,6 +56,8 @@
     {{ with .Params.description }}
     <p class="data-page__desc">{{ . }}</p>
     {{ end }}
+
+    {{ .Content }}
 
     {{ with .Params.table }}
     <table class="data-table">
@@ -437,7 +450,6 @@
     </script>
     {{ end }}
 
-    {{ .Content }}
 
     {{ with .Params.downloads }}
     <div class="download-section mt-4">

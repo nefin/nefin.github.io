@@ -2,11 +2,18 @@
      `last_observation` in the front matter — never from a hand-typed label.
 
      Context: the dataset page.
-     Returns: dict with .state ("none" | "current" | "lagging" | "stale" | "unknown"),
-              .label (short text) and .months (integer months since last observation).
+     Returns: dict with .state ("none" | "discontinued" | "current" | "lagging" |
+              "stale" | "unknown"), .label (short text) and .months (integer
+              months since last observation).
 
      A dataset is considered `current` while it is within its own update cycle
-     (frequency + one grace period), `lagging` up to a year, `stale` beyond that. */}}
+     (frequency + one grace period), `lagging` up to a year, `stale` beyond that.
+
+     `discontinued` is deliberately not derived from the dates: a series that was
+     retired on purpose is not the same thing as one nobody got round to
+     updating, and only a human knows which is which. Set it in the front matter
+     (with `successor_url`, when a maintained series took its place) so that the
+     page stops crying wolf about an archive that is complete by design. */}}
 
 {{ $out := dict "state" "unknown" "label" "Update status unknown" "months" 0 }}
 
@@ -17,13 +24,17 @@
   {{ $months := int (div (now.Sub $d).Hours 730.5) }}
   {{ $pretty := $d.Format "Jan 2006" }}
   {{ $limit  := cond (eq (.Params.frequency | default "Daily") "Monthly") 3 2 }}
-  {{ if le $months $limit }}
+  {{ if .Params.discontinued }}
+    {{ $out = dict "state" "discontinued" "label" (printf "Discontinued — ends %s" $pretty) "months" $months }}
+  {{ else if le $months $limit }}
     {{ $out = dict "state" "current" "label" (printf "Updated %s" $pretty) "months" $months }}
   {{ else if lt $months 12 }}
     {{ $out = dict "state" "lagging" "label" (printf "Last observation %s" $pretty) "months" $months }}
   {{ else }}
     {{ $out = dict "state" "stale" "label" (printf "Last observation %s" $pretty) "months" $months }}
   {{ end }}
+{{ else if .Params.discontinued }}
+  {{ $out = dict "state" "discontinued" "label" "Discontinued" "months" 0 }}
 {{ end }}
 
 {{ return $out }}

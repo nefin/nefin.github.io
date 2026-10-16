@@ -126,6 +126,9 @@ ul { list-style: none; }
 .dataset-card__title { font-family: var(--font-serif); font-size: 1.05rem; color: var(--primary); margin-bottom: .35rem; }
 .dataset-card__desc  { font-size: .83rem; color: var(--gray-500); line-height: 1.5; }
 .dataset-card__badge { display: inline-block; font-size: .72rem; color: var(--accent-text); margin-top: .75rem; text-transform: uppercase; letter-spacing: .06em; }
+/* Catalog card closing the homepage row — a signpost, not a dataset. */
+.dataset-card--all { background: transparent; border-style: dashed; }
+.dataset-card--all:hover { background: var(--white); }
 .dataset-card__badge--notice { color: var(--gray-500); text-transform: none; letter-spacing: 0; font-style: italic; }
 
 /* ── Publications ── */
@@ -457,6 +460,11 @@ ul { list-style: none; }
 .dataset-card__badge--lagging::before,
 .dataset-card__badge--stale::before   { content: "⚠ "; }
 .dataset-card__badge--none::before    { content: "— "; }
+/* Retired on purpose, not neglected — neutral grey, no warning glyph. */
+.dataset-card__badge--discontinued {
+  color: var(--gray-500); text-transform: none; letter-spacing: 0; font-weight: 500;
+}
+.dataset-card__badge--discontinued::before { content: "◼ "; font-size: .6em; vertical-align: .15em; }
 
 /* ── Dataset page: coverage facts ── */
 .data-facts {
@@ -478,6 +486,8 @@ ul { list-style: none; }
 .data-notice--stale,
 .data-notice--none    { background: var(--danger-bg); border-color: var(--danger); color: var(--gray-900); }
 .data-notice--lagging { background: var(--gray-50);   border-color: var(--gray-400); color: var(--gray-700); }
+.data-notice--discontinued { background: var(--gray-50); border-color: var(--gray-500); color: var(--gray-700); }
+.data-notice--discontinued a { font-weight: 500; }
 
 /* ── Code blocks (access snippets, citation) ── */
 .code-block {

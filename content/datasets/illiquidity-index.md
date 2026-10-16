@@ -7,4 +7,6 @@ no_data: true
 downloads:
   - label: "Methodology (PDF)"
     url: "/nefindata/methodology/nefin_methodology.pdf"
+aliases:
+  - "/data/illiquidity_index.html"
 ---

@@ -161,6 +161,16 @@ collections:
         required: false
         options: ["Daily", "Weekly", "Monthly", "Quarterly"]
       - { label: "No data file published", name: "no_data", widget: "boolean", default: false, required: false, hint: "Tick when only the methodology is available. The page will say so explicitly." }
+      - { label: "Series discontinued", name: "discontinued", widget: "boolean", default: false, required: false, hint: "Tick when the series was retired on purpose. The page then reads as a historical archive instead of showing the 'not updated in N years' warning." }
+      - { label: "Replacement dataset URL", name: "successor_url", widget: "string", required: false, hint: "Only with 'Series discontinued'. e.g. /data/short-interest/" }
+      - { label: "Replacement dataset link text", name: "successor_label", widget: "string", required: false, hint: "How the replacement is named in the notice, e.g. 'the daily average loan fee published with the Short Interest statistics'." }
+      - { label: "Extra notes (below the intro)", name: "body", widget: "markdown", required: false, hint: "Optional prose shown under the description. Use it for caveats and links to related datasets." }
+      - label: "Legacy URLs (redirects)"
+        name: "aliases"
+        widget: "list"
+        required: false
+        field: { label: "Old path", name: "alias", widget: "string" }
+        hint: "Old addresses that must keep working, e.g. /data/risk_factors.html from the pre-2026 site. Hugo publishes a redirect at each one. Never delete an entry — papers and bookmarks still point there."
       - label: "Download Links"
         name: "downloads"
         widget: "list"

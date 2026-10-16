@@ -6,6 +6,7 @@ description: "Brazilian zero-coupon spot interest rate curve estimated from DI f
 last_observation: "2020-05-29"
 coverage_start: "2002-01-02"
 frequency: "Daily"
+discontinued: true
 downloads:
   - label: "Spot Rate Curve (CSV)"
     url: "/nefindata/spot-rate-curve/spot_rate_curve.csv"
@@ -13,4 +14,6 @@ downloads:
     url: "/nefindata/spot-rate-curve/spot_rate_curve.xls"
   - label: "Methodology (PDF)"
     url: "/nefindata/methodology/nefin_methodology.pdf"
+aliases:
+  - "/data/spot_rate_curve.html"
 ---

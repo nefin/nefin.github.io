@@ -23,4 +23,6 @@ table:
     - ["IML",   "-13.85%","-6.58%", "0.72%",  "0.42%"]
     - ["Risk-Free","14.90%","14.44%","11.22%","11.81%"]
 table_caption: "Annualized returns, sample ending 30 January 2026. The summary table is a periodic snapshot; the CSV and the chart below carry the full series up to the last observation."
+aliases:
+  - "/data/risk_factors.html"
 ---

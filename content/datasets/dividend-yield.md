@@ -6,6 +6,7 @@ description: "Weekly dividend yield series for the Brazilian stock market, used 
 last_observation: "2023-09-08"
 coverage_start: "2001-02-02"
 frequency: "Weekly"
+discontinued: true
 downloads:
   - label: "Dividend Yield (CSV)"
     url: "/nefindata/dividend-yield/dividend_yield.csv"
@@ -13,4 +14,6 @@ downloads:
     url: "/nefindata/dividend-yield/dividend_yield.xls"
   - label: "Methodology (PDF)"
     url: "/nefindata/methodology/nefin_methodology.pdf"
+aliases:
+  - "/data/dividend_yield.html"
 ---

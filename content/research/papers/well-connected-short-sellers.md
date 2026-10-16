@@ -4,6 +4,6 @@ type: "papers"
 journal: "Journal of Financial Economics"
 year: "2017"
 authors: "Chague, F., De-Losso, R., Genaro, A. and Giovannetti, B."
-paper_url: "http://www.sciencedirect.com/science/article/pii/S0304405X16302495"
+paper_url: "https://www.sciencedirect.com/science/article/pii/S0304405X16302495"
 weight: 8
 ---

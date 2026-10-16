@@ -4,6 +4,6 @@ type: "papers"
 journal: "Revista Brasileira de Economia"
 year: "2017"
 authors: "Astorino, E., Chague, F., Giovannetti, B. and Silva, M."
-paper_url: "http://www.scielo.br/pdf/rbe/v71n1/0034-7140-rbe-71-01-0003.pdf"
+paper_url: "https://www.scielo.br/j/rbe/a/RjTbzmbfFtJyNSTWgNYmxNQ/?format=pdf&lang=en"
 weight: 10
 ---

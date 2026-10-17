@@ -9,16 +9,7 @@
 <section class="section">
   <div class="container">
     {{ partial "research-tabs.html" . }}
-    <ul class="pub-list">
-      {{ range .Pages }}
-      <li class="pub-item">
-        <a href="{{ .Params.paper_url | default "#" }}" target="_blank" rel="noopener">
-          <div class="pub-title">{{ .Title }}</div>
-          <div class="pub-authors">{{ .Params.authors }}</div>
-        </a>
-      </li>
-      {{ end }}
-    </ul>
+    {{ partial "pub-list.html" (sort .Pages "Title") }}
   </div>
 </section>
 {{ end }}

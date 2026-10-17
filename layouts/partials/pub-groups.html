@@ -1,0 +1,12 @@
+{{/* Papers split into international journals first, then Brazilian ones
+     (`national: true` in front matter). A group with no papers is skipped. */}}
+{{ $intl := slice }}{{ $nat := slice }}
+{{ range . }}{{ if .Params.national }}{{ $nat = $nat | append . }}{{ else }}{{ $intl = $intl | append . }}{{ end }}{{ end }}
+{{ with $intl }}
+<h3 class="pub-group__title">International journals</h3>
+{{ partial "pub-list.html" . }}
+{{ end }}
+{{ with $nat }}
+<h3 class="pub-group__title">Brazilian journals</h3>
+{{ partial "pub-list.html" . }}
+{{ end }}

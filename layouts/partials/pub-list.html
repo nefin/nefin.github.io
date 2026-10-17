@@ -1,0 +1,10 @@
+{{/* A list of paper pages, shared by Published Papers (recent + archive) and Working
+     Papers. Items without paper_url render unlinked instead of pointing at "#". */}}
+<ul class="pub-list">
+  {{ range . }}
+  <li class="pub-item">
+    {{ $body := printf `<div class="pub-title">%s</div>%s<div class="pub-authors">%s</div>` .Title (cond (isset .Params "journal") (printf `<div class="pub-journal">%s%s</div>` .Params.journal (cond (isset .Params "year") (printf " · %s" .Params.year) "")) "") .Params.authors }}
+    {{ with .Params.paper_url }}<a href="{{ . }}" target="_blank" rel="noopener">{{ $body | safeHTML }}</a>{{ else }}<div class="pub-item__body">{{ $body | safeHTML }}</div>{{ end }}
+  </li>
+  {{ end }}
+</ul>

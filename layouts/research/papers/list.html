@@ -6,20 +6,27 @@
   </div>
 </section>
 
+{{/* Papers from the last five calendar years are listed first; older ones move to
+     the Archive on their own. The cutoff is taken at build time, so it advances with
+     the first deploy of each new year — nobody has to move files by hand.
+     `year: "Forthcoming"` sorts above every year ("F" > "2") and stays in the recent list. */}}
+{{ $cutoff := sub now.Year 4 }}
+{{ $recent := slice }}{{ $archive := slice }}
+{{ range sort .Pages "Params.year" "desc" }}
+  {{ $y := .Params.year | default "0" }}
+  {{ if or (eq $y "Forthcoming") (ge (int $y) $cutoff) }}{{ $recent = $recent | append . }}{{ else }}{{ $archive = $archive | append . }}{{ end }}
+{{ end }}
+
 <section class="section">
   <div class="container">
     {{ partial "research-tabs.html" . }}
-    <ul class="pub-list">
-      {{ range .Pages }}
-      <li class="pub-item">
-        <a href="{{ .Params.paper_url | default "#" }}" target="_blank" rel="noopener">
-          <div class="pub-title">{{ .Title }}</div>
-          <div class="pub-journal">{{ .Params.journal }}{{ with .Params.year }} · {{ . }}{{ end }}</div>
-          <div class="pub-authors">{{ .Params.authors }}</div>
-        </a>
-      </li>
-      {{ end }}
-    </ul>
+    {{ partial "pub-groups.html" $recent }}
+
+    {{ with $archive }}
+    <h2 class="pub-archive__title" id="archive">Archive</h2>
+    <p class="pub-archive__note">Published before {{ $cutoff }}.</p>
+    {{ partial "pub-groups.html" . }}
+    {{ end }}
   </div>
 </section>
 {{ end }}

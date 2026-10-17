@@ -135,11 +135,15 @@ ul { list-style: none; }
 .pub-list { display: flex; flex-direction: column; gap: 1.5rem; }
 .pub-item { border-left: 3px solid var(--gray-200); padding-left: 1.25rem; transition: border-color .15s; }
 .pub-item:hover { border-color: var(--accent); }
-.pub-item a { color: var(--gray-900); display: block; }
+.pub-item a, .pub-item__body { color: var(--gray-900); display: block; }
 .pub-item a:hover { text-decoration: none; }
 .pub-title   { font-family: var(--font-serif); font-size: 1rem; margin-bottom: .3rem; line-height: 1.35; }
 .pub-journal { font-size: .83rem; color: var(--accent-text); font-style: italic; margin-bottom: .2rem; }
 .pub-authors { font-size: .8rem; color: var(--gray-500); }
+.pub-archive__title { font-family: var(--font-serif); font-size: 1.35rem; margin: 3rem 0 .25rem; padding-top: 2rem; border-top: 1px solid var(--gray-200); }
+.pub-group__title { font-family: var(--font-sans); font-size: .8rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; color: var(--gray-500); margin: 2rem 0 1rem; }
+.pub-group__title:first-child, .pub-archive__note + .pub-group__title { margin-top: 0; }
+.pub-archive__note { font-size: .85rem; color: var(--gray-500); margin-bottom: 1.5rem; }
 
 /* ── People grid ── */
 .people-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem 1.5rem; }

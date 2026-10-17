@@ -90,9 +90,10 @@ collections:
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Journal", name: "journal", widget: "string" }
-      - { label: "Year", name: "year", widget: "string", required: false }
+      - { label: "Year", name: "year", widget: "string", pattern: ["^(\\d{4}|Forthcoming)$", "A four-digit year, or Forthcoming"], hint: "Publication year, or Forthcoming. Papers older than five years move to the Archive section automatically." }
+      - { label: "Brazilian journal", name: "national", widget: "boolean", default: false, hint: "Listed under Brazilian journals, below the international ones." }
       - { label: "Authors", name: "authors", widget: "string" }
-      - { label: "Paper URL (DOI or SSRN)", name: "paper_url", widget: "string" }
+      - { label: "Paper URL (DOI or SSRN)", name: "paper_url", widget: "string", required: false }
       - { label: "Display Order", name: "weight", widget: "number", default: 99 }
 
   # ── Working Papers ─────────────────────────────────────────
@@ -105,7 +106,7 @@ collections:
     fields:
       - { label: "Title", name: "title", widget: "string" }
       - { label: "Authors", name: "authors", widget: "string" }
-      - { label: "Paper URL (SSRN)", name: "paper_url", widget: "string" }
+      - { label: "Paper URL (SSRN)", name: "paper_url", widget: "string", required: false }
       - { label: "Display Order", name: "weight", widget: "number", default: 99 }
 
   # ── Insights (essays / crônicas) ───────────────────────────

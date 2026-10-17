@@ -1,12 +1,11 @@
 ---
 title: "Portfolios"
 type: "datasets"
-summary: "Brazilian stock portfolios sorted by size, book-to-market, momentum, and illiquidity."
-description: "Daily returns of Brazilian stock portfolios, published as one file per sorting scheme: three portfolios sorted independently by size, book-to-market, momentum and illiquidity; three 2×2 double sorts combining size with book-to-market, illiquidity and momentum; and seven portfolios sorted by industry. Each file is dated by year, month and day, with returns as daily fractions."
-last_observation: "2023-08-31"
+summary: "Brazilian stock portfolios sorted by size, book-to-market, momentum, illiquidity and industry."
+description: "Daily returns of Brazilian stock portfolios, published as one file per sorting scheme: three portfolios sorted independently by size, book-to-market, momentum and illiquidity; three 2×2 double sorts combining size with book-to-market, illiquidity and momentum; and seven portfolios sorted by industry. Each workbook has daily equally and value weighted returns (as fractions, dated by year, month and day), the monthly number of stocks and average market value (dated by year and month), and the annual average book value and book-to-market ratio (dated by year)."
+last_observation: "2026-09-08"
 coverage_start: "2001-01-02"
 frequency: "Daily"
-discontinued: true
 downloads:
   - label: "3 Portfolios Sorted by Size (XLS)"
     url: "/nefindata/portfolios/3_portfolios_sorted_by_size.xls"

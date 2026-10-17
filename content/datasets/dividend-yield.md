@@ -1,12 +1,11 @@
 ---
 title: "Dividend Yield"
 type: "datasets"
-summary: "Historical dividend yield series for Brazilian stocks and market-level aggregates."
-description: "Weekly dividend yield series for the Brazilian stock market, used as a return predictor in the NEFIN predictability datasets. One observation per week, expressed as a fraction (not percent)."
-last_observation: "2023-09-08"
+summary: "Weekly dividend yield of the Brazilian stock market."
+description: "Weekly dividend yield of the Brazilian stock market: dividends paid over the previous twelve months divided by current market value. One observation per week, taken on its last trading day, expressed as a fraction (0.05 = 5%)."
+last_observation: "2026-09-08"
 coverage_start: "2001-02-02"
 frequency: "Weekly"
-discontinued: true
 downloads:
   - label: "Dividend Yield (CSV)"
     url: "/nefindata/dividend-yield/dividend_yield.csv"

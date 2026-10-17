@@ -59,9 +59,14 @@
 
     {{ .Content }}
 
-    {{ with .Params.table }}
+    {{/* `table` + `table_caption` is the main summary table; `tables` (a list of
+         {caption, headers, rows}) adds more below it, e.g. a second factor version. */}}
+    {{ $tables := slice }}
+    {{ with .Params.table }}{{ $tables = $tables | append (merge . (dict "caption" $.Params.table_caption)) }}{{ end }}
+    {{ range .Params.tables }}{{ $tables = $tables | append . }}{{ end }}
+    {{ range $tables }}
     <table class="data-table">
-      <caption>{{ $.Params.table_caption }}</caption>
+      <caption>{{ .caption }}</caption>
       <thead>
         <tr>{{ range .headers }}<th scope="col">{{ . }}</th>{{ end }}</tr>
       </thead>
@@ -75,6 +80,15 @@
 
     {{ if .Params.dashboard }}
     <div class="dashboard">
+
+      {{/* Optional `dashboard_versions: [{label, csv}]` — one button per file with the
+           same layout (e.g. value- vs equally weighted factors); the first is shown on load. */}}
+      {{ with .Params.dashboard_versions }}
+      <div class="dash-versions" role="group" aria-label="Series version">
+        <span class="dash-versions__label">Weighting</span>
+        {{ range $i, $v := . }}<button class="version-btn{{ if eq $i 0 }} active{{ end }}" data-csv="{{ $v.csv }}" aria-pressed="{{ if eq $i 0 }}true{{ else }}false{{ end }}">{{ $v.label }}</button>{{ end }}
+      </div>
+      {{ end }}
 
       <!-- ── Tabs ── -->
       <div class="dash-tabs">
@@ -138,7 +152,8 @@
     <script src="/js/chart.umd.min.js" defer></script>
     <script>
     (function () {
-      const CSV_URL = '{{ with .Params.dashboard_csv }}{{ . }}{{ else }}/nefindata/risk-factors/nefin_factors.csv{{ end }}';
+      let CSV_URL = '{{ with .Params.dashboard_versions }}{{ (index . 0).csv }}{{ else }}{{ with $.Params.dashboard_csv }}{{ . }}{{ else }}/nefindata/risk-factors/nefin_factors.csv{{ end }}{{ end }}';
+      const dataCache = {};
 
       const FACTORS = [
         { key: 'rm_rf', label: 'Rm-Rf',     color: '#003082' },
@@ -160,9 +175,10 @@
 
       // ── CSV loading ─────────────────────────────────────────────
       async function loadData() {
+        if (dataCache[CSV_URL]) return dataCache[CSV_URL];
         const res  = await fetch(CSV_URL);
         const text = await res.text();
-        return text.trim().split('\n').slice(1).map(line => {
+        return dataCache[CSV_URL] = text.trim().split('\n').slice(1).map(line => {
           const c = line.split(',');
           return { date: c[1], rm_rf: +c[2], smb: +c[3], hml: +c[4], wml: +c[5], iml: +c[6], rf: +c[7] };
         }).filter(d => d.date && !isNaN(d.rm_rf));
@@ -429,6 +445,25 @@
           singleFactor = e.target.value;
           if (charts.histogram) { charts.histogram.destroy(); delete charts.histogram; }
           if (loaded) renderActive();
+        });
+
+        document.querySelectorAll('.version-btn').forEach(btn => {
+          btn.addEventListener('click', async () => {
+            if (btn.classList.contains('active')) return;
+            document.querySelectorAll('.version-btn').forEach(b => {
+              b.classList.toggle('active', b === btn);
+              b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+            });
+            CSV_URL = btn.dataset.csv;
+            try {
+              allData = await loadData();
+              if (charts.histogram) { charts.histogram.destroy(); delete charts.histogram; }
+              renderActive();
+            } catch (e) {
+              document.getElementById('chartLoading').textContent = 'Failed to load data.';
+              document.getElementById('chartLoading').style.display = '';
+            }
+          });
         });
 
         try {

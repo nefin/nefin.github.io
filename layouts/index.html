@@ -27,7 +27,10 @@
       </div>
       <div class="stat-item__divider"></div>
       <div class="stat-item">
-        <span class="stat-item__number">Since 2001</span>
+        {{/* Derived from the data: the earliest coverage_start in the catalog. */}}
+        {{ $first := 9999 }}
+        {{ range $datasets }}{{ with .Params.coverage_start }}{{ $y := int (substr . 0 4) }}{{ if lt $y $first }}{{ $first = $y }}{{ end }}{{ end }}{{ end }}
+        <span class="stat-item__number">Since {{ $first }}</span>
         <span class="stat-item__label">Longest Series</span>
       </div>
       <div class="stat-item__divider"></div>

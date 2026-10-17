@@ -36,7 +36,7 @@ Changes made through the CMS are committed to `main` directly by Decap, so `git 
 ### File Structure
 - **`content/`** — Markdown source files organized by section:
   - `_index.md` — homepage content
-  - `datasets/` — one `.md` per dataset: nine pages in all. Eight have data files under `static/nefindata/`; `illiquidity-index` is `no_data: true` (methodology only), so it has no data folder and is not in `update_dataset_dates.py`. Of the eight with data, only `risk-factors` and `short-interest` are maintained; the other six are `discontinued: true`
+  - `datasets/` — one `.md` per dataset: nine pages in all, each with a data folder under `static/nefindata/`. As of 2026-10, seven are maintained (`risk-factors`, `short-interest`, `loan-fees`, `portfolios`, `dividend-yield`, `illiquidity-index`, `cost-of-equity`) and two are `discontinued: true` archives (`spot-rate-curve`, `volatility-index`)
   - `people/` — faculty, researchers, students, alumni. `_index.md` cascades `build.render: never` to the individual person pages: people are rendered inside the section lists, never as standalone pages
   - `research/` — papers, working papers and books. Same `render: never` cascade
   - `insights/` — two kinds of writing, published at `/insights/<filename>/`: guest essays by invited (non-NEFIN) researchers about their own work, and didactic/informative pieces (tutorials, explainers) written by the NEFIN team itself
@@ -66,9 +66,11 @@ Changes made through the CMS are committed to `main` directly by Decap, so `git 
 - **`netlify.toml`** — Netlify build settings (used only for CMS auth, not for hosting)
 - **`python_general_scripts/`**
   - `converting_xls_to_csv.ipynb` — batch XLS → CSV with pandas
+  - `import_from_pipeline.py` — rewrites the published data files from the `nefin-portfolio` pipeline output, keeping their public layout (see **Data Update Workflow**)
   - `update_dataset_dates.py` — rewrites `coverage_start` / `last_observation` in `content/datasets/*.md` from the data files themselves. CI runs it with `--check` and fails the build on drift
 - **`docs/`** — reference material for maintainers, not published:
   - `VISUAL_IDENTITY.md` — design reference (palette, typography, logo use; old site vs. redesign). Read it before changing colors or fonts in `main.css`
+  - `METHODOLOGY_OPEN_ISSUES.md` — where the published data and the methodology PDF disagree, decisions NEFIN still owes, and pipeline checks deferred. Read it before touching a dataset's methodology text, and delete items as they are resolved
   - `NEFIN_content.md` — content inventory scraped from the *old* site as input for the redesign. Historical; don't treat it as the current state of the site
 - Not in git, never commit: `public/` (build output), `resources/` (Hugo's image cache), `.hugo_build.lock`, and the per-machine agent config `.mcp.json`, `settings.json` and `.claude/settings.local.json`, which hold local MCP tokens
 
@@ -84,7 +86,7 @@ Every downloadable data file lives at a fixed URL: **`nefin.com.br/nefindata/{da
 - Full naming policy + current file table: `static/nefindata/README.md`
 
 ### Homepage dataset teaser
-`layouts/index.html` shows **only the series NEFIN still produces** — every dataset whose front matter has neither `discontinued` nor `no_data` — followed by a dashed "All datasets" card linking to the full catalog. The list is derived, not hand-kept: retiring a series with `discontinued: true` removes it from the homepage automatically, and clearing the flag brings it back. As of 2026-09 only `risk-factors` and `short-interest` are live; six are `discontinued` archives and `illiquidity-index` is `no_data`. Don't reintroduce a hardcoded `slice` of `site.GetPage` calls here, and don't filter with `where`, which silently drops pages that simply lack the key.
+`layouts/index.html` shows **only the series NEFIN still produces** — every dataset whose front matter has neither `discontinued` nor `no_data` — followed by a dashed "All datasets" card linking to the full catalog. The list is derived, not hand-kept: retiring a series with `discontinued: true` removes it from the homepage automatically, and clearing the flag brings it back. As of 2026-10 seven are live and two are `discontinued` archives (see `content/` above). Don't reintroduce a hardcoded `slice` of `site.GetPage` calls here, and don't filter with `where`, which silently drops pages that simply lack the key.
 
 ### Legacy URLs
 The pre-2026 Bootstrap site (removed from the tree in 2026-10; browse it with `git show site-antigo-bootstrap:DEPRECATED/<file>` or `git checkout site-antigo-bootstrap -- DEPRECATED`) used a different URL scheme, and its addresses are cited in papers and syllabi. GitHub Pages has **no server-side redirects**, so each old address is kept alive by an `aliases` entry in the front matter of the page that replaced it — Hugo publishes a `<meta http-equiv=refresh>` + `rel=canonical` stub at that path. Sixteen are mapped: the nine `/data/<name>.html` dataset pages, `/faculty.html`, `/researchers.html`, `/students.html`, `/alumni.html`, and `/research/{papers,working_papers,books}.html`.
@@ -113,7 +115,7 @@ Edit `static/css/main.css` directly — no compilation needed. Changes take effe
    - `discontinued: true` — when the series was **retired on purpose**, not merely left un-updated. The page then reads as a historical archive (neutral grey badge "Discontinued — ends <month>") instead of the red "not updated in N years" warning. Pair it with `successor_url` / `successor_label` when a maintained series replaced it, so the notice links there. This is never inferred from the dates: only a human knows the difference between a finished series and a neglected one
    A dataset within its update cycle shows "Updated <month>"; beyond it, "Last observation <month>" plus a visible warning. There is no free-text "updated" field any more — it was how pages ended up claiming "Updated Monthly" while the data sat three years old
 3. The `layouts/datasets/` templates handle rendering automatically, including the Python/R access snippet and the "How to cite" block
-4. The markdown **body** of a dataset page renders directly under the description (above any table or dashboard). Use it for caveats and cross-links — `description` is escaped, so a link only works in the body. `loan-fees.md` / `short-interest.md` use it to keep the two loan fee series (weekly, discontinued 2023 vs. daily, maintained) from being mistaken for each other
+4. The markdown **body** of a dataset page renders directly under the description (above any table or dashboard). Use it for caveats and cross-links — `description` is escaped, so a link only works in the body. `loan-fees.md` / `short-interest.md` use it to tie the weekly and daily loan fee series together
 
 ### Adding a New Insights Post
 1. Duplicate `content/insights/modelo-de-post.md` (a `draft: true` template, never published) and rename it — the filename becomes the URL slug. Its front matter is deliberately all placeholders and its body is AI-written filler: never publish it, and never attribute a demo body to a real person
@@ -128,7 +130,14 @@ Edit `static/css/main.css` directly — no compilation needed. Changes take effe
 
 ## Data Update Workflow
 
-When updating financial data files:
+**Pipeline-produced datasets** — refresh these only through the importer below; a hand-edited `nefin_factors.csv` (as in 2026-09) gets silently overwritten by the next import, and vice versa. These are `risk-factors` incl. the `portfolio_by_*.csv` / `portfolio_3x3.zip` extras, `portfolios`, `dividend-yield`, `illiquidity-index`, `short-interest`, `loan-fees`, `cost-of-equity`, and they come from NEFIN's separate `nefin-portfolio` project, whose `data/` folder holds the outputs (`05_model_input/`, `06_models/`, `08_reporting/`). Refresh them with:
+```bash
+python3 python_general_scripts/import_from_pipeline.py /path/to/nefin-portfolio/data   # needs pandas, openpyxl, xlwt
+python3 python_general_scripts/update_dataset_dates.py
+```
+The script maps the pipeline's names onto the published ones (`mom`→`WML`, `low/medium/high`→`Size1/2/3`, industry names→`Industry_1..7`, …), keeps the published 2001-01-02 start even where the pipeline begins in 2000, and reduces the daily dividend yield to the last trading day of each week, since the page publishes a weekly series. Each portfolio `.xls` is rewritten **using the published file as its template**: same sheet order, same per-sheet column names (they differ between sheets of one file, e.g. `Size1_Mom1` for returns vs `S1_Mom1` for stock counts) and frequencies as in methodology section 2 — returns daily, stock counts and market values monthly (`year, month`), book values and B/M annual (`year`). Sheets the pipeline doesn't produce (the 2001–2014 `Number of firms`, `Market Value`, … in the 2x2 and industry files, and `Industry Codes`) are carried over untouched. Risk factors are published in two versions on an equal footing — neither is the "official" one: `nefin_factors.csv` (SMB/HML/WML/IML from value-weighted terciles; summary in the front-matter `table`) and `nefin_factors_equally_weighted.csv` (equal weights; summary in the `tables` list, which the dataset template renders after `table`), each also as a `_monthly` file (`year, month`, complete months only). The dashboard switches between them via `dashboard_versions` (`[{label, csv}]`, first one shown on load). Then recompute both summary tables by hand (method in the script's docstring) and update `table_caption`. `loan-fees` is the weekly mean of the daily short-interest loan fee, as a fraction. Not covered by the pipeline import: the two discontinued archives. Until 2026-10 all seven `cost-of-equity` CSVs were byte-identical copies of `basic_products.csv` while the `.xls` were right; the importer now writes both from the same frame, so check sector files differ after any manual change.
+
+For any other data file:
 1. Place new XLS/CSV files in the appropriate `static/nefindata/<dataset-slug>/` subdirectory (see **Data file URLs** above)
 2. Run `python_general_scripts/converting_xls_to_csv.ipynb` if converting XLS → CSV (run from the `python_general_scripts/` directory so relative paths resolve correctly)
 3. Run `python3 python_general_scripts/update_dataset_dates.py` from the repo root — it rewrites `coverage_start` and `last_observation` from the files you just added. If you add a new dataset, register its file and date format in that script's `SOURCES` map

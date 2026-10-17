@@ -41,9 +41,10 @@ maintenance-side rules.
 |---|---|---|
 | `cost-of-equity` | `basic_products`, `construction`, `consumer`, `energy`, `finance`, `manufacturing`, `other` | csv + xls |
 | `dividend-yield` | `dividend_yield` | csv + xls |
+| `illiquidity-index` | `illiquidity_index` | csv |
 | `loan-fees` | `loan_fees` | csv + xls |
 | `portfolios` | `3_portfolios_sorted_by_size`, `3_portfolios_sorted_by_book_to_market`, `3_portfolios_sorted_by_momentum`, `3_portfolios_sorted_by_illiquidity`, `4_portfolios_sorted_by_size_and_book_to_market_2x2`, `4_portfolios_sorted_by_size_and_illiquidity_2x2`, `4_portfolios_sorted_by_size_and_momentum_2x2`, `7_portfolios_sorted_by_industry` | xls only |
-| `risk-factors` | `nefin_factors` | csv |
+| `risk-factors` | `nefin_factors`, `nefin_factors_equally_weighted`, `nefin_factors_monthly`, `nefin_factors_equally_weighted_monthly` | csv |
 | `short-interest` | `average_short_interest`, `average_days_to_cover`, `average_loan_fee` | csv |
 | `spot-rate-curve` | `spot_rate_curve` | csv + xls |
 | `volatility-index` | `ivol_br`, `risk_aversion`, `variance_premium` | csv (ivol_br only) + xls |

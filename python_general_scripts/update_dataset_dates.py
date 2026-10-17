@@ -40,7 +40,7 @@ SOURCES: dict[str, dict] = {
     "loan-fees":         {"file": "nefindata/loan-fees/loan_fees.csv",               "date": "ymd"},
     "portfolios":        {"file": "nefindata/portfolios/3_portfolios_sorted_by_size.xls", "date": "ymd"},
     "cost-of-equity":    {"file": "nefindata/cost-of-equity/consumer.xls",           "date": "myyyy", "col": "Month/Year"},
-    # illiquidity-index has no data file; the page carries `no_data: true`.
+    "illiquidity-index": {"file": "nefindata/illiquidity-index/illiquidity_index.csv", "date": "iso",   "col": "date"},
 }
 
 

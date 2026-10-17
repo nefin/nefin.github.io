@@ -1,14 +1,11 @@
 ---
 title: "Loan Fees"
 type: "datasets"
-summary: "Weekly securities lending rates (loan fees) for Brazilian equities in the BTC market, 2013–2023."
-description: "Weekly average securities lending fee (aluguel de ações) for Brazilian equities traded in the BTC market, expressed as a fraction per year. The series covers January 2013 to September 2023."
-last_observation: "2023-09-06"
+summary: "Weekly securities lending fee (loan fee) for Brazilian equities in the BTC market."
+description: "Weekly average securities lending fee (aluguel de ações) for Brazilian equities traded in the BTC market, expressed as a fraction per year (0.015 = 1.5%). Each observation is the average of the daily loan fee over the week, dated on its last trading day."
+last_observation: "2026-09-08"
 coverage_start: "2013-01-04"
 frequency: "Weekly"
-discontinued: true
-successor_url: "/data/short-interest/"
-successor_label: "the daily average loan fee published with the Short Interest statistics"
 downloads:
   - label: "Loan Fees (CSV)"
     url: "/nefindata/loan-fees/loan_fees.csv"
@@ -20,7 +17,13 @@ aliases:
   - "/data/loan_fees.html"
 ---
 
-The two loan fee series are not interchangeable. This one is a **weekly** average
-over the BTC market and stops in September 2023; the
-[Short Interest](/data/short-interest/) page publishes a **daily** average that is
-still maintained. Work that needs a current loan fee should use the daily series.
+This is the weekly version of the daily average loan fee published on the
+[Short Interest](/data/short-interest/) page (in percent per year there, as a fraction
+here). The series was discontinued in September 2023 and resumed in October 2026, rebuilt
+from the daily data for the whole period since 2013. The rebuilt history moves with the
+version published until 2023 (correlation 0.82) but sits about 16% higher, so
+re-download the file rather than appending to an old copy.
+
+The few weeks above 5% in 2013–2014 are real, not data errors: they are loans of VALE5
+and PETR4 taken around interest-on-equity (JCP) record dates, settled three sessions
+later.
